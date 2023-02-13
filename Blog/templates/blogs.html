@@ -1,0 +1,89 @@
+{% include "header.html" %}
+
+<!-- Page Header -->
+<header class="masthead"
+        style="background-image: url('https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80')">
+   <div class="overlay"></div>
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+               <h1>The People's Blogs</h1>
+               <span class="subheading">Feel Free To Post Your Random Thoughts.</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+   <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+         {% if not all_blogs and not current_user.is_authenticated: %}
+         <div style="text-align: center;">
+            <p>
+               It seems that no posts have loaded 😖
+            </p>
+            <div class="clearfix" style="font-weight: 900; padding: 1rem 0 10rem;">
+               Register Here to create your own blog
+               <a class="btn btn-delete btn-dark float-right"
+                  href="{{ url_for('register') }}" style="margin-left: 1rem;">Register</a>
+            </div>
+         </div>
+
+         {% else: %}
+         {% for blog in all_blogs: %}
+         <div class="post-preview" style="font-size: 1.25rem;">
+            <a href="{{ url_for('get_all_posts', blog_id=blog.id) }}">
+               <h2 class="post-title">
+                  Visit {{blog.name}}
+               </h2>
+               {% if blog.description | length > 29: %}
+               <h4 class="post-subtitle" style="font-size: 1.25rem;">
+                  {{blog.description[0:29] | safe}}...
+               </h4>
+               {% else: %}
+               <h4 class="post-subtitle">
+                  {{blog.description | safe}}
+               </h4>
+               {% endif %}
+            </a>
+            <p class="post-meta">Created by
+               <a href="#">{{blog.author.name}}</a>
+               on {{blog.created_date}}
+            </p>
+         </div>
+         {% if all_blogs|length > 0 %}
+         <hr style="margin-top: 15rem;">
+         {% endif %}
+         {% endfor %}
+         {% endif %}
+
+
+         <!-- New Post -->
+         {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
+         <div class="clearfix" style="margin-top: 5rem;">
+            <a class="btn btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
+         </div>
+         {% else: %}
+         <div>
+            <p style="text-align: left; line-height: 3;">
+               You can create your own blogs, by joining the community.
+               <br>
+               Click register, to create a new account: <a
+                    class="btn btn-new-post btn-outline-primary btn-open float-right"
+                    href="{{ url_for('register')}}">register</a>
+               <br>
+               If you already have an account, login here: <a
+                    class="btn btn-new-post btn-outline-primary btn-open float-right"
+                    href="{{ url_for('login')}}">login</a>
+            </p>
+         </div>
+         {% endif %}
+      </div>
+   </div>
+</div>
+<hr>
+
+{% include "footer.html" %}
