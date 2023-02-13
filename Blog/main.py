@@ -116,16 +116,16 @@ def create_blog():
         new_blog.description = form.description.data
         new_blog.created_date = date.today().strftime("%B %d, %Y")
         new_blog.author = current_user
-        new_post = BlogPost(
-            title="Your First Post",
-            subtitle="Here will be the subtitle",
-            body="This is where your post text goes, feel free to write anything.<br>"
-                 "You can Add Images, using buttons or copy pasting, "
-                 "decorate your text, the only thing left is your creativity!",
-            img_url="https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU=",
-            blog=new_blog,
-            date=date.today().strftime("%B %d, %Y")
-        )
+        new_post = BlogPost()
+        new_post.title="Your First Post"
+        new_post.subtitle="Here will be the subtitle"
+        new_post.body="This is where your post text goes, feel free to write anything.<br>" \
+                      "You can Add Images, using buttons or copy pasting, "\
+                      "decorate your text, the only thing left is your creativity!"
+        new_post.img_url="https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU=",
+        new_post.blog=new_blog
+        new_post.date=date.today().strftime("%B %d, %Y")
+
         db.session.add(new_post)
         db.session.add(new_blog)
         db.session.commit()
@@ -271,14 +271,14 @@ def add_new_post(blog_id):
     if current_user.is_authenticated and current_user.id == inside_blog.author_id:
         form = CreatePostForm()
         if form.validate_on_submit():
-            new_post = BlogPost(
-                title=form.title.data,
-                subtitle=form.subtitle.data,
-                body=form.body.data,
-                img_url=form.img_url.data,
-                blog=inside_blog,
-                date=date.today().strftime("%B %d, %Y")
-            )
+            new_post = BlogPost()
+            new_post.title=form.title.data
+            new_post.subtitle=form.subtitle.data
+            new_post.body=form.body.data
+            new_post.img_url=form.img_url.data
+            new_post.blog=inside_blog
+            new_post.date=date.today().strftime("%B %d, %Y")
+
             db.session.add(new_post)
             db.session.commit()
             return redirect(url_for("get_all_posts", blog_id=blog_id))
