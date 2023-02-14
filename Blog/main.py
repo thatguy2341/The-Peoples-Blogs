@@ -1,5 +1,6 @@
 import os
 from datetime import date
+from dotenv import load_dotenv
 
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
@@ -14,7 +15,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+load_dotenv("./.env")
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
@@ -96,6 +98,7 @@ def home_page():
             all_blogs[0]
         except IndexError:
             all_blogs = db.session.query(Blogs).all()
+            flash(f"Sorry, we couldn't find {search}")
         return render_template('blogs.html', all_blogs=all_blogs)
 
     all_blogs = db.session.query(Blogs).all()
@@ -327,7 +330,7 @@ def delete_post(post_id, blog_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.

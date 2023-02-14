@@ -1,5 +1,5 @@
 {% include "header.html" %}
-
+<div class="background" style="background-image: url('https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')">
 <!-- Page Header -->
 <header class="masthead"
         style="background-image: url('https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80')">
@@ -16,8 +16,28 @@
    </div>
 </header>
 
+
+
 <!-- Main Content -->
 <div class="container">
+   <form class="form " method="post">
+         <div class="row" style="margin: 2rem auto;">
+         <div class="col col-lg-9 col-md-9 col-sm-9 mx-auto" style="margin: 5px 0 2rem 0;">
+            <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search">
+         </div>
+         <div class="col col-lg-3 col-md-3 col-sm-3 mx-auto">
+         <button class="btn btn-outline-info btn-delete my-2 my-sm-0" type="submit" style="margin-left: 0;">Search</button>
+         </div>
+
+         {% with messages = get_flashed_messages() %}
+         {% if messages: %}
+            <p>{{messages[0]}}</p>
+         {% endif %}
+         {% endwith %}
+
+         </div>
+      </form>
+
    <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
          {% if not all_blogs and not current_user.is_authenticated: %}
@@ -34,10 +54,11 @@
 
          {% else: %}
          {% for blog in all_blogs: %}
+         <hr>
          <div class="post-preview" style="font-size: 1.25rem;">
             <a href="{{ url_for('get_all_posts', blog_id=blog.id) }}">
                <h2 class="post-title">
-                  Visit {{blog.name}}
+                  {{blog.name}}
                </h2>
                {% if blog.description | length > 29: %}
                <h4 class="post-subtitle" style="font-size: 1.25rem;">
@@ -54,11 +75,13 @@
                on {{blog.created_date}}
             </p>
          </div>
-         {% if all_blogs|length > 0 %}
-         <hr style="margin-top: 15rem;">
-         {% endif %}
          {% endfor %}
+         <hr style="margin-bottom: 15rem;">
          {% endif %}
+         {% if not current_user.is_authenticated %}
+         <hr>
+         {% endif %}
+
 
 
          <!-- New Post -->
@@ -66,20 +89,33 @@
          <div class="clearfix" style="margin-top: 5rem;">
             <a class="btn btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
          </div>
-         {% else: %}
-         <div>
-            <p style="text-align: left; line-height: 3;">
+         {% elif current_user.blogs | length < 2: %}
+
+            <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
                You can create your own blogs, by joining the community.
                <br>
-               Click register, to create a new account: <a
-                    class="btn btn-new-post btn-outline-primary btn-open float-right"
-                    href="{{ url_for('register')}}">register</a>
-               <br>
-               If you already have an account, login here: <a
-                    class="btn btn-new-post btn-outline-primary btn-open float-right"
-                    href="{{ url_for('login')}}">login</a>
-            </p>
+            </h4>
+
+         <div class="row">
+            <div class="col col-lg-9 col-md-9 col-sm-9">
+               Click register, to create a new account:
+            </div>
+
+            <div class="col col-lg-3 col-md-3 col-sm-3">
+               <a class="btn btn-new-post btn-outline-primary btn-open float-right" href="{{ url_for('register')}}">register</a>
+            </div>
          </div>
+         <hr>
+         <div class="row">
+            <div class="col col-lg-9 col-md-9 col-sm-9" >
+               If you already have an account, login here:
+            </div>
+            <div class="col col-lg-3 col-md-3 col-sm-3">
+               <a class="btn btn-new-post btn-outline-success btn-open float-right" href="{{ url_for('login')}}">login</a>
+            </div>
+         </div>
+
+
          {% endif %}
       </div>
    </div>
@@ -87,3 +123,5 @@
 <hr>
 
 {% include "footer.html" %}
+
+</div>
