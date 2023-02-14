@@ -21,7 +21,7 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 app.app_context().push()
 db = SQLAlchemy(app, engine_options={"pool_pre_ping": True})
 gravatar = Gravatar(app=app, size=50, default="mp")
