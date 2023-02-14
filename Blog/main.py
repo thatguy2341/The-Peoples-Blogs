@@ -15,13 +15,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog
 
 app = Flask(__name__)
-load_dotenv("/.env")
+load_dotenv(".env")
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
-#app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 app.app_context().push()
 db = SQLAlchemy(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
@@ -329,7 +328,7 @@ def delete_post(post_id, blog_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True, host="0.0.0.0", port=0)
 
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.
