@@ -57,7 +57,7 @@
             </div>
             {% if current_user.is_authenticated: %}
             <div style="font-weight: 900;">
-               {{ ckeditor.load(pkg_type="standard") }}
+               {{ ckeditor.load(pkg_type="basic") }}
                {{ ckeditor.config(name='body') }}
                {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
             </div>
