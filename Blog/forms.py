@@ -1,6 +1,6 @@
 from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, SearchField
+from wtforms import StringField, SubmitField, PasswordField, SearchField, TelField, TextAreaField
 from wtforms.validators import DataRequired, URL, Email, Length
 
 
@@ -37,3 +37,10 @@ class CreateBlog(FlaskForm):
 
 class SearchForm(FlaskForm):
     name = SearchField("Enter Blog Name", )
+
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email Address', validators=[DataRequired(), Email()])
+    phone_number = TelField("Phone Number")
+    message = TextAreaField("Message", validators=[Length(min=7), Length(max=3000), DataRequired()])
+    submit = SubmitField("Send")

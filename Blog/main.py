@@ -1,5 +1,7 @@
 import os
 from datetime import date
+from smtplib import SMTP
+
 from dotenv import load_dotenv
 
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
@@ -12,7 +14,7 @@ from sqlalchemy import exc
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog
+from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm
 
 app = Flask(__name__)
 load_dotenv(".env")
@@ -21,6 +23,9 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
+MY_GMAIL = os.getenv("GMAIL")
+TO_GMAIL = os.getenv("TO_GMAIL")
+MY_PASS = os.getenv("PASS")
 app.app_context().push()
 db = SQLAlchemy(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
@@ -260,9 +265,43 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["POST", "GET"])
 def contact():
-    return render_template("contact.html")
+    form = ContactForm()
+    if request.method == "GET":
+        return render_template("contact.html", form=form)
+    else:
+        try:
+            # THIS IS SPAM DETECTING SYSTEM, DETECTS IF 2 MESSEGES 1 AFTER THE OTHER ARE THE SAME
+            # CAN ADD A CHECK FOR THE SAME NAME ALSO, TOO TIRED THO.
+            with open("message", "rt") as file:
+                message_li = [value.strip("\r").strip() for value in form.message.data.split("\n")]
+                message_last = [value.strip() for value in file.readlines()[::2] if
+                                value.strip() is not None or value != "\n"]
+
+            if len(request.form["message"].strip()) < 7 or message_last == message_li:
+                flash("Spam Detected, please be patient while sending the message.")
+                return render_template("contact.html", form=form)
+            else:
+                with open("message", "wt") as file:
+                    file.write(form.message.data)
+
+                with SMTP("smtp.gmail.com") as connection:
+                    connection.starttls()
+                    connection.login(user=MY_GMAIL, password=MY_PASS)
+                    connection.sendmail(from_addr=request.form["email"],
+                                        to_addrs="gamenewman2@gmail.com",
+                                        msg=f"Subject:Message From Blog Website\n\n"
+                                            f"Name: {form.name.data}.\n"
+                                            f"Email: {form.email.data}\n"
+                                            f"Phone Number: {form.phone_number.data}\n"
+                                            f"Message: {form.message.data}")
+        except KeyError:
+            flash("There Was An Error While Sending Your Message, please try again.")
+            return render_template("contact.html", form=form)
+
+        else:
+            return redirect(url_for("home_page"))
 
 
 @app.route("/blog/<int:blog_id>/new-post", methods=["POST", "GET"])
@@ -332,21 +371,5 @@ if __name__ == "__main__":
 
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.
+# TODO: messaging system.
 
-# Finally after long and tedious hours of studing, I have created the first
-# site that I truly enjoy and relish.
-#
-# https://images.unsplash.com/photo-1531686264889-56fdcabd163f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2VsZWJyYXRpb258ZW58MHx8MHx8&w=1000&q=80
-#
-# Finally I can say that all the programing that I have studied, after all of my trials and
-# errors, I have created a site to behold.
-#
-# Finally after this long journey, my efforts amounted for something everyone can enjoy.
-#
-# Finally I have finished working on the site, it may not be much, it may not be close to
-# perfection, the haters might spot the blemishes, but I love the start of it, and that's all that matters.
-#
-# Finally I am publishing a site that can be&nbsp;distributed to others, this is the mark of
-# the end of a project, and the start of a new journey.
-#
-# Finally I can be done writting the first post, on the first blog, of my first site.
