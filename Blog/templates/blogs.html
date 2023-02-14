@@ -20,8 +20,8 @@
 
 <!-- Main Content -->
 <div class="container">
-   <form class="form " method="post">
-         <div class="row" style="margin: 2rem auto;">
+   <form class="form" method="post">
+         <div class="row" style="margin: 2rem auto 4rem;">
          <div class="col col-lg-9 col-md-9 col-sm-9 mx-auto" style="margin: 5px 0 2rem 0;">
             <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search">
          </div>
@@ -41,7 +41,7 @@
    <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
          {% if not all_blogs and not current_user.is_authenticated: %}
-         <div style="text-align: center;">
+         <div style="text-align: center; margin-bottom: 20rem;">
             <p>
                It seems that no posts have loaded 😖
             </p>

@@ -20,7 +20,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.app_context().push()
 db = SQLAlchemy(app)
@@ -125,7 +125,7 @@ def create_blog():
         new_post.body="This is where your post text goes, feel free to write anything.<br>" \
                       "You can Add Images, using buttons or copy pasting, "\
                       "decorate your text, the only thing left is your creativity!"
-        new_post.img_url="https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU=",
+        new_post.img_url="https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU="
         new_post.blog=new_blog
         new_post.date=date.today().strftime("%B %d, %Y")
 
