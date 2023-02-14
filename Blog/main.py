@@ -334,3 +334,21 @@ if __name__ == "__main__":
 
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.
+
+# Finally after long and tedious hours of studing, I have created the first
+# site that I truly enjoy and relish.
+#
+# https://images.unsplash.com/photo-1531686264889-56fdcabd163f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2VsZWJyYXRpb258ZW58MHx8MHx8&w=1000&q=80
+#
+# Finally I can say that all the programing that I have studied, after all of my trials and
+# errors, I have created a site to behold.
+#
+# Finally after this long journey, my efforts amounted for something everyone can enjoy.
+#
+# Finally I have finished working on the site, it may not be much, it may not be close to
+# perfection, the haters might spot the blemishes, but I love the start of it, and that's all that matters.
+#
+# Finally I am publishing a site that can be&nbsp;distributed to others, this is the mark of
+# the end of a project, and the start of a new journey.
+#
+# Finally I can be done writting the first post, on the first blog, of my first site.
