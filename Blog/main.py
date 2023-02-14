@@ -15,17 +15,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog
 
 app = Flask(__name__)
-load_dotenv("./.env")
+load_dotenv("/.env")
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///blog.db"
-# app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
+#app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 app.app_context().push()
 db = SQLAlchemy(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
-
 
 class Users(db.Model, UserMixin):
     __tablename__ = "users"
