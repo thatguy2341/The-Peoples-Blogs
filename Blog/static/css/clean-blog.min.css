@@ -107,7 +107,8 @@
 
 .register{
    text-align: center;
-   margin-top: 10px;
+   font-weight: 900;
+   font-size: 1.4rem;
 }
 
 @media screen and (max-width: 800px){
@@ -127,10 +128,21 @@
  }
  .register {
  text-align: left;
+ font-size: 1.2rem;
  width: 50%;
  }
  .register-btn {
  margin-top: 1rem;
  width: 50%;
  }
+}
+
+@media screen and (max-width: 450px){
+   .search-blogs{
+    width: 60%;
+    }
+
+    .register {
+    font-size: 1rem;
+   }
 }

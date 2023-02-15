@@ -16,6 +16,7 @@ class RegistrationForm(FlaskForm):
     name = StringField('Enter Your Name', validators=[DataRequired()])
     email = StringField('Enter Your Email', validators=[DataRequired(), Email()])
     password = PasswordField('Enter Password', validators=[DataRequired(), Length(min=8)])
+    validate_password = PasswordField('Enter Password', validators=[DataRequired(), Length(min=8)])
     submit = SubmitField("Join The Community")
 
 

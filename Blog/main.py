@@ -13,13 +13,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_wtf.csrf import CSRFProtect
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm
 
 app = Flask(__name__)
 load_dotenv(".env")
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
+csrf = CSRFProtect(app)
 Bootstrap(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
@@ -209,6 +210,9 @@ def get_all_posts(blog_id):
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        if form.validate_password.data != form.password.data:
+            flash("Oops! The passwords did not match! fix the password validation.")
+            return render_template("register.html", form=form)
         secured_password = generate_password_hash(form.password.data, salt_length=8)
         new_user = Users()
         new_user.email = form.email.data
