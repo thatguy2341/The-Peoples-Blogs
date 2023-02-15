@@ -67,19 +67,25 @@
          {% endif %}
 
          {% if user.id == admin_user.id or all_posts|length > 1 %}
-         <hr style="margin-top: 10rem;">
+         <hr style="margin-top: 5rem;">
          {% endif %}
 
 
          <!-- New Post -->
          {% if user.id == admin_user.id %}
-         <a href="{{url_for('delete_blog', blog_id=blog.id)}}">
-            <button type="button" class="btn btn-new-post btn-danger float-left">Delete Blog</button>
-         </a>
-         <div class="clearfix">
-            <a class="btn btn-new-post btn-primary float-right" href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
-               New Post</a>
-         </div>
+            <div class="row">
+               <div class="col col-lg-6 col-md-6 col-sm-6">
+                  <a href="{{url_for('delete_blog', blog_id=blog.id)}}">
+                     <button type="button" class="btn btn-new-post btn-danger float-left">Delete Blog</button>
+                  </a>
+               </div>
+               <div class="col col-lg-6 col-md-6 col-sm-6">
+                  <div class="clearfix">
+                     <a class="btn btn-new-post btn-primary float-right" href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
+                        New Post</a>
+                  </div>
+               </div>
+            </div>
          {% endif %}
       </div>
    </div>

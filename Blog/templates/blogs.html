@@ -17,16 +17,19 @@
 </header>
 
 
-
+<!--<div class="container clearfix" style="margin: 3rem 0;">-->
+<!--      <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>-->
+<!--</div>-->
 <!-- Main Content -->
 <div class="container">
+
    <form class="form" method="post">
-         <div class="row" style="margin: 2rem auto 4rem;">
+         <div class="row" style="margin: 2rem auto 2rem;">
          <div class="col col-lg-9 col-md-9 col-sm-9 mx-auto" style="margin: 5px 0 2rem 0;">
             <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search">
          </div>
-         <div class="col col-lg-3 col-md-3 col-sm-3 mx-auto">
-         <button class="btn btn-outline-info btn-delete my-2 my-sm-0" type="submit" style="margin-left: 0;">Search</button>
+         <div class="col col-lg-3 col-md-3 col-sm-3 ">
+         <button class="btn btn-outline-info btn-delete  my-sm-0" type="submit" style="margin-left: 0;">Search</button>
          </div>
 
          {% with messages = get_flashed_messages() %}
@@ -55,9 +58,9 @@
                <h2 class="post-title">
                   {{blog.name}}
                </h2>
-               {% if blog.description | length > 29: %}
+               {% if blog.description | length > 80: %}
                <h4 class="post-subtitle" style="font-size: 1.25rem;">
-                  {{blog.description[0:29] | safe}}...
+                  {{blog.description[0:79] | safe}}...
                </h4>
                {% else: %}
                <h4 class="post-subtitle">
@@ -81,7 +84,8 @@
 
          <!-- New Post -->
          {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
-         <div class="clearfix" style="margin-top: 5rem;">
+         <hr style="margin-top: 5rem;">
+         <div class="clearfix">
             <a class="btn btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
          </div>
          {% elif current_user.blogs | length < 2: %}

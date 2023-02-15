@@ -27,7 +27,7 @@
             href="{{url_for('get_all_posts', blog_id=post.blog_id)}}">⤣ Go Back</a>
       </div>
       <div class="row">
-         <div class="col-lg-8 col-md-10 mx-auto">
+         <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
             {{ post.body|safe }}
             <hr style="margin-top: 3rem;">
             {% if user.id == post.blog.author_id %}

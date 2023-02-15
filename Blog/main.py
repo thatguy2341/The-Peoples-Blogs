@@ -201,7 +201,6 @@ def register():
             db.session.add(new_user)
             db.session.commit()
         except exc.IntegrityError:
-            db.session.rollback()
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
@@ -372,4 +371,5 @@ if __name__ == "__main__":
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.
 # TODO: messaging system.
+# TODO: confirmation system for deleting.
 
