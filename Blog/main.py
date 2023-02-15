@@ -100,14 +100,17 @@ def home_page():
     if request.method == "POST":
         search = request.form.get("search")
         all_blogs = db.session.query(Blogs).filter(Blogs.name.contains(search) | Users.name.contains(search))
+        all_blogs = [blog for blog in all_blogs]
         try:
             all_blogs[0]
         except IndexError:
             all_blogs = db.session.query(Blogs).all()
             flash(f"Sorry, we couldn't find {search}")
-        return render_template('blogs.html', all_blogs=all_blogs)
+            print(all_blogs.count())
+        return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
     all_blogs = db.session.query(Blogs).all()
+
     return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
 
@@ -208,6 +211,9 @@ def get_all_posts(blog_id):
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
+    if current_user.is_authenticated:
+        return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
+
     form = RegistrationForm()
 
     if request.method == "POST":
@@ -237,13 +243,15 @@ def register():
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
+
+    if current_user.is_authenticated:
+        return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
+
     form = LoginForm()
 
     if request.method == "POST":
         given_email = form.email.data
         given_password = form.password.data
-        if given_password is None:
-            return redirect(url_for('register'))
         for user in db.session.query(Users).all():
             if user.email == given_email:
                 if check_password_hash(password=given_password, pwhash=user.password):

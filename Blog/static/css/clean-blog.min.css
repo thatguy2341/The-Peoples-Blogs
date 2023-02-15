@@ -138,9 +138,9 @@
  }
 }
 
-@media screen and (max-width: 450px){
+@media screen and (max-width: 499px){
    #search-blogs{
-    width: 60%;
+    width: 50%;
     padding: 0;
     }
 
