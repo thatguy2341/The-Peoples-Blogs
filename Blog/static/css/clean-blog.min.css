@@ -104,7 +104,17 @@
 .go-back{
    margin: 1rem 1.5rem 3rem;
 }
+
+.register{
+   text-align: center;
+   margin-top: 10px;
+}
+
 @media screen and (max-width: 800px){
+ .search-blogs{
+ width: 50%;
+ margin-left: 0;
+ }
  .go-back{
    margin-left: 0;
  }
@@ -112,6 +122,15 @@
    padding-right: 2rem;
  }
  .button-screen-sm{
-   margin-left: 2rem;
+   margin-left: 0rem;
+   width: 30%;
+ }
+ .register {
+ text-align: left;
+ width: 50%;
+ }
+ .register-btn {
+ margin-top: 1rem;
+ width: 50%;
  }
 }
