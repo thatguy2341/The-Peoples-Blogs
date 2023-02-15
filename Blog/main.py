@@ -199,7 +199,7 @@ def get_all_posts(blog_id):
     posts = BlogPost.query.filter_by(blog_id=blog_id).all()
     admin_user = blog.author
 
-    if current_user != blog.author and raise_view == 1:
+    if current_user != blog.author and raise_view:
         blog.views = blog.views + 1
     db.session.commit()
     return render_template("index.html", all_posts=posts, user=current_user, admin_user=admin_user, blog=blog)
