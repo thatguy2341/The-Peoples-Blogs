@@ -17,19 +17,19 @@
 </header>
 
 
-<!--<div class="container clearfix" style="margin: 3rem 0;">-->
-<!--      <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>-->
-<!--</div>-->
+
 <!-- Main Content -->
 <div class="container">
-
-   <form class="form" method="post">
-         <div class="row" style="margin: 2rem auto 2rem;">
-         <div class="col col-lg-9 col-md-9 col-sm-9 mx-auto" style="margin: 5px 0 2rem 0;">
+   <div class="container clearfix" style="margin: 3rem 0;">
+      <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>
+   </div>
+   <form class="form mx-auto" method="post">
+         <div class="row mx-auto" style="margin: 2rem auto 2rem;">
+         <div class="col col-lg-9 col-md-9 col-sm-9 " style="margin: 5px 0 2rem 0;">
             <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search">
          </div>
          <div class="col col-lg-3 col-md-3 col-sm-3 ">
-         <button class="btn btn-outline-info btn-delete  my-sm-0" type="submit" style="margin-left: 0;">Search</button>
+         <button class="btn btn-outline-info btn-delete my-sm-0" type="submit" style="margin-left: 0;">Search</button>
          </div>
 
          {% with messages = get_flashed_messages() %}

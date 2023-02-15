@@ -44,7 +44,7 @@ class Users(db.Model, UserMixin):
 class Blogs(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.String(5000), nullable=True)
+    description = db.Column(db.Text, nullable=True)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     author = relationship("Users", back_populates='blogs')
     created_date = db.Column(db.String(100), nullable=False)
@@ -201,6 +201,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
         except exc.IntegrityError:
+            db.rollback()
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
@@ -366,10 +367,9 @@ def delete_post(post_id, blog_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=1000)
+    app.run(debug=False)
 
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.
 # TODO: messaging system.
 # TODO: confirmation system for deleting.
-
