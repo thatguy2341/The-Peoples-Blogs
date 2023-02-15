@@ -239,7 +239,7 @@ def register():
 def login():
     form = LoginForm()
 
-    if form.validate_on_submit():
+    if request.method == "POST":
         given_email = form.email.data
         given_password = form.password.data
         if given_password is None:
