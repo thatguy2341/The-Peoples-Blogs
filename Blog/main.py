@@ -22,7 +22,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///blog.db" #os.getenv("DATABASE_URL", )
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
 MY_PASS = os.getenv("PASS")
