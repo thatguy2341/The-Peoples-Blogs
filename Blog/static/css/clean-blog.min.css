@@ -100,3 +100,12 @@
   position: relative;
   background-size: cover;
 }
+
+.go-back{
+   margin: 1rem 1.5rem 3rem;
+}
+@media screen and (max-width: 800px){
+ .go-back{
+   margin-left: 0;
+ }
+}

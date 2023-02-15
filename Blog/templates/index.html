@@ -74,12 +74,12 @@
          <!-- New Post -->
          {% if user.id == admin_user.id %}
             <div class="row">
-               <div class="col col-lg-6 col-md-6 col-sm-6">
+               <div class="col col-lg-6 col-md-6 col-sm-4">
                   <a href="{{url_for('delete_blog', blog_id=blog.id)}}">
                      <button type="button" class="btn btn-new-post btn-danger float-left">Delete Blog</button>
                   </a>
                </div>
-               <div class="col col-lg-6 col-md-6 col-sm-6">
+               <div class="col col-lg-6 col-md-6 col-sm-8">
                   <div class="clearfix">
                      <a class="btn btn-new-post btn-primary float-right" href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
                         New Post</a>
