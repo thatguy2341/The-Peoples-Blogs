@@ -22,7 +22,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///blog.db" #os.getenv("DATABASE_URL", )
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
 MY_PASS = os.getenv("PASS")
@@ -49,6 +49,7 @@ class Blogs(db.Model, UserMixin):
     author = relationship("Users", back_populates='blogs')
     created_date = db.Column(db.String(100), nullable=False)
     posts = relationship("BlogPost", back_populates="blog")
+    views = db.Column(db.Integer, nullable=False)
 
 
 class BlogPost(db.Model):
@@ -62,6 +63,7 @@ class BlogPost(db.Model):
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
     comments = relationship('Comments', back_populates='inside_post')
+    views = db.Column(db.Integer, nullable=False)
 
 
 class Comments(db.Model, UserMixin):
@@ -93,7 +95,7 @@ def load_user(user_id):
 
 @app.route("/", methods=["GET", "POST"])
 def home_page():
-
+    num = request.args.get("num") if request.args.get("num") is not None else 0
     if request.method == "POST":
         search = request.form.get("search")
         all_blogs = db.session.query(Blogs).filter(Blogs.name.contains(search) | Users.name.contains(search))
@@ -105,7 +107,7 @@ def home_page():
         return render_template('blogs.html', all_blogs=all_blogs)
 
     all_blogs = db.session.query(Blogs).all()
-    return render_template('blogs.html', all_blogs=all_blogs)
+    return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
@@ -122,6 +124,7 @@ def create_blog():
         new_blog.description = form.description.data
         new_blog.created_date = date.today().strftime("%B %d, %Y")
         new_blog.author = current_user
+        new_blog.views = 0
         new_post = BlogPost()
         new_post.title="Your First Post"
         new_post.subtitle="Here will be the subtitle"
@@ -131,6 +134,7 @@ def create_blog():
         new_post.img_url="https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU="
         new_post.blog=new_blog
         new_post.date=date.today().strftime("%B %d, %Y")
+        new_post.views = 0
 
         db.session.add(new_post)
         db.session.add(new_blog)
@@ -169,8 +173,10 @@ def edit_blog(blog_id):
             description=blog.description,
         )
         if edit_form.validate_on_submit():
-            blog.name = edit_form.name
-            blog.description = edit_form.description
+            blog.name = edit_form.name.data
+            blog.description = edit_form.description.data
+            blog.created_date = blog.created_date
+            blog.views = blog.views
             db.session.commit()
             return redirect(url_for("get_all_posts", blog_id=blog_id))
 
@@ -179,11 +185,20 @@ def edit_blog(blog_id):
     return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
 
+@app.route("/next-page/<int:num>")
+def next_page(num):
+    if len(db.session.query(Blogs).all()) > 10:
+        return redirect(url_for("home_page", num=num))
+
+    return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
+
 @app.route('/get-posts/<int:blog_id>')
 def get_all_posts(blog_id):
     blog = Blogs.query.get(blog_id)
     posts = BlogPost.query.filter_by(blog_id=blog_id).all()
     admin_user = blog.author
+    blog.views = blog.views + 1
+    db.session.commit()
     return render_template("index.html", all_posts=posts, user=current_user, admin_user=admin_user, blog=blog)
 
 
@@ -244,6 +259,8 @@ def logout():
 def show_post(post_id):
     form = CommentForm()
     requested_post = BlogPost.query.get(post_id)
+    requested_post.views += 1
+    db.session.commit()
     post_comments = requested_post.comments
     if form.validate_on_submit():
         if current_user.is_authenticated:
@@ -318,6 +335,7 @@ def add_new_post(blog_id):
             new_post.img_url=form.img_url.data
             new_post.blog=inside_blog
             new_post.date=date.today().strftime("%B %d, %Y")
+            new_post.views = 0
 
             db.session.add(new_post)
             db.session.commit()
@@ -345,6 +363,7 @@ def edit_post(post_id, blog_id):
             post.img_url = edit_form.img_url.data
             post.blog = inside_blog
             post.body = edit_form.body.data
+            post.views = post.views
             db.session.commit()
             return redirect(url_for("show_post", post_id=post.id))
 
@@ -367,7 +386,7 @@ def delete_post(post_id, blog_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 # TODO: add a show my blogs button.
 # TODO: add maybe a rating system.

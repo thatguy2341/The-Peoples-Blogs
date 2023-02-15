@@ -46,6 +46,7 @@
                <h2 class="post-title">
                   {{post.title}}
                </h2>
+               <h6> 👁️{{post.views}}</h6>
             </a>
             {% if user.id == admin_user.id %}
             <a href="{{url_for('delete_post', post_id=post.id, blog_id=blog.id)}}">

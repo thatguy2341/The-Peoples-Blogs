@@ -108,4 +108,10 @@
  .go-back{
    margin-left: 0;
  }
+ .search-bar{
+   padding-right: 2rem;
+ }
+ .button-screen-sm{
+   margin-left: 2rem;
+ }
 }

@@ -20,16 +20,18 @@
 
 <!-- Main Content -->
 <div class="container">
-   <div class="container clearfix" style="margin: 3rem 0;">
+   {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
+   <div class="clearfix" style="margin: 3rem 0;">
       <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>
    </div>
-   <form class="form mx-auto" method="post">
+   {% endif %}
+      <form class="form mx-auto" method="post">
          <div class="row mx-auto" style="margin: 2rem auto 2rem;">
          <div class="col col-lg-9 col-md-9 col-sm-9 " style="margin: 5px 0 2rem 0;">
             <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search">
          </div>
          <div class="col col-lg-3 col-md-3 col-sm-3 ">
-         <button class="btn btn-outline-info btn-delete my-sm-0" type="submit" style="margin-left: 0;">Search</button>
+         <button class="btn btn-sm btn-outline-info btn-delete button-screen-sm" type="submit" style="margin-left: 0;">Search</button>
          </div>
 
          {% with messages = get_flashed_messages() %}
@@ -40,7 +42,6 @@
 
          </div>
       </form>
-
    <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
          {% if not all_blogs and not current_user.is_authenticated: %}
@@ -51,13 +52,14 @@
          </div>
 
          {% else: %}
-         {% for blog in all_blogs: %}
+         {% for blog in all_blogs[page * 10 : page * 10 + 9]: %}
          <hr>
          <div class="post-preview" style="font-size: 1.25rem;">
             <a href="{{ url_for('get_all_posts', blog_id=blog.id) }}">
                <h2 class="post-title">
                   {{blog.name}}
                </h2>
+               <h6> 👁️{{blog.views}}</h6>
                {% if blog.description | length > 80: %}
                <h4 class="post-subtitle" style="font-size: 1.25rem;">
                   {{blog.description[0:79] | safe}}...
@@ -80,7 +82,11 @@
          <hr>
          {% endif %}
 
-
+         {% if all_blogs | length > 10 %}
+         <div class="container clearfix" style="margin: 3rem 0;">
+         <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('next_page', num=page+1)}}">Next Page</a>
+         </div>
+         {% endif %}
 
          <!-- New Post -->
          {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
