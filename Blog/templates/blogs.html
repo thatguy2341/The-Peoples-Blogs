@@ -27,12 +27,12 @@
    {% endif %}
       <form class="form" method="post">
          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-         <div class="row" style="margin: 2rem auto 2rem;">
-         <div class="col-lg-10 col-md-9 col-sm-8" id="search-blogs" style="margin: 5px auto 2rem;">
+         <div class="row search-row">
+         <div class="col-lg-10 col-md-9 col-sm-10" id="search-blogs" style="margin: 5px auto 2rem;">
             <input class="form-control" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search">
          </div>
-         <div class="col-lg-2 col-md-3 col-sm-4 button-screen-sm">
-         <button class="btn btn-sm btn-outline-info btn-delete float-right" type="submit" style="margin-left: 0;">Search</button>
+         <div class="col-lg-2 col-md-3 col-sm-2 button-screen-sm">
+         <button class="btn btn-sm btn-outline-info btn-delete" type="submit" style="margin-left: 0; padding: 15px 15px;">🔍</button>
          </div>
 
          {% with messages = get_flashed_messages() %}

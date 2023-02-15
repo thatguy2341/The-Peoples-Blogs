@@ -111,11 +111,18 @@
    font-size: 1.4rem;
 }
 
+
+@media screen and (min-width: 801px){
+   .search-row{
+      margin: 2rem auto 2rem 8rem;
+   }
+}
+
 @media screen and (max-width: 800px){
  #search-blogs{
  width: 70%;
- margin-left: 0;
- padding: 0;
+ margin-left: 0px;
+ padding-left: 15px;
  }
  .go-back{
    margin-left: 0;
@@ -140,8 +147,9 @@
 
 @media screen and (max-width: 499px){
    #search-blogs{
-    width: 50%;
+    width: 60%;
     padding: 0;
+    padding-left: 15px;
     }
 
     .register {
