@@ -197,6 +197,8 @@ def get_all_posts(blog_id):
     blog = Blogs.query.get(blog_id)
     posts = BlogPost.query.filter_by(blog_id=blog_id).all()
     admin_user = blog.author
+
+    print(admin_user.id)
     blog.views = blog.views + 1
     db.session.commit()
     return render_template("index.html", all_posts=posts, user=current_user, admin_user=admin_user, blog=blog)
@@ -216,7 +218,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
         except exc.IntegrityError:
-            db.rollback()
+            db.session.rollback()
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
@@ -262,17 +264,16 @@ def show_post(post_id):
     requested_post.views += 1
     db.session.commit()
     post_comments = requested_post.comments
-    if form.validate_on_submit():
-        if current_user.is_authenticated:
-            new_comment = Comments()
-            new_comment.text = form.comment.data
-            new_comment.author = current_user
-            new_comment.inside_post = requested_post
-            db.session.add(new_comment)
-            db.session.commit()
-        else:
-            flash("You Need To Log In Or Register To Comment On Posts")
-            return redirect(url_for("login"))
+    if current_user.is_authenticated and form.validate_on_submit():
+        new_comment = Comments()
+        new_comment.text = form.comment.data
+        new_comment.author = current_user
+        new_comment.inside_post = requested_post
+        db.session.add(new_comment)
+        db.session.commit()
+    elif form.validate_on_submit():
+        flash("You Need To Log In Or Register To Comment On Posts")
+        return redirect(url_for("login"))
 
     return render_template("post.html", post=requested_post, user=current_user, form=form, comments=post_comments)
 

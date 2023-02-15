@@ -45,7 +45,7 @@
                   <li>
                      {% for comment in comments: %}
                      <div class="commenterImage">
-                        <img src="{{ current_user.email | gravatar }}"/>
+                        <img src="{{ comment.author.email | gravatar }}"/>
                      </div>
                      <div class="commentText">
                         <p>{{ comment.text|safe }}</p>
