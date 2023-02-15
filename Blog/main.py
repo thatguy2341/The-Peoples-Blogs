@@ -194,12 +194,13 @@ def next_page(num):
 
 @app.route('/get-posts/<int:blog_id>')
 def get_all_posts(blog_id):
+    raise_view = request.args.get("raise_view")
     blog = Blogs.query.get(blog_id)
     posts = BlogPost.query.filter_by(blog_id=blog_id).all()
     admin_user = blog.author
 
-    print(admin_user.id)
-    blog.views = blog.views + 1
+    if current_user != blog.author and raise_view == 1:
+        blog.views = blog.views + 1
     db.session.commit()
     return render_template("index.html", all_posts=posts, user=current_user, admin_user=admin_user, blog=blog)
 
@@ -261,7 +262,9 @@ def logout():
 def show_post(post_id):
     form = CommentForm()
     requested_post = BlogPost.query.get(post_id)
-    requested_post.views += 1
+    raise_view = request.args.get("raise_view")
+    if current_user != requested_post.blog.author and raise_view:
+        requested_post.views += 1
     db.session.commit()
     post_comments = requested_post.comments
     if current_user.is_authenticated and form.validate_on_submit():

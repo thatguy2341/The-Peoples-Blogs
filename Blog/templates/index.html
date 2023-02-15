@@ -42,7 +42,7 @@
          {% else: %}
          {% for post in all_posts %}
          <div class="post-preview">
-            <a href="{{ url_for('show_post', post_id=post.id) }}">
+            <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
                <h2 class="post-title">
                   {{post.title}}
                </h2>
@@ -53,7 +53,7 @@
                <button type="button" class="btn btn-delete btn-outline-danger float-right">Delete post</button>
             </a>
             {% endif %}
-            <a href="{{ url_for('show_post', post_id=post.id) }}">
+            <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
                <h4 class="post-subtitle">
                   {{post.subtitle}}
                </h4>

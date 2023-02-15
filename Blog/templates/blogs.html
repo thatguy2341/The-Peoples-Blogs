@@ -55,7 +55,7 @@
          {% for blog in all_blogs[page * 10 : page * 10 + 9]: %}
          <hr>
          <div class="post-preview" style="font-size: 1.25rem;">
-            <a href="{{ url_for('get_all_posts', blog_id=blog.id) }}">
+            <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
                <h2 class="post-title">
                   {{blog.name}}
                </h2>
