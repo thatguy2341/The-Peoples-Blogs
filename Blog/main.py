@@ -209,10 +209,12 @@ def get_all_posts(blog_id):
 @app.route('/register', methods=["POST", "GET"])
 def register():
     form = RegistrationForm()
-    if form.validate_on_submit():
+
+    if request.method == "POST":
         if form.validate_password.data != form.password.data:
             flash("Oops! The passwords did not match! fix the password validation.")
             return render_template("register.html", form=form)
+
         secured_password = generate_password_hash(form.password.data, salt_length=8)
         new_user = Users()
         new_user.email = form.email.data
@@ -240,7 +242,8 @@ def login():
     if form.validate_on_submit():
         given_email = form.email.data
         given_password = form.password.data
-
+        if given_password is None:
+            return redirect(url_for('register'))
         for user in db.session.query(Users).all():
             if user.email == given_email:
                 if check_password_hash(password=given_password, pwhash=user.password):

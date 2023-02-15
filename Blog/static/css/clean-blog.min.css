@@ -112,9 +112,10 @@
 }
 
 @media screen and (max-width: 800px){
- .search-blogs{
+ #search-blogs{
  width: 70%;
  margin-left: 0;
+ padding: 0;
  }
  .go-back{
    margin-left: 0;
@@ -138,8 +139,9 @@
 }
 
 @media screen and (max-width: 450px){
-   .search-blogs{
+   #search-blogs{
     width: 60%;
+    padding: 0;
     }
 
     .register {
