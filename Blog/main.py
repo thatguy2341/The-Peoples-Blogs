@@ -409,6 +409,5 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 # TODO: add a show my blogs button.
-# TODO: add maybe a rating system.
 # TODO: messaging system.
 # TODO: confirmation system for deleting.
