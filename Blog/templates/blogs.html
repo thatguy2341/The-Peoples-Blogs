@@ -19,21 +19,21 @@
 
 <form class="form container" method="post">
          <div class="row search-row content">
-         <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
-            <input class="form-control" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; right: 1%;">
-            <button class="btn btn-info btn-delete" type="submit" style=" padding: 10px 15px; position: absolute; right: 0%;">🔍</button>
+            <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
+               <input class="form-control" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; right: 1%;">
+               <button class="btn btn-info btn-delete" type="submit" style=" padding: 10px 15px; position: absolute; right: 0%;">🔍</button>
+               {% with messages = get_flashed_messages() %}
+               {% if messages: %}
+                  <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
+               {% endif %}
+               {% endwith %}
+            </div>
+            
          </div>
-
-         {% with messages = get_flashed_messages() %}
-         {% if messages: %}
-            <p>{{messages[0]}}</p>
-         {% endif %}
-         {% endwith %}
-
-         </div>
-      </form>
+</form>
 <!-- Main Content -->
 <div class="container">
+   
    {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
    <div class="clearfix" style="margin: 3rem 0;">
       <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>
