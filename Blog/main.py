@@ -13,14 +13,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_wtf.csrf import CSRFProtect
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm
 
 app = Flask(__name__)
 load_dotenv(".env")
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
-csrf = CSRFProtect(app)
 Bootstrap(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
@@ -213,7 +211,7 @@ def register():
     if current_user.is_authenticated:
         return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
-    form = RegistrationForm()
+    form = RegistrationForm(meta={'csrf': False})
 
     if request.method == "POST":
         if form.validate_password.data != form.password.data:
@@ -246,7 +244,7 @@ def login():
     if current_user.is_authenticated:
         return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
-    form = LoginForm()
+    form = LoginForm(meta={'csrf': False})
 
     if request.method == "POST":
         given_email = form.email.data

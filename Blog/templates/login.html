@@ -27,7 +27,6 @@
          {% if messages: %}
          <p>{{messages[0]}}</p>
          {% endif %}
-         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
          {{ wtf.quick_form(form, button_map={"submit": "primary"}) }}
          {% endwith %}
       </div>
