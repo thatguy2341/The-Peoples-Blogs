@@ -97,13 +97,12 @@ def home_page():
     num = request.args.get("num") if request.args.get("num") is not None else 0
     if request.method == "POST":
         search = request.form.get("search")
-        all_blogs = db.session.query(Blogs).filter(Blogs.name.contains(search) | Users.name.contains(search))
+        all_blogs = db.session.query(Blogs).filter(Blogs.name.contains(search) | Users.name.contains(search) | Blogs.name.contains(search.title()))
         all_blogs = [blog for blog in all_blogs]
-        try:
-            all_blogs[0]
-        except IndexError:
+        if all_blogs is None:
             all_blogs = db.session.query(Blogs).all()
             flash(f"Sorry, we couldn't find {search}")
+
         return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
     all_blogs = db.session.query(Blogs).all()
