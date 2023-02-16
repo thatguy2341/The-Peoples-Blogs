@@ -112,13 +112,20 @@
 }
 
 
-@media screen and (min-width: 801px){
+@media screen and (min-width: 999px){
    .search-row{
       margin: 2rem auto 2rem 8rem;
+      padding-left: 4rem;
    }
 }
 
-@media screen and (max-width: 800px){
+@media screen and (min-width: 750px){
+   .search-row{
+      margin: 2rem auto 2rem 4rem;
+   }
+}
+
+@media screen and (max-width: 750px){
  #search-blogs{
  width: 70%;
  margin-left: 0px;

@@ -106,7 +106,6 @@ def home_page():
         except IndexError:
             all_blogs = db.session.query(Blogs).all()
             flash(f"Sorry, we couldn't find {search}")
-            print(all_blogs.count())
         return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
     all_blogs = db.session.query(Blogs).all()
