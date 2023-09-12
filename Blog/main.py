@@ -21,7 +21,8 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///blog.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///blog.db"
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
 MY_PASS = os.getenv("PASS")
@@ -49,6 +50,7 @@ class Blogs(db.Model, UserMixin):
     created_date = db.Column(db.String(100), nullable=False)
     posts = relationship("BlogPost", back_populates="blog")
     views = db.Column(db.Integer, nullable=False)
+#TODO: add a users_views column, that keeps the id of each user that views.
 
 
 class BlogPost(db.Model):
@@ -63,7 +65,7 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
     comments = relationship('Comments', back_populates='inside_post')
     views = db.Column(db.Integer, nullable=False)
-
+#TODO: add a users_views column, that keeps the id of each user that views.
 
 class Comments(db.Model, UserMixin):
     __tablename__ = "comments"
