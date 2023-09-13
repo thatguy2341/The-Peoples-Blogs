@@ -39,7 +39,15 @@ class Users(db.Model, UserMixin):
     joined_date = db.Column(db.String(100), nullable=False)
     comments = relationship('Comments', back_populates='author')
     blogs = relationship('Blogs', back_populates="author")
+    views = relationship('Views', back_populates="user") # lazy='dynamic' lets us use query with views from users.
 
+
+class Views(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    user = relationship("Users", back_populates="views")
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    blog_id = db.Column(db.Integer, nullable=True)
+    post_id = db.Column(db.Integer, nullable=True)
 
 class Blogs(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,10 +58,10 @@ class Blogs(db.Model, UserMixin):
     created_date = db.Column(db.String(100), nullable=False)
     posts = relationship("BlogPost", back_populates="blog")
     views = db.Column(db.Integer, nullable=False)
-#TODO: add a users_views column, that keeps the id of each user that views.
 
 
-class BlogPost(db.Model):
+
+class BlogPost(db.Model, UserMixin):
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
     blog_id = db.Column(db.Integer, db.ForeignKey("blogs.id"))
@@ -65,7 +73,7 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
     comments = relationship('Comments', back_populates='inside_post')
     views = db.Column(db.Integer, nullable=False)
-#TODO: add a users_views column, that keeps the id of each user that views.
+
 
 class Comments(db.Model, UserMixin):
     __tablename__ = "comments"
@@ -206,8 +214,14 @@ def get_all_posts(blog_id):
     posts = BlogPost.query.filter_by(blog_id=blog_id).all()
     admin_user = blog.author
 
-    if current_user != blog.author and raise_view:
-        blog.views = blog.views + 1
+    if current_user.is_authenticated and current_user != blog.author and raise_view:
+        if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=blog_id).first() is None:
+            blog.views = blog.views + 1
+            new_view = Views()
+            new_view.user = current_user
+            new_view.blog_id = blog_id
+            db.session.add(new_view)
+
     db.session.commit()
     return render_template("index.html", all_posts=posts, user=current_user, admin_user=admin_user, blog=blog)
 
@@ -255,14 +269,14 @@ def login():
     if request.method == "POST":
         given_email = form.email.data
         given_password = form.password.data
-        for user in db.session.query(Users).all():
-            if user.email == given_email:
-                if check_password_hash(password=given_password, pwhash=user.password):
-                    login_user(user)
-                    return redirect(url_for("home_page"))
+        user = Users.query.filter_by(email=given_email).first()
+        if user is not None:
+            if check_password_hash(password=given_password, pwhash=user.password):
+                login_user(user)
+                return redirect(url_for("home_page"))
 
-                flash("The password was Incorrect, try again")
-                return render_template("login.html", form=form)
+            flash("The password was Incorrect, try again")
+            return render_template("login.html", form=form)
 
         flash("You Haven't Registered Before, Your Email Is Unknown")
 
@@ -281,8 +295,15 @@ def show_post(post_id):
     form = CommentForm()
     requested_post = BlogPost.query.get(post_id)
     raise_view = request.args.get("raise_view")
-    if current_user != requested_post.blog.author and raise_view:
-        requested_post.views += 1
+    if current_user.is_authenticated and current_user != requested_post.blog.author and raise_view:
+        if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=requested_post.blog_id,
+                                             post_id=post_id).first() is None:
+            requested_post.views += 1
+            new_view = Views()
+            new_view.user = current_user
+            new_view.post_id = post_id
+            new_view.blog_id = requested_post.blog_id
+            db.session.add(new_view)
     db.session.commit()
     post_comments = requested_post.comments
     if current_user.is_authenticated and form.validate_on_submit():
@@ -410,6 +431,6 @@ def delete_post(post_id, blog_id):
 if __name__ == "__main__":
     app.run(debug=True)
 
-# TODO: add a show my blogs button.
+# TODO: add a show my blogs button to the profile.
 # TODO: messaging system.
 # TODO: confirmation system for deleting.
