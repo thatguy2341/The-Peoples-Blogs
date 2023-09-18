@@ -20,8 +20,8 @@
 <form class="form container" method="post">
          <div class="row search-row content">
             <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
-               <input class="form-control" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; right: 1%;">
-               <button class="btn btn-info btn-delete" type="submit" style=" padding: 10px 15px; position: absolute; right: 0%;">🔍</button>
+               <input class="form-control search-bar" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; right: 1%;">
+               <button class="btn btn-info btn-search" type="submit" >🔍</button>
                {% with messages = get_flashed_messages() %}
                {% if messages: %}
                   <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
@@ -54,10 +54,12 @@
          <hr>
          <div class="post-preview" style="font-size: 1.25rem;">
             <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
+               
                <h1 class="post-title">
-                  {{blog.name}}
+               {{blog.name}}
                </h1>
-               <h6> 👁️{{blog.views}}</h6>
+               
+               
                {% if blog.description | length > 65: %}
                <h4 class="post-subtitle" style="font-size: 1.45rem; font-weight: 300;">
                   {{blog.description[0:64] | safe}}...
@@ -68,10 +70,13 @@
                </h4>
                {% endif %}
             </a>
-            <p class="post-meta">Created by
-               <a href="#">{{blog.author.name}}</a>
-               on {{blog.created_date}}
-            </p>
+            <div class="row">
+               <p class="post-meta col-10">Created by
+                  <a href="#">{{blog.author.name}}</a>
+                  on {{blog.created_date}}
+               </p>
+               <h4 class="col-2 views">{{blog.views}} 👁️</h4>
+            </div>
          </div>
          {% endfor %}
          <hr style="margin-bottom: 15rem;">

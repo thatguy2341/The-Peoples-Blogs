@@ -46,7 +46,7 @@
                <h2 class="post-title">
                   {{post.title}}
                </h2>
-               <h6> 👁️{{post.views}}</h6>
+               
             </a>
             {% if user.id == admin_user.id %}
             <a href="{{url_for('delete_post', post_id=post.id, blog_id=blog.id)}}">
@@ -58,11 +58,14 @@
                   {{post.subtitle}}
                </h4>
             </a>
-
-            <p class="post-meta">Posted by
-               <a href="#">{{admin_user.name}}</a>
-               on {{post.date}}
-            </p>
+            
+            <div class="row">
+               <p class="post-meta col-10">Posted by
+                  <a href="#">{{admin_user.name}}</a>
+                  on {{post.date}}
+               </p>
+               <h4 class="col-2 views"> {{post.views}} 👁️</h4>
+            </div>
          </div>
          {% endfor %}
          {% endif %}
