@@ -30,6 +30,7 @@ app.app_context().push()
 db = SQLAlchemy(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
 
+
 class Users(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -110,15 +111,20 @@ def home_page():
         searcher = (search.title(), search, search.upper(), search.lower())
         all_blogs = set()
         for s in searcher:
-            blogs = db.session.query(Blogs).filter(Blogs.name.contains(s) | Users.name.contains(s))
-            for blog in blogs:
+            found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
+            found_names = db.session.query(Users).filter(Users.name.contains(s))
+            for blog in found_blogs:
                 all_blogs.add(blog)
+            for name in found_names:
+                for blog in name.blogs:
+                    all_blogs.add(blog)
 
+        all_blogs = list(all_blogs)
         if not all_blogs:
             all_blogs = db.session.query(Blogs).all()
             flash(f"Sorry, we couldn't find '{search}'")
 
-        return render_template('blogs.html', all_blogs=list(all_blogs), page=num)
+        return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
     all_blogs = db.session.query(Blogs).all()
 
