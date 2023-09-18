@@ -40,7 +40,7 @@ class Users(db.Model, UserMixin):
     joined_date = db.Column(db.String(100), nullable=False)
     comments = relationship('Comments', back_populates='author')
     blogs = relationship('Blogs', back_populates="author")
-    views = relationship('Views', back_populates="user") # lazy='dynamic' lets us use query with views from users.
+    views = relationship('Views', back_populates="user")  # lazy='dynamic' lets us use query with views from users.
 
 
 class Views(db.Model, UserMixin):
@@ -49,6 +49,7 @@ class Views(db.Model, UserMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     blog_id = db.Column(db.Integer, nullable=True)
     post_id = db.Column(db.Integer, nullable=True)
+
 
 class Blogs(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -59,7 +60,6 @@ class Blogs(db.Model, UserMixin):
     created_date = db.Column(db.String(100), nullable=False)
     posts = relationship("BlogPost", back_populates="blog")
     views = db.Column(db.Integer, nullable=False)
-
 
 
 class BlogPost(db.Model, UserMixin):
@@ -147,14 +147,14 @@ def create_blog():
         new_blog.author = current_user
         new_blog.views = 0
         new_post = BlogPost()
-        new_post.title="Your First Post"
-        new_post.subtitle="Here will be the subtitle"
-        new_post.body="This is where your post text goes, feel free to write anything.<br>" \
-                      "You can Add Images, using buttons or copy pasting, "\
-                      "decorate your text, the only thing left is your creativity!"
-        new_post.img_url="https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU="
-        new_post.blog=new_blog
-        new_post.date=date.today().strftime("%B %d, %Y")
+        new_post.title = "Your First Post"
+        new_post.subtitle = "Here will be the subtitle"
+        new_post.body = "This is where your post text goes, feel free to write anything.<br>" \
+                        "You can Add Images, using buttons or copy pasting, " \
+                        "decorate your text, the only thing left is your creativity!"
+        new_post.img_url = "https://media.istockphoto.com/id/811268074/photo/laptop-computer-desktop-pc-human-hand-office-soft-focus-picture-vintage-concept.jpg?s=612x612&w=is&k=20&c=TdryUCJfxWqCEpnTU9Uqs7_GprlMa4UqoYml4wL_0BU="
+        new_post.blog = new_blog
+        new_post.date = date.today().strftime("%B %d, %Y")
         new_post.views = 0
 
         db.session.add(new_post)
@@ -213,6 +213,7 @@ def next_page(num):
 
     return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
+
 @app.route('/get-posts/<int:blog_id>')
 def get_all_posts(blog_id):
     raise_view = request.args.get("raise_view")
@@ -266,7 +267,6 @@ def register():
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
-
     if current_user.is_authenticated:
         return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
@@ -378,12 +378,12 @@ def add_new_post(blog_id):
         form = CreatePostForm()
         if form.validate_on_submit():
             new_post = BlogPost()
-            new_post.title=form.title.data
-            new_post.subtitle=form.subtitle.data
-            new_post.body=form.body.data
-            new_post.img_url=form.img_url.data
-            new_post.blog=inside_blog
-            new_post.date=date.today().strftime("%B %d, %Y")
+            new_post.title = form.title.data
+            new_post.subtitle = form.subtitle.data
+            new_post.body = form.body.data
+            new_post.img_url = form.img_url.data
+            new_post.blog = inside_blog
+            new_post.date = date.today().strftime("%B %d, %Y")
             new_post.views = 0
 
             db.session.add(new_post)
