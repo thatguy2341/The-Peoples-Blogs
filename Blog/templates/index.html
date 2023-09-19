@@ -43,7 +43,7 @@
          {% for post in all_posts %}
          <div class="post-preview">
             <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
-               <h2 class="post-title">
+               <h2 class="post-title" id="post-title">
                   {{post.title}}
                </h2>
                
@@ -54,17 +54,17 @@
             </a>
             {% endif %}
             <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
-               <h4 class="post-subtitle">
+               <h4 class="post-subtitle" id="post-subtitle">
                   {{post.subtitle}}
                </h4>
             </a>
             
             <div class="row">
-               <p class="post-meta col-10">Posted by
+               <p class="post-meta col col-lg-10 col-md-10 col-sm-8" id="post-meta">Posted by
                   <a href="#">{{admin_user.name}}</a>
                   on {{post.date}}
                </p>
-               <h4 class="col-2 views"> {{post.views}} 👁️</h4>
+               <h4 class="col col-lg-10 col-md-2 col-sm-4 views"> {{post.views}} 👁️</h4>
             </div>
          </div>
          {% endfor %}
@@ -78,15 +78,15 @@
          <!-- New Post -->
          {% if user.id == admin_user.id %}
             <div class="row">
-               <div class="col col-lg-6 col-md-6 col-sm-4">
+               <div class="col col-lg-6 col-md-6 col-sm-6">
                   <a href="{{url_for('delete_blog', blog_id=blog.id)}}">
-                     <button type="button" class="btn btn-new-post btn-danger float-left">Delete Blog</button>
+                     <button type="button" class="btn btn-new-post btn-danger float-left post-control">Delete Blog</button>
                   </a>
                </div>
-               <div class="col col-lg-6 col-md-6 col-sm-8">
+               <div class="col col-lg-6 col-md-6 col-sm-6">
                   <div class="clearfix">
-                     <a class="btn btn-new-post btn-primary float-right" href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
-                        New Post</a>
+                     <a class="btn btn-new-post btn-primary float-right post-control" href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
+                        Post</a>
                   </div>
                </div>
             </div>

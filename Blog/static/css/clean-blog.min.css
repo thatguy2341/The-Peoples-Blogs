@@ -92,8 +92,8 @@
   font-size: 14px;
   font-weight: 800;
   padding: 15px 25px;
-  right: 1rem;
-  bottom: 15rem;
+  right: -8rem;
+  bottom: 13rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: 10px;
@@ -101,12 +101,20 @@
   position: absolute;
 }
 
-@media screen and (max-width: 767px){
-    .btn-delete{
-        padding: 10px 10px;
-        right: 0rem;
-        bottom: 18rem;
-    }
+@media screen and (max-width: 990px){
+.btn-delete{
+  font-size: 14px;
+  font-weight: 800;
+  padding: 15px 25px;
+  right: -1rem;
+  bottom: 15rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 10px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  position: absolute;
+}
+}
 }
 @media screen and (max-width: 620px){
     .btn-delete{
@@ -124,7 +132,30 @@
     }
 }
 
-@media screen and (max-width: 575px){
+@media screen and (max-width: 420px){
+   #post-title {
+      font-size: 1.5rem;
+   }
+   #post-subtitle {
+      font-size: 1rem;
+   }
+   #post-meta{
+      font-size: 0.7rem;
+   }
+   .btn-delete {
+        font-size: 0.6rem;
+        padding: 7px 7px;
+        bottom: 15rem;
+   }
+}
+
+@media screen and (max-width: 300px){
+   .post-control {
+      font-size: 0.7rem;
+   }
+}
+
+@media screen and (max-width: 770px){
     .btn-delete{
         padding: 10px 10px;
         right: 0rem;
@@ -157,9 +188,27 @@
 }
 
 .register{
-   text-align: center;
    font-weight: 900;
    font-size: 1.4rem;
+
+}
+.register-row{
+   padding: 0 20%;
+}
+ .register {
+ text-align: left;
+ font-size: 1.2rem;
+ margin-bottom: 0;
+ padding: 0;
+}
+
+.register-btn{
+   text-align: right;
+   margin: 0.5rem auto;
+}
+ #register-btn {
+   text-align: center;
+
 }
 
 
@@ -179,6 +228,10 @@
  #search-blogs{
  }
 
+.register-row{
+   padding: 0;
+}
+
  .go-back{
    margin-left: 0;
  }
@@ -188,25 +241,39 @@
    width: 30%;
  }
  .register {
- text-align: left;
+ text-align: center;
  font-size: 1.2rem;
- width: 50%;
- }
- .register-btn {
- margin-top: 1rem;
- width: 50%;
- }
+ margin-bottom: 0;
+ padding: 0;
 }
 
-@media screen and (max-width: 499px){
+ .register-btn{
+   text-align: center;
+}
+}
+
+@media screen and (max-width: 324px){
    .search-row{
       width: 90%;
       margin: 3.5rem 0rem;
     }
+   .register-btn{
+      margin-bottom: 2rem;
+   }
+
+   .register-btn{
+      text-align: center;
+      margin: 0.5rem auto;
+   }
 
     .register {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    width: 100%;
    }
+   #register-btn{
+      position: relative;
+   }
+
 }
 
 .post-preview>a>.post-title {
@@ -220,7 +287,7 @@
 }
 @media screen and (max-width: 767px) {
  .views{
-    font-size: 1.2rem;
+    font-size: 1rem;
  }
  .post-meta{
     font-size: 1.0rem;

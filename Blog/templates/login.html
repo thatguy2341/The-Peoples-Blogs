@@ -20,9 +20,9 @@
 </header>
 
 <div class="container">
-   <div class="row">
+   <div class="row" style="margin-top: 4rem;">
 
-      <div class="col-lg-8 col-md-10 content" style="font-weight:900;">
+      <div class="col-lg-8 col-md-10 content mx-auto" style="font-weight:900;">
          {% with messages = get_flashed_messages() %}
          {% if messages: %}
          <p>{{messages[0]}}</p>
@@ -31,16 +31,16 @@
          {% endwith %}
       </div>
    </div>
-   <hr style="margin-top: 3rem">
-   <div class="row">
+   <hr style="margin: 4rem 2rem 2rem;">
+   <div class="row register-row" style="margin: 0;">
 
-      <div class="col-lg-8 col-md-10 col-sm-9 register">
+      <div class="col-lg-8 col-md-9 col-sm-6 register">
          <p>
-            Don't have an account? Register Here:
+            Don't have an account?
          </p>
       </div>
-      <div class="col-lg-4 col-md-2 col-sm-3 register-btn">
-         <a class="btn btn-new-post btn-outline-primary btn-open float-left" href="{{ url_for('register')}}">register</a>
+      <div class="col-lg-4 col-md-3 col-sm-6 register-btn">
+         <a id="register-btn" class="btn btn-new-post btn-outline-primary btn-open" href="{{ url_for('register')}}">register</a>
       </div>
 
    </div>
