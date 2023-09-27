@@ -100,12 +100,12 @@ def load_user(user_id):
     return Users.query.get(user_id)
 
 def title(string: str):
-    exept = {'a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'}
+    exept = {'a', 'an', 'the', 'but', 'or', 'on', 'in', 'with', 'and'}
     word_list = string.split(' ')
     string = ''
     for word in word_list:
         string += word.title() + ' ' if word not in exept or word.isupper() else word + ' '
-    return string.strip(' ')
+    return string.strip(' ').title()
 
 # ------------------------- Site Functionality --------------------------------------
 
