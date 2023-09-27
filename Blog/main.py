@@ -99,6 +99,16 @@ def inject_current_year():
 def load_user(user_id):
     return Users.query.get(user_id)
 
+def title(string: str):
+    exepet = {'a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'}
+    word_list = string.split(' ')
+    string = ''
+    for word in word_list:
+        if word not in exepet or word.isupper():
+            string += word.title() + ' '
+        else:
+            string += word + ' '
+    return string.strip(' ')
 
 # ------------------------- Site Functionality --------------------------------------
 
@@ -108,11 +118,11 @@ def home_page():
     num = request.args.get("num") if request.args.get("num") is not None else 0
     if request.method == "POST":
         search = request.form.get("search")
-        searcher = (search.title(), search, search.upper(), search.lower())
+        searcher = (title(search), search.upper())
         all_blogs = set()
         for s in searcher:
             found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
-            found_names = db.session.query(Users).filter(Users.name.contains(s))
+            found_names = db.session.query(Users).filter(Users.name.contains(s)) # TODO: see if u can change filter to search with lower.
             for blog in found_blogs:
                 all_blogs.add(blog)
             for name in found_names:
@@ -141,7 +151,7 @@ def create_blog():
     form = CreateBlog()
     if form.validate_on_submit():
         new_blog = Blogs()
-        new_blog.name = form.name.data
+        new_blog.name = title(form.name.data)
         new_blog.description = form.description.data
         new_blog.created_date = date.today().strftime("%B %d, %Y")
         new_blog.author = current_user
@@ -248,7 +258,7 @@ def register():
         secured_password = generate_password_hash(form.password.data, salt_length=8)
         new_user = Users()
         new_user.email = form.email.data
-        new_user.name = form.name.data
+        new_user.name = title(form.name.data)
         new_user.password = secured_password
         new_user.joined_date = date.today().strftime("%B %d, %Y")
         try:

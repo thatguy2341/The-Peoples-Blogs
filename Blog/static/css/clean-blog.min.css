@@ -78,7 +78,7 @@
 .btn-search {
   font-size: 14px;
   font-weight: 800;
-  padding: 10px 15px;
+  padding: 9px 15px;
   right: 1%;
   bottom: -2.6rem;
   letter-spacing: 1px;
@@ -163,12 +163,20 @@
     }
 }
 
+@keyframes animate {
+from {transform: rotate(0deg);}
+to {transform: rotate(180deg);}
+}
+
 #edit-image{
     transform: rotate(180deg);
+    animation-duration: 1s;
+    animation-name: animate;
     margin: 0.8rem 1rem;
     position: absolute;
     color: #537FE7;
     text-decoration: none;
+
 }
 
 .btn-open{
