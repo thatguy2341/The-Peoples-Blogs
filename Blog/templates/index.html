@@ -64,11 +64,18 @@
             </a>
             
             <div class="row">
-               <p class="post-meta col col-lg-10 col-md-10 col-sm-8" id="post-meta" style="padding-left: 0;">Posted by
+               {% if user.is_authenticated %}
+               <p class="post-meta col col-lg-10 col-md-10 col-sm-8" style="padding-left: 0;">Posted by
                   <a href="#">{{admin_user.name}}</a>
                   on {{post.date}}
                </p>
-
+               {% else %}
+               <p class="post-meta col col-lg-10 col-md-10 col-sm-8">Posted by
+                  <a href="#">{{admin_user.name}}</a>
+                  on {{post.date}}
+               </p>
+               {% endif %}
+               
                <h4 class="col col-lg-2 col-md-2 col-sm-4 views"> {{post.views}} 👁️</h4>
             </div>
          </div>
