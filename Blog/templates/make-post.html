@@ -26,6 +26,7 @@
       <div class="col-lg-8 col-md-10 mx-auto" style="font-weight:900;">
          {{ ckeditor.load(pkg_type="standard") }}
          {{ ckeditor.config(name='body') }}
+         {{ form.csrf_token }}
          {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
 
       </div>

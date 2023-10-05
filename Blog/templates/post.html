@@ -59,6 +59,7 @@
             <div style="font-weight: 900;">
                {{ ckeditor.load(pkg_type="basic") }}
                {{ ckeditor.config(name='body') }}
+               {{ form.csrf_token }}
                {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
             </div>
             {% else: %}
