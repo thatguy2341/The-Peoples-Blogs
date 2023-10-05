@@ -65,12 +65,13 @@
             
             <div class="row">
                {% if user.is_authenticated %}
-               <p class="post-meta col col-lg-10 col-md-10 col-sm-8" style="padding-left: 0;">Posted by
+               <p class="post-meta col col-lg-10 col-md-10 col-sm-10" style="padding-left: 0;">Posted by
                   <a href="#">{{admin_user.name}}</a>
                   on {{post.date}}
                </p>
                {% else %}
-               <p class="post-meta col col-lg-10 col-md-10 col-sm-8">Posted by
+               
+               <p class="post-meta col col-lg-10 col-md-10 col-sm-10">Posted by
                   <a href="#">{{admin_user.name}}</a>
                   on {{post.date}}
                </p>
