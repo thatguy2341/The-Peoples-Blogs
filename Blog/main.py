@@ -24,7 +24,7 @@ Bootstrap(app)
 if os.environ.get("LOCAL") == "True":
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
@@ -87,6 +87,7 @@ class Comments(db.Model, UserMixin):
     author = relationship("Users", back_populates='comments')
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
     inside_post = relationship('BlogPost', back_populates="comments")
+
 
 with app.app_context():
     db.create_all()
