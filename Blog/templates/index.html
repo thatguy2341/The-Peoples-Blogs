@@ -43,7 +43,7 @@
          
          {% for post in all_posts %}
 
-         <hr>
+         <hr style="border-top: 1px solid rgb(0 0 0 / 20%)">
          <div class="post-preview">
             <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
                <h2 class="post-title" id="post-title">
@@ -77,7 +77,7 @@
          {% endif %}
          
          {% if user.id == admin_user.id or all_posts|length > 1 %}
-         <hr style="margin-bottom: 5rem;">
+         <hr style="margin-bottom: 5rem; border-top: 1px solid rgb(0 0 0 / 20%)">
          {% endif %}
 
 
