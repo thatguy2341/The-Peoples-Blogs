@@ -40,7 +40,10 @@
          </div>
 
          {% else: %}
+         
          {% for post in all_posts %}
+
+         <hr>
          <div class="post-preview">
             <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
                <h2 class="post-title" id="post-title">
@@ -49,6 +52,7 @@
                
             </a>
             {% if user.id == admin_user.id %}
+            
             <a href="{{url_for('delete_post', post_id=post.id, blog_id=blog.id)}}">
                <button type="button" class="btn btn-delete btn-outline-danger float-right">Delete post</button>
             </a>
@@ -60,18 +64,20 @@
             </a>
             
             <div class="row">
-               <p class="post-meta col col-lg-10 col-md-10 col-sm-8" id="post-meta">Posted by
+               <p class="post-meta col col-lg-10 col-md-10 col-sm-8" id="post-meta" style="padding-left: 0;">Posted by
                   <a href="#">{{admin_user.name}}</a>
                   on {{post.date}}
                </p>
+
                <h4 class="col col-lg-2 col-md-2 col-sm-4 views"> {{post.views}} 👁️</h4>
             </div>
          </div>
+         
          {% endfor %}
          {% endif %}
-
+         
          {% if user.id == admin_user.id or all_posts|length > 1 %}
-         <hr style="margin-top: 5rem;">
+         <hr style="margin-bottom: 5rem;">
          {% endif %}
 
 
