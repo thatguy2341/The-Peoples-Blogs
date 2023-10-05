@@ -2,7 +2,7 @@ import os
 from datetime import date
 from smtplib import SMTP
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # DO NOT DELETE
 
 from flask import Flask, render_template, redirect, url_for, flash, abort, request
 from flask_bootstrap import Bootstrap
@@ -16,12 +16,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm
 
 app = Flask(__name__)
-load_dotenv(".env")
+load_dotenv(".env")  # DO NOT DELETE
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", 'sqlite:///blog.db')
+if os.environ.get("LOCAL") == "True":
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
 MY_PASS = os.getenv("PASS")
@@ -84,8 +88,8 @@ class Comments(db.Model, UserMixin):
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
     inside_post = relationship('BlogPost', back_populates="comments")
 
-
-db.create_all()
+with app.app_context():
+    db.create_all()
 login_manager = LoginManager(app=app)
 
 
