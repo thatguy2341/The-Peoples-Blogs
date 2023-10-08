@@ -64,7 +64,7 @@
             </a>
             
             <div class="row">
-               {% if user.is_authenticated %}
+               {% if user.id == admin_user.id %}
                <p class="post-meta col col-lg-10 col-md-10 col-sm-10" style="padding-left: 0;">Posted by
                   <a href="#">{{admin_user.name}}</a>
                   on {{post.date}}
