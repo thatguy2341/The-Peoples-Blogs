@@ -1,4 +1,10 @@
 {% include "header.html" %}
+
+<head>
+   <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
+</head>
+
+
 <div class="background" style="background-image: url('https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')">
 <!-- Page Header -->
 <header class="masthead"
@@ -52,7 +58,7 @@
          {% else: %}
          {% for blog in all_blogs[page * 10 : page * 10 + 9]: %}
          <hr>
-         <div class="post-preview" style="font-size: 1.25rem;">
+         <div class="post-preview smooth-scroll" style="font-size: 1.25rem;">
             <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
                
                <h1 class="post-title">
@@ -79,32 +85,34 @@
             </div>
          </div>
          {% endfor %}
-         <hr style="margin-bottom: 15rem;">
+         <hr class="smooth-scroll" style="margin-bottom: 15rem;">
          {% endif %}
          {% if not current_user.is_authenticated %}
-         <hr>
+         <hr class="smooth-scroll">
          {% endif %}
 
          {% if all_blogs | length > 10 %}
-         <div class="container clearfix" style="margin: 3rem 0;">
+         <div class="container clearfix smooth-scroll" style="margin: 3rem 0;">
          <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('next_page', num=page+1)}}">Next Page</a>
          </div>
          {% endif %}
 
          <!-- New Post -->
          {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
-         <hr style="margin-top: 5rem;">
-         <div class="clearfix">
-            <a class="btn btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
+         <div class="smooth-scroll">
+            <hr style="margin-top: 5rem;">
+            <div class="clearfix">
+               <a class="btn btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
+            </div>
          </div>
          {% elif current_user.blogs | length < 2: %}
-
+         <div class="smooth-scroll">
             <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
                You can create your own blogs, by joining the community.
                <br>
             </h4>
-
-         <div class="row">
+         </div>
+         <div class="row smooth-scroll">
             <div class="col col-lg-9 col-md-9 col-sm-9">
                Click register, to create a new account:
             </div>
@@ -114,7 +122,7 @@
             </div>
          </div>
          <hr>
-         <div class="row">
+         <div class="row smooth-scroll">
             <div class="col col-lg-9 col-md-9 col-sm-9" >
                If you already have an account, login here:
             </div>

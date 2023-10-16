@@ -1,4 +1,8 @@
 {% include "header.html" %}
+<head>
+   <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
+</head>
+
 <!-- Page Header -->
 <header class="masthead"
         style="background-image: url('https://images.unsplash.com/photo-1470092306007-055b6797ca72?ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80');">
@@ -42,7 +46,7 @@
          {% else: %}
          
          {% for post in all_posts %}
-
+         <div class="smooth-scroll">
          <hr style="border-top: 1px solid rgb(0 0 0 / 20%)">
          <div class="post-preview">
             <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
@@ -80,18 +84,19 @@
                <h4 class="col col-lg-2 col-md-2 col-sm-4 views"> {{post.views}} 👁️</h4>
             </div>
          </div>
+         </div>
          
          {% endfor %}
          {% endif %}
          
          {% if user.id == admin_user.id or all_posts|length > 1 %}
-         <hr style="margin-bottom: 5rem; border-top: 1px solid rgb(0 0 0 / 20%)">
+         <hr class="smooth-scroll" style="margin-bottom: 5rem; border-top: 1px solid rgb(0 0 0 / 20%)">
          {% endif %}
 
 
          <!-- New Post -->
          {% if user.id == admin_user.id %}
-            <div class="row">
+            <div class="row smooth-scroll">
                <div class="col col-lg-6 col-md-6 col-sm-6">
                   <a href="{{url_for('delete_blog', blog_id=blog.id)}}">
                      <button type="button" class="btn btn-new-post btn-danger float-left post-control">Delete Blog</button>

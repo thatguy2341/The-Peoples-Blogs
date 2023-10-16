@@ -303,8 +303,11 @@ to {transform: rotate(180deg);}
 
 }
 
+
+
 .post-preview>a>.post-title {
     margin-bottom: 1.5rem;
+
 }
 
 .views {
@@ -314,4 +317,13 @@ to {transform: rotate(180deg);}
   position: absolute;
   right: 1rem;
   padding-top: 1rem;
+}
+
+.section--hidden {
+  opacity: 0;
+  transform: translateY(8rem);
+  /* this will hide the element and move it down by 8 rem, so when this is class is removed it will reveal the element and move it back up, making a cool animation.*/
+}
+.smooth-scroll {
+    transition: transform 1s, opacity 1s;
 }
