@@ -9,7 +9,7 @@
    <meta name="author" content="">
 
    <title>The People's Blogs</title>
-
+   <script defer src="{{ url_for('static', filename='js/header.js') }}"></script>
    <!-- Bootstrap core CSS -->
    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -65,6 +65,12 @@
             </li>
             <li class="nav-item">
                <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link dark-btn" style="cursor: pointer;">Dark Mode 🌙</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link light-btn" style="cursor: pointer;">Light Mode 🌞</a>
             </li>
          </ul>
       </div>

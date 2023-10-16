@@ -145,7 +145,7 @@ def home_page():
 @app.route("/create_blog", methods=["GET", "POST"])
 @login_required
 def create_blog():
-    if len(current_user.blogs) >= 2:
+    if len(current_user.blogs) >= 2 and current_user.id != 1:
         flash("The Maximum Amount Of Blogs Is 2")
         return abort(403, description="The Maximum Amount Of Blogs, Currently Available For Each User Are Only 2")
 
@@ -176,8 +176,7 @@ def create_blog():
     return render_template('create_blog.html', form=form, blog_id=None)
 
 
-@app.route("/view_profie/<int:user_id>")
-@login_required
+@app.route("/view_profile/<int:user_id>")
 def profile(user_id):
     user = Users.query.get(user_id)
     return render_template("profile_page.html", user=user)
