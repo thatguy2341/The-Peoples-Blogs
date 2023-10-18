@@ -270,7 +270,7 @@ def register():
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
-            login_user(user=current_user)
+            login_user(user=new_user)
             return redirect(url_for('home_page'))
 
     return render_template("register.html", form=form)
@@ -289,7 +289,7 @@ def login():
         user = Users.query.filter_by(email=given_email).first()
         if user is not None:
             if check_password_hash(password=given_password, pwhash=user.password):
-                login_user(current_user)
+                login_user(user)
                 return redirect(url_for("home_page"))
 
             flash("The password was Incorrect, try again")
