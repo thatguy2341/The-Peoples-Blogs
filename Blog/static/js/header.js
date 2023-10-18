@@ -33,7 +33,6 @@ document
   .querySelectorAll('.fas-anchor')
   .forEach(a => (a.style.color = '#212529'));
 let imageUrl = frontImage.style.backgroundImage;
-let onDarkmode = false;
 
 const darkmode = function (e) {
   e.preventDefault();
@@ -48,7 +47,6 @@ const darkmode = function (e) {
 
   darkModeBtn.classList.toggle('hidden');
   lightModeBtn.classList.toggle('hidden');
-  onDarkmode = true;
 };
 
 const lightmode = function (e) {
@@ -63,7 +61,6 @@ const lightmode = function (e) {
   darkModeBtn.classList.toggle('hidden');
   lightModeBtn.classList.toggle('hidden');
 
-  onDarkmode = false;
 };
 
 darkModeBtn.addEventListener('click', darkmode);

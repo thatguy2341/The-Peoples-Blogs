@@ -119,23 +119,24 @@ def home_page():
     num = request.args.get("num") if request.args.get("num") is not None else 0
     if request.method == "POST":
         search = request.form.get("search")
-        searcher = (title(search), search.upper())
-        all_blogs = set()
-        for s in searcher:
-            found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
-            found_names = db.session.query(Users).filter(Users.name.contains(s)) # TODO: see if u can change filter to search with lower.
-            for blog in found_blogs:
-                all_blogs.add(blog)
-            for name in found_names:
-                for blog in name.blogs:
+        if search is not None:
+            searcher = (title(search), search.upper())
+            all_blogs = set()
+            for s in searcher:
+                found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
+                found_names = db.session.query(Users).filter(Users.name.contains(s)) # TODO: see if u can change filter to search with lower.
+                for blog in found_blogs:
                     all_blogs.add(blog)
+                for name in found_names:
+                    for blog in name.blogs:
+                        all_blogs.add(blog)
 
-        all_blogs = list(all_blogs)
-        if not all_blogs:
-            all_blogs = db.session.query(Blogs).all()
-            flash(f"Sorry, we couldn't find '{search}'")
+            all_blogs = list(all_blogs)
+            if not all_blogs:
+                all_blogs = db.session.query(Blogs).all()
+                flash(f"Sorry, we couldn't find '{search}'")
 
-        return render_template('blogs.html', all_blogs=all_blogs, page=num)
+            return render_template('blogs.html', all_blogs=all_blogs, page=num)
 
     all_blogs = db.session.query(Blogs).all()
 
@@ -269,7 +270,7 @@ def register():
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
-            login_user(user=new_user)
+            login_user(user=current_user)
             return redirect(url_for('home_page'))
 
     return render_template("register.html", form=form)
@@ -288,7 +289,7 @@ def login():
         user = Users.query.filter_by(email=given_email).first()
         if user is not None:
             if check_password_hash(password=given_password, pwhash=user.password):
-                login_user(user)
+                login_user(current_user)
                 return redirect(url_for("home_page"))
 
             flash("The password was Incorrect, try again")
