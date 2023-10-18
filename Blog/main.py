@@ -247,7 +247,7 @@ def get_all_posts(blog_id):
 @app.route('/register', methods=["POST", "GET"])
 def register():
     if current_user.is_authenticated:
-        return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
+        return redirect(url_for('home_page'))
 
     form = RegistrationForm(meta={'csrf': False})
 
@@ -279,7 +279,7 @@ def register():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if current_user.is_authenticated:
-        return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
+        return redirect(url_for('home_page'))
 
     form = LoginForm(meta={'csrf': False})
 
