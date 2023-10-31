@@ -22,7 +22,6 @@ document.documentElement.style.setProperty("--color-darkMode", "black");
 document.documentElement.style.setProperty("--color-darkModeText", "white");
 
 const lines = document.querySelectorAll("hr");
-
 const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
 const btns = new Array(...document.querySelectorAll(".btn"));
@@ -69,6 +68,11 @@ const darkmode = function () {
   lines.forEach(
     (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
   );
+  dropdowns.forEach((dropdown) => {
+    dropdown.querySelector(".select").style.color = "white";
+    dropdown.querySelector(".menu").style.color = "white";
+    dropdown.querySelector(".caret").style.borderTop = "6px solid white";
+  });
 
   document.documentElement.style.setProperty("--anchor-color", "white");
 
@@ -99,6 +103,11 @@ const lightmode = function () {
   });
 
   lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
+  dropdowns.forEach((dropdown) => {
+    dropdown.querySelector(".select").style.color = "black";
+    dropdown.querySelector(".menu").style.color = "black";
+    dropdown.querySelector(".caret").style.borderTop = "6px solid black";
+  });
 
   const observer = new IntersectionObserver(
     lazyLoad.bind(frontImage.dataset.srcLight),
