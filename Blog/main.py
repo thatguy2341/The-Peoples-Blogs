@@ -4,7 +4,7 @@ from smtplib import SMTP
 
 from dotenv import load_dotenv  # DO NOT DELETE
 
-from flask import Flask, render_template, redirect, url_for, flash, abort, request
+from flask import Flask, render_template, redirect, url_for, flash, abort, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
@@ -32,6 +32,7 @@ MY_PASS = os.getenv("PASS")
 app.app_context().push()
 db = SQLAlchemy(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
+DARKMODE = False
 
 
 class Users(db.Model, UserMixin):
@@ -91,6 +92,7 @@ class Comments(db.Model, UserMixin):
 
 with app.app_context():
     db.create_all()
+
 login_manager = LoginManager(app=app)
 
 
@@ -103,12 +105,13 @@ def inject_current_year():
 def load_user(user_id):
     return Users.query.get(user_id)
 
+
 def title(string: str):
-    exept = {'a', 'an', 'the', 'but', 'or', 'on', 'in', 'with', 'and'}
+    dont_cap = {'a', 'an', 'the', 'but', 'or', 'on', 'in', 'with', 'and'}
     word_list = string.split(' ')
     string = ''
     for word in word_list:
-        string += word.title() + ' ' if word not in exept or word.isupper() else word + ' '
+        string += word.title() + ' ' if word not in dont_cap or word.isupper() else word + ' '
     return string.strip(' ').title()
 
 # ------------------------- Site Functionality --------------------------------------
@@ -247,6 +250,7 @@ def get_all_posts(blog_id):
 @app.route('/register', methods=["POST", "GET"])
 def register():
     if current_user.is_authenticated:
+        # Bug if user logs in from phone it doesn't redirect to home_page. try and fix probably problem with csrf
         return redirect(url_for('home_page'))
 
     form = RegistrationForm(meta={'csrf': False})
@@ -279,6 +283,7 @@ def register():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if current_user.is_authenticated:
+        # Bug if user logs in from phone it doesn't redirect to home_page. try and fix probably problem with csrf
         return redirect(url_for('home_page'))
 
     form = LoginForm(meta={'csrf': False})
@@ -349,7 +354,7 @@ def contact():
         return render_template("contact.html", form=form)
     else:
         try:
-            # THIS IS SPAM DETECTING SYSTEM, DETECTS IF 2 MESSEGES 1 AFTER THE OTHER ARE THE SAME
+            # THIS IS SPAM DETECTING SYSTEM, DETECTS IF 2 MESSAGES 1 AFTER THE OTHER ARE THE SAME
             # CAN ADD A CHECK FOR THE SAME NAME ALSO, TOO TIRED THO.
             with open("message", "rt") as file:
                 message_li = [value.strip("\r").strip() for value in form.message.data.split("\n")]
@@ -445,9 +450,19 @@ def delete_post(post_id, blog_id):
     return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
 
+@app.route('/change_view/<change>', methods=['GET', 'POST'])
+def change_view_mode(change):
+    global DARKMODE
+    if change == '1':
+        DARKMODE = not DARKMODE
+    return jsonify({'mode': DARKMODE})
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
-# TODO: add a show my blogs button to the profile.
+# TODO: lazy loading images. DONE
+# TODO: category for search
+# TODO: profile.
 # TODO: messaging system.
 # TODO: confirmation system for deleting.

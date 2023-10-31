@@ -6,7 +6,7 @@
 
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1661956602153-23384936a1d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80')">
+<header class="masthead lazy-img" style="background-image: url('{{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')" data-src-light="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')" data-src-dark="url('{{url_for('static', filename='img/blog-dark-bg.jpg')}}')">
    <div class="overlay"></div>
    <div class="container">
       <div class="row">
@@ -26,12 +26,23 @@
             <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
                <input class="form-control search-bar" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; right: 1%;">
                <button class="btn btn-info btn-search" type="submit" >🔍</button>
+               
                {% with messages = get_flashed_messages() %}
                {% if messages: %}
                   <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
                {% endif %}
                {% endwith %}
             </div>
+<!--         <div class="btn-group">-->
+<!--           <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--             Action-->
+<!--           </button>-->
+<!--           <ul class="dropdown-menu">-->
+<!--             <li><a class="dropdown-item" href="#">Action</a></li>-->
+<!--             <li><a class="dropdown-item" href="#">Another action</a></li>-->
+<!--             <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+<!--           </ul>-->
+<!--         </div>-->
             
          </div>
 </form>
@@ -100,7 +111,7 @@
          <div class="smooth-scroll">
             <hr style="margin-top: 5rem;">
             <div class="clearfix">
-               <a class="btn btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
+               <a class="btn btn-filled btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
             </div>
          </div>
          {% elif current_user.blogs | length < 2: %}

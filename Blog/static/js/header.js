@@ -1,67 +1,109 @@
-'use strict';
+"use strict";
 
 // Hover on navlinks effect.
-const navBar = document.querySelector('.navbar-collapse');
+const navBar = document.querySelector(".navbar-collapse");
 
 const makeBold = function (e) {
-  if (!e.target.classList.contains('nav-link')) return;
+  if (!e.target.classList.contains("nav-link")) return;
 
-  const links = navBar.querySelectorAll('.nav-link');
+  const links = navBar.querySelectorAll(".nav-link");
 
-  links.forEach(link => {
+  links.forEach((link) => {
     if (link !== e.target) link.style.opacity = this;
   });
 };
 
-navBar.addEventListener('mouseover', makeBold.bind(0.5));
+navBar.addEventListener("mouseover", makeBold.bind(0.5));
 
-navBar.addEventListener('mouseout', makeBold.bind(1));
+navBar.addEventListener("mouseout", makeBold.bind(1));
 
 // Dark and Light Mode.
-document.documentElement.style.setProperty('--color-darkMode', 'black');
-document.documentElement.style.setProperty('--color-darkModeText', 'white');
+document.documentElement.style.setProperty("--color-darkMode", "black");
+document.documentElement.style.setProperty("--color-darkModeText", "white");
 
-const body = document.querySelector('body');
-const darkModeBtn = document.querySelector('.dark-btn');
-const lightModeBtn = document.querySelector('.light-btn');
-lightModeBtn.classList.add('hidden');
-const btns = document.querySelectorAll('.btn');
-const btnsInfo = [...document.querySelectorAll('.btn-info'), ...document.querySelectorAll('.btn-primary')];
-const anchors = document.querySelectorAll('a');
-const frontImage = document.querySelector('.masthead');
+const body = document.querySelector("body");
+const viewBtn = document.querySelector(".light-btn");
+const btns = new Array(...document.querySelectorAll(".btn"));
+const filledbtnsPrimary = btns.filter((btn) =>
+  btn.classList.contains("btn-primary")
+);
+const filledbtnsDanger = btns.filter((btn) =>
+  btn.classList.contains("btn-danger")
+);
+const filledbtnsInfo = btns.filter((btn) => btn.classList.contains("btn-info"));
+const anchors = document.querySelectorAll("a");
+const frontImage = document.querySelector(".masthead");
 document
-  .querySelectorAll('.fas-anchor')
-  .forEach(a => (a.style.color = '#212529'));
-let imageUrl = frontImage.style.backgroundImage;
+  .querySelectorAll(".fas-anchor")
+  .forEach((a) => (a.style.color = "#212529"));
 
-const darkmode = function (e) {
-  e.preventDefault();
-  body.classList.add('dark-mode-active');
-  btns.forEach(btn => btn.classList.add('btn-outline-light'));
-  btnsInfo?.forEach(btn => {btn?.classList.remove('btn-info'); btn?.classList.remove('btn-primary');});
-  document.documentElement.style.setProperty('--anchor-color', 'white');
+const lazyLoad = function (entries, observer) {
+  const [entry] = entries;
+  if (entry.isIntersecting) {
+    frontImage.style.backgroundImage = this;
 
-  // Changing the big image.
-  frontImage.style.backgroundImage =
-    "url('https://miro.medium.com/v2/resize:fit:1400/0*tCccas60oybUjlOK')";
-
-  darkModeBtn.classList.toggle('hidden');
-  lightModeBtn.classList.toggle('hidden');
+    frontImage.classList.remove("lazy-img");
+    observer.unobserve(entry.target);
+  }
 };
 
-const lightmode = function (e) {
-  e.preventDefault();
-  body.classList.remove('dark-mode-active');
-  btns.forEach(btn => btn.classList.remove('btn-outline-light'));
-  btnsInfo?.forEach(btn => {btn?.classList.add('btn-info'); btn?.classList.add('btn-primary');});
-
-  frontImage.style.backgroundImage = imageUrl;
-
-  document.documentElement.style.setProperty('--anchor-color', '212529');
-  darkModeBtn.classList.toggle('hidden');
-  lightModeBtn.classList.toggle('hidden');
-
+const changeMode = function () {
+  fetch(`/change_view/${this}`)
+    .then((response) => response.json())
+    .then((data) => (data["mode"] ? darkmode() : lightmode()));
 };
 
-darkModeBtn.addEventListener('click', darkmode);
-lightModeBtn.addEventListener('click', lightmode);
+const darkmode = function () {
+  viewBtn.textContent = "Light Mode 🌞";
+  body.classList.add("dark-mode-active");
+  btns.forEach((btn) => {
+    if (!btn.classList.contains("btn-outline-danger"))
+      btn.classList.add("btn-outline-light");
+
+    btn?.classList.remove("btn-info");
+    btn?.classList.remove("btn-primary");
+    btn?.classList.remove("btn-danger");
+  });
+  document.documentElement.style.setProperty("--anchor-color", "white");
+
+  // lazy loading the big image.
+  const observer = new IntersectionObserver(
+    lazyLoad.bind(frontImage.dataset.srcDark),
+    {
+      root: null,
+      threshold: 0,
+      rootMargin: "50px",
+    }
+  );
+  observer.observe(frontImage);
+};
+
+const lightmode = function () {
+  viewBtn.textContent = "Dark Mode 🌙";
+  body.classList.remove("dark-mode-active");
+  btns.forEach((btn) => btn.classList.remove("btn-outline-light"));
+  filledbtnsDanger.forEach((btn) => {
+    btn.classList.add("btn-danger");
+  });
+  filledbtnsInfo.forEach((btn) => {
+    btn.classList.add("btn-info");
+  });
+  filledbtnsPrimary.forEach((btn) => {
+    btn.classList.add("btn-primary");
+  });
+
+  const observer = new IntersectionObserver(
+    lazyLoad.bind(frontImage.dataset.srcLight),
+    {
+      root: null,
+      threshold: 0,
+      rootMargin: "50px",
+    }
+  );
+  observer.observe(frontImage);
+
+  document.documentElement.style.setProperty("--anchor-color", "212529");
+};
+
+changeMode.bind(0)();
+viewBtn.addEventListener("click", changeMode.bind(1));
