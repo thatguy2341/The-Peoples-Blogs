@@ -84,11 +84,11 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
   font-size: 14px;
   font-weight: 800;
   padding: 9px 15px;
-  right: 13%;
+  right: -1em;
   bottom: -2.6rem;
   letter-spacing: 1px;
   text-transform: uppercase;
-  border-radius: 20px;
+  border-radius: 2em;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   position: absolute;
 }
@@ -441,7 +441,7 @@ background: #23242a;
 }
 
 .search-bar {
-    position: absolute; z-index: 0; width: 85%;
+    position: absolute; z-index: 0; width: 100%;
 }
 
 @media screen and (max-width: 991px){
