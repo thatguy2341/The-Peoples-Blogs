@@ -2,6 +2,7 @@
 
 <head>
    <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
+   <script defer src="{{url_for('static', filename='js/dropdown.js')}}"></script>
 </head>
 
 
@@ -24,7 +25,7 @@
 <form class="form container" method="post">
          <div class="row search-row content">
             <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
-               <input class="form-control search-bar" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; right: 1%;">
+               <input class="form-control search-bar" type="search" name="search" placeholder="Search For a Blog or Author" aria-label="Search" style="position: absolute; z-index: 0; left: 1%; width: 70%;">
                <button class="btn btn-info btn-search" type="submit" >🔍</button>
                
                {% with messages = get_flashed_messages() %}
@@ -33,16 +34,18 @@
                {% endif %}
                {% endwith %}
             </div>
-<!--         <div class="btn-group">-->
-<!--           <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--             Action-->
-<!--           </button>-->
-<!--           <ul class="dropdown-menu">-->
-<!--             <li><a class="dropdown-item" href="#">Action</a></li>-->
-<!--             <li><a class="dropdown-item" href="#">Another action</a></li>-->
-<!--             <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-<!--           </ul>-->
-<!--         </div>-->
+            <div class="dropdown">
+                <div class="select">
+                   <span class="selected">Categories</span>
+                   <div class="caret"></div>
+                </div>
+               <ul class="menu">
+                  <li class="option">Most popular</li>
+                  <li class="option">Least popular</li>
+                  <li class="option">Recent</li>
+                  <li class="option">Latest</li>
+               </ul>
+            </div>
             
          </div>
 </form>

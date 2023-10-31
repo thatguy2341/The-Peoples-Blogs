@@ -21,6 +21,8 @@ navBar.addEventListener("mouseout", makeBold.bind(1));
 document.documentElement.style.setProperty("--color-darkMode", "black");
 document.documentElement.style.setProperty("--color-darkModeText", "white");
 
+const lines = document.querySelectorAll("hr");
+
 const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
 const btns = new Array(...document.querySelectorAll(".btn"));
@@ -64,6 +66,10 @@ const darkmode = function () {
     btn?.classList.remove("btn-primary");
     btn?.classList.remove("btn-danger");
   });
+  lines.forEach(
+    (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
+  );
+
   document.documentElement.style.setProperty("--anchor-color", "white");
 
   // lazy loading the big image.
@@ -91,6 +97,8 @@ const lightmode = function () {
   filledbtnsPrimary.forEach((btn) => {
     btn.classList.add("btn-primary");
   });
+
+  lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
 
   const observer = new IntersectionObserver(
     lazyLoad.bind(frontImage.dataset.srcLight),
