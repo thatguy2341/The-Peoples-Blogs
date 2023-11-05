@@ -81,17 +81,21 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
 
 
 .btn-search {
-  font-size: 14px;
-  font-weight: 800;
-  padding: 9px 15px;
-  right: -1em;
-  bottom: -2.6rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  border-radius: 2em;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  position: absolute;
+    padding: .375em .75em;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    background-color: white;
+    border: 1px solid #ced4da;
+    height: calc(1.5em + 0.75rem + 10px);
 }
+
+.bar-search {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    border-right: 0;
+
+}
+
 
 .btn-delete{
   font-size: 14px;
@@ -357,8 +361,7 @@ background-image: url('https://images.unsplash.com/photo-1588345921523-c2dcdb7f1
 
 .dropdown {
     min-width: 17%;
-    left: 89%;
-    font-size: 90%;
+
 }
 
 .dropdown * {
@@ -380,12 +383,12 @@ background-image: url('https://images.unsplash.com/photo-1588345921523-c2dcdb7f1
 }
 
 .select-clicked {
-    border: 2px #26489a solid;
-    box-shadow: 0 0 0.8em #26489a;
+    border: 2px #0000001c solid;
+    box-shadow: 0 0 0.8em #0000001c;
 }
 
 .select:hover {
-    background: #323741;
+    background: #0000001c;
 }
 
 .caret {
@@ -428,22 +431,31 @@ transform: rotate(180deg);
 }
 
 .menu li:hover {
-    background: #2a2d35;
+    background: #0000001c;
 }
 
-.dropdown-active {
-background: #23242a;
+.menu-disable {
+    display: none;
+    opacity: 0;
 }
-
 .menu-open {
     display: block;
     opacity: 1;
 }
 
-.search-bar {
-    position: absolute; z-index: 0; width: 100%;
+
+.dropdown-active {
+background: #0000001c;
 }
 
+
+
+.dropdown-disable {
+    display: none;
+}
+
+
+/*
 @media screen and (max-width: 991px){
 .dropdown {
     min-width: 25%;
@@ -455,14 +467,8 @@ background: #23242a;
     min-width: 35%;
 }
 }
-@media screen and (max-width: 660px){
-.dropdown {
-    display: none;
-}
+
 .search-bar {
     width: 100%;
-}
-.btn-search {
-    right: -3%;
-}
-}
+}}
+*/

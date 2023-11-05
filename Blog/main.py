@@ -33,6 +33,7 @@ app.app_context().push()
 db = SQLAlchemy(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
 DARKMODE = False
+NUM = 0
 
 
 class Users(db.Model, UserMixin):
@@ -65,6 +66,12 @@ class Blogs(db.Model, UserMixin):
     posts = relationship("BlogPost", back_populates="blog")
     views = db.Column(db.Integer, nullable=False)
 
+    def to_dict(self):
+        d = {column.name: getattr(self, column.name) for column in self.__table__.columns
+                if column.name != ''}
+        d.update({'author': self.author.name})
+
+        return d
 
 class BlogPost(db.Model, UserMixin):
     __tablename__ = "blog_posts"
@@ -114,36 +121,61 @@ def title(string: str):
         string += word.title() + ' ' if word not in dont_cap or word.isupper() else word + ' '
     return string.strip(' ').title()
 
+
 # ------------------------- Site Functionality --------------------------------------
 
 
 @app.route("/", methods=["GET", "POST"])
 def home_page():
-    num = request.args.get("num") if request.args.get("num") is not None else 0
-    if request.method == "POST":
-        search = request.form.get("search")
-        if search is not None:
-            searcher = (title(search), search.upper())
-            all_blogs = set()
-            for s in searcher:
-                found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
-                found_names = db.session.query(Users).filter(Users.name.contains(s)) # TODO: see if u can change filter to search with lower.
-                for blog in found_blogs:
+    global NUM
+    NUM = request.args.get("num") if request.args.get("num") is not None else 0
+    # if request.method == "POST":
+        # search = request.form.get("search")
+        # if search is not None:
+
+            # return render_template('blogs.html', all_blogs=all_blogs, page=NUM)
+
+    # all_blogs = db.session.query(Blogs).all()
+
+    return render_template('blogs.html', page=NUM)  #, all_blogs=all_blogs
+
+
+@app.route('/get_page', methods=['GET'])
+def get_page():
+    return jsonify({'num': NUM})
+
+
+@app.route('/get_blogs/<search>/<category>', methods=['GET'])
+def get_blogs(search, category):
+    all_blogs = set()
+    if search == 'null':
+        for blog in db.session.query(Blogs).all():
+            all_blogs.add(blog)
+
+    else:
+        searcher = (title(search), search.upper())
+
+        for s in searcher:
+            found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
+            found_names = db.session.query(Users).filter(
+                Users.name.contains(s))  # TODO: see if u can change filter to search with lower.
+            for blog in found_blogs:
+                all_blogs.add(blog)
+            for name in found_names:
+                for blog in name.blogs:
                     all_blogs.add(blog)
-                for name in found_names:
-                    for blog in name.blogs:
-                        all_blogs.add(blog)
 
-            all_blogs = list(all_blogs)
-            if not all_blogs:
-                all_blogs = db.session.query(Blogs).all()
-                flash(f"Sorry, we couldn't find '{search}'")
+    all_blogs_dict = []
+    for blog in all_blogs:
+        all_blogs_dict.append(blog.to_dict())
 
-            return render_template('blogs.html', all_blogs=all_blogs, page=num)
+    #TODO make categories work here.
+    if not all_blogs:
+        # all_blogs = db.session.query(Blogs).all()
+        # flash(f"Sorry, we couldn't find '{search}'")
+        return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 
-    all_blogs = db.session.query(Blogs).all()
-
-    return render_template('blogs.html', all_blogs=all_blogs, page=num)
+    return jsonify({'blogs': all_blogs_dict}), 200
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
