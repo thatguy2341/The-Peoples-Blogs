@@ -10,7 +10,7 @@ from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import exc
+from sqlalchemy import exc, text
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm
@@ -129,15 +129,8 @@ def title(string: str):
 def home_page():
     global NUM
     NUM = request.args.get("num") if request.args.get("num") is not None else 0
-    # if request.method == "POST":
-        # search = request.form.get("search")
-        # if search is not None:
 
-            # return render_template('blogs.html', all_blogs=all_blogs, page=NUM)
-
-    # all_blogs = db.session.query(Blogs).all()
-
-    return render_template('blogs.html', page=NUM)  #, all_blogs=all_blogs
+    return render_template('blogs.html', page=NUM)
 
 
 @app.route('/get_page', methods=['GET'])
@@ -147,35 +140,27 @@ def get_page():
 
 @app.route('/get_blogs/<search>/<category>', methods=['GET'])
 def get_blogs(search, category):
-    all_blogs = set()
+    all_blogs = list()
     if search == 'null':
         for blog in db.session.query(Blogs).all():
-            all_blogs.add(blog)
+            all_blogs.append(blog.to_dict())
 
     else:
-        searcher = (title(search), search.upper())
+        searcher = search.lower()
+        ids = db.session.execute(
+            text(f"SELECT blogs.id FROM blogs, users WHERE (LOWER(users.name) LIKE '%{searcher}%' "
+                 f"AND blogs.author_id = users.id) OR (LOWER(blogs.name) LIKE '%{searcher}%')")).unique()
 
-        for s in searcher:
-            found_blogs = db.session.query(Blogs).filter(Blogs.name.contains(s))
-            found_names = db.session.query(Users).filter(
-                Users.name.contains(s))  # TODO: see if u can change filter to search with lower.
-            for blog in found_blogs:
-                all_blogs.add(blog)
-            for name in found_names:
-                for blog in name.blogs:
-                    all_blogs.add(blog)
-
-    all_blogs_dict = []
-    for blog in all_blogs:
-        all_blogs_dict.append(blog.to_dict())
+        ids = [id_[0] for id_ in ids]
+        found_blogs = db.session.query(Blogs).filter(Blogs.id.in_(ids))
+        for blog in found_blogs:
+            all_blogs.append(blog.to_dict())
 
     #TODO make categories work here.
     if not all_blogs:
-        # all_blogs = db.session.query(Blogs).all()
-        # flash(f"Sorry, we couldn't find '{search}'")
         return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 
-    return jsonify({'blogs': all_blogs_dict}), 200
+    return jsonify({'blogs': all_blogs}), 200
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
