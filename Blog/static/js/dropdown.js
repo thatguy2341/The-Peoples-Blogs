@@ -21,6 +21,7 @@ dropdowns.forEach((dropdown) => {
       selected.innerText = e.target.innerText;
       select.classList.remove("select-clicked");
       caret.classList.remove("caret-rotate");
+      menu.classList.add('menu-disable')
       this.classList.remove("menu-open");
       options.forEach((option) => {
         option.classList.remove("dropdown-active");
@@ -29,3 +30,18 @@ dropdowns.forEach((dropdown) => {
     }
   });
 });
+
+const checkSize = function () {
+    if (window.innerWidth <= 576) {
+    dropdowns.forEach( dropdown => dropdown.classList.add('dropdown-disable'));
+    document.querySelector('.search-bar').classList.remove('col');
+    }
+    else {
+        dropdowns.forEach( dropdown => dropdown.classList.remove('dropdown-disable'));
+        document.querySelector('.search-bar').classList.add('col');
+    }
+}
+
+checkSize();
+
+window.addEventListener('resize', checkSize)

@@ -20,7 +20,7 @@ navBar.addEventListener("mouseout", makeBold.bind(1));
 // Dark and Light Mode.
 document.documentElement.style.setProperty("--color-darkMode", "black");
 document.documentElement.style.setProperty("--color-darkModeText", "white");
-
+const dropdownsHeader = document.querySelectorAll(".dropdown");
 const lines = document.querySelectorAll("hr");
 const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
@@ -58,7 +58,7 @@ const darkmode = function () {
   viewBtn.textContent = "Light Mode 🌞";
   body.classList.add("dark-mode-active");
   btns.forEach((btn) => {
-    if (!btn.classList.contains("btn-outline-danger"))
+    if (!btn.classList.contains("btn-outline-danger") && !btn.classList.contains("btn-search"))
       btn.classList.add("btn-outline-light");
 
     btn?.classList.remove("btn-info");
@@ -68,7 +68,7 @@ const darkmode = function () {
   lines.forEach(
     (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
   );
-  dropdowns.forEach((dropdown) => {
+  dropdownsHeader?.forEach((dropdown) => {
     dropdown.querySelector(".select").style.color = "white";
     dropdown.querySelector(".menu").style.color = "white";
     dropdown.querySelector(".caret").style.borderTop = "6px solid white";
@@ -103,7 +103,7 @@ const lightmode = function () {
   });
 
   lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
-  dropdowns.forEach((dropdown) => {
+  dropdownsHeader?.forEach((dropdown) => {
     dropdown.querySelector(".select").style.color = "black";
     dropdown.querySelector(".menu").style.color = "black";
     dropdown.querySelector(".caret").style.borderTop = "6px solid black";

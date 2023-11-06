@@ -1,6 +1,6 @@
 "use strict";
 
-const sections = document.querySelectorAll('.smooth-scroll');
+const sections = document.querySelectorAll(".smooth-scroll");
 
 const revealSection = function (entries, observer) {
   const [entry] = entries;
