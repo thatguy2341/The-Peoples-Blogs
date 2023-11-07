@@ -1,8 +1,8 @@
 {% include "header.html" %}
 
 <head>
+   <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
   <script defer src="{{url_for('static', filename='js/searchSystem.js')}}"></script>
-  <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
   <script defer src="{{url_for('static', filename='js/dropdown.js')}}"></script>
 </head>
 
@@ -39,7 +39,7 @@
                             <span class="selected">Recent</span>
                             <div class="caret"></div>
                          </div>
-                        <ul class="menu">
+                        <ul class="menu menu-disable">
                            <li class="option">Popular</li>
                            <li class="option dropdown-active">Recent</li>
                            <li class="option">Latest</li>

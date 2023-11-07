@@ -330,7 +330,7 @@ to {transform: rotate(180deg);}
 
 .section--hidden {
   opacity: 0;
-  transform: translateY(8rem);.
+  transform: translateY(8rem);
   /* this will hide the element and move it down by 8 rem, so when this is class is removed it will reveal the element and move it back up, making a cool animation.*/
 }
 .smooth-scroll {
