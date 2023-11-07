@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4f5309c6-8497-458d-8201-db450822c0c0" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/master" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="aedd800d-6f72-43ab-a892-b64ec165b4b7" />
+        <option name="url" value="https://github.com/thatguy2341/The-Peoples-Blogs.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2LhTqcTCDZrWR7T7PgiioPs1o9x" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/OneDrive/Documents/PycharmProjects/Web Development&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gamen\OneDrive\Documents\PycharmProjects\BlogProject\Blog\static\js" />
+      <recent name="C:\Users\User\PycharmProjects\pythonProject\Blog" />
+      <recent name="C:\Users\User\PycharmProjects\pythonProject" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="pythonProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Blog" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Blog/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4f5309c6-8497-458d-8201-db450822c0c0" name="Changes" comment="" />
+      <created>1676322506830</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1676322506830</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Fix requirements.txt">
+      <created>1676401590151</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1676401590151</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Fix requirements.txt">
+      <created>1676401654092</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1676401654092</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Fix requirements.txt">
+      <created>1676408100116</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1676408100116</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Fix requirements.txt">
+      <created>1676408189124</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1676408189124</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Fix requirements.txt">
+      <created>1676442734202</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1676442734202</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Edit Styling">
+      <created>1676443916465</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1676443916465</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Fix DataBase">
+      <created>1676479712539</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1676479712539</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Add views count">
+      <created>1676483986341</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1676483986342</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Add views count">
+      <created>1676484021202</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1676484021202</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Fix bad attr">
+      <created>1676490144589</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1676490144589</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Change Views System">
+      <created>1676491472938</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1676491472938</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Change Views System">
+      <created>1676491864707</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1676491864707</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Fix search on phone">
+      <created>1676494070305</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1676494070305</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Fix search on phone">
+      <created>1676494461428</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1676494461428</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fix search on phone">
+      <created>1676495687307</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1676495687307</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Fix search on phone">
+      <created>1676498315570</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1676498315570</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Fix search on phone">
+      <created>1676500425746</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1676500425746</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Fix search on phone">
+      <created>1676500489769</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1676500489769</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Fix search on phone">
+      <created>1676502375426</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1676502375426</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Fix search on phone">
+      <created>1676505028735</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1676505028735</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Fix search on phone">
+      <created>1676505738001</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1676505738001</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Fix search on phone">
+      <created>1676506242493</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1676506242493</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Fix search on phone">
+      <created>1676507111801</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1676507111801</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Fix search on phone">
+      <created>1676508154527</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1676508154527</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Fix search on phone">
+      <created>1676540870367</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1676540870367</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Fix search on phone">
+      <created>1676541747047</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1676541747047</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Fix search on phone">
+      <created>1676542058193</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1676542058193</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Fix search on phone">
+      <created>1676558078980</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1676558078981</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Fix messaging system">
+      <created>1676559942675</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1676559942675</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Fix views adding">
+      <created>1694561522587</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1694561522588</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Fix views adding">
+      <created>1694613920764</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1694613920764</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Changed Styling">
+      <created>1695058493167</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1695058493167</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Changes to Viewing style">
+      <created>1695065018309</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1695065018310</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Changes to Viewing style">
+      <created>1695154155887</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1695154155887</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Changes to Viewing style">
+      <created>1695154239819</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1695154239819</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Changes to Viewing style">
+      <created>1695154357140</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1695154357140</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Changes to the search and styling">
+      <created>1695806680411</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1695806680411</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Changes to the search and styling">
+      <created>1695806985668</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1695806985668</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Changes to the search and styling">
+      <created>1695807140553</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1695807140553</updated>
+    </task>
+    <task id="LOCAL-00066" summary="CHANGED DATABASE">
+      <created>1696503584944</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1696503584946</updated>
+    </task>
+    <task id="LOCAL-00067" summary="CHANGED DATABASE">
+      <created>1696505416922</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1696505416922</updated>
+    </task>
+    <task id="LOCAL-00068" summary="CHANGED DATABASE">
+      <created>1696505680182</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1696505680183</updated>
+    </task>
+    <task id="LOCAL-00069" summary="CSRF Token missing Fix">
+      <created>1696508094722</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1696508094722</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Fix Multi Posts Style">
+      <created>1696540779863</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1696540779867</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Fix Multi Posts Style">
+      <created>1696541138046</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1696541138047</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Fix Multi Posts Style">
+      <created>1696542539127</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1696542539128</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Fix Multi Posts Style">
+      <created>1696543982177</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1696543982178</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Fix Multi Posts Style">
+      <created>1696798633223</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1696798633224</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Smooth Scroll">
+      <created>1697436538284</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1697436538284</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Create Blog Website" />
+    <MESSAGE value="Fix Format" />
+    <MESSAGE value="Fix requirements.txt" />
+    <MESSAGE value="Edit Styling" />
+    <MESSAGE value="Fix DataBase" />
+    <MESSAGE value="Add views count" />
+    <MESSAGE value="Fix bad attr" />
+    <MESSAGE value="Change Views System" />
+    <MESSAGE value="Fix search on phone" />
+    <MESSAGE value="Fix messaging system" />
+    <MESSAGE value="Fix views adding" />
+    <MESSAGE value="Changed Styling" />
+    <MESSAGE value="Changes to Viewing style" />
+    <MESSAGE value="Changes to the search and styling" />
+    <MESSAGE value="CHANGED DATABASE" />
+    <MESSAGE value="CSRF Token missing Fix" />
+    <MESSAGE value="Fix Multi Posts Style" />
+    <MESSAGE value="Smooth Scroll" />
+    <option name="LAST_COMMIT_MESSAGE" value="Smooth Scroll" />
+  </component>
+</project>
