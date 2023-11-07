@@ -26,7 +26,7 @@
 
    <!-- creating a global variable in js of the base url of the application (for all js files) -->
    <script>
-      const SCRIPT_ROOT = {{ request.script_root|tojson }}
+      let SCRIPT_ROOT = {{ request.script_root|tojson }}
    </script>
 
 </head>
