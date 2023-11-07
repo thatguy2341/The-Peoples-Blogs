@@ -24,6 +24,11 @@
    <!-- Custom styles for this template -->
    <link href="{{ url_for('static', filename='css/clean-blog.min.css')}}" rel="stylesheet">
 
+   <!-- creating a global variable in js of the base url of the application (for all js files) -->
+   <script>
+      const SCRIPT_ROOT = {{ request.script_root|tojson }}
+   </script>
+
 </head>
 
 <body>
