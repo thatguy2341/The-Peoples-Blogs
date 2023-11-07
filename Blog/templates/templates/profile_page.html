@@ -1,0 +1,34 @@
+{% include "header.html" %}
+<header class="masthead"
+        style="background-image: url('https://images.unsplash.com/photo-1520809227329-2f94844a9635?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80')">
+   <div class="overlay"></div>
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+               <h1>{{user.name}}'s Profile</h1>
+               <span class="subheading">With His Written Blogs</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</header>
+
+<!--<div class="container">-->
+<!--   <div class="row">-->
+<!--      <div class="col">-->
+<!--         Your Blogs:-->
+<!--      </div>-->
+<!--      <div class="col">-->
+<!--         {% for blog in user.blogs: %}-->
+<!--         <div>{{blog.name}}</div>-->
+<!--         {% endfor %}-->
+<!--      </div>-->
+<!--   </div>-->
+<!--   <div class="row">-->
+
+<!--   </div>-->
+<!--</div>-->
+
+
+{% include "footer.html"%}

@@ -1,0 +1,165 @@
+{% include "header.html" %}
+
+<head>
+   <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
+  <script defer src="{{url_for('static', filename='js/searchSystem.js')}}"></script>
+  <script defer src="{{url_for('static', filename='js/dropdown.js')}}"></script>
+</head>
+
+
+<!-- Page Header -->
+<header class="masthead lazy-img" style="background-image: url('{{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')"
+        data-src-light="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')"
+        data-src-dark="url('{{url_for('static', filename='img/blog-dark-bg.jpg')}}')">
+   <div class="overlay"></div>
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+               <h1>The People's Blogs</h1>
+               <span class="subheading">Feel Free To Post Your Random Thoughts.</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</header>
+
+<body class="background">
+<form class="form container" method="post">
+         <div class="row search-row content">
+            <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
+               <div class="row">
+                  <div class="col col-lg-10 col-md-9 col-sm-9 input-group mb3 search-bar" >
+                     <input class="form-control bar-search" type="text" autocomplete="off" name="search" aria-describedby="button-addon2" placeholder="Search For a Blog or Author">
+                     <button class="btn btn-outline-secondary btn-search" type="submit" id="button-addon2" >🔍</button>
+                  </div>
+                  <div class="col col-lg-2 col-md-3 col-sm-3">
+                     <div class="dropdown">
+                        <div class="select">
+                            <span class="selected">Recent</span>
+                            <div class="caret"></div>
+                         </div>
+                        <ul class="menu menu-disable">
+                           <li class="option">Popular</li>
+                           <li class="option dropdown-active">Recent</li>
+                           <li class="option">Latest</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               {% with messages = get_flashed_messages() %}
+                  <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
+               {% endwith %}
+            </div>
+
+
+         </div>
+</form>
+<!-- Main Content -->
+<div class="container">
+   
+   {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
+   <div class="clearfix" style="margin: 3rem 0;">
+      <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>
+   </div>
+   {% endif %}
+
+   <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto ">
+        <div class="blogs-container">
+        
+        </div>
+<!--         {% if not all_blogs: %}-->
+<!--         <div style="text-align: center; margin-bottom: 20rem;">-->
+<!--            <p>-->
+<!--               It seems that no posts have loaded 😖-->
+<!--            </p>-->
+<!--         </div>-->
+
+<!--         {% else: %}-->
+<!--         {% for blog in all_blogs[page * 10 : page * 10 + 9]: %}-->
+<!--         <hr>-->
+<!--         <div class="post-preview smooth-scroll" style="font-size: 1.25rem;">-->
+<!--            <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">-->
+<!--               -->
+<!--               <h1 class="post-title">-->
+<!--               {{blog.name}}-->
+<!--               </h1>-->
+<!--               -->
+<!--               -->
+<!--               {% if blog.description | length > 65: %}-->
+<!--               <h4 class="post-subtitle" style="font-size: 1.45rem; font-weight: 300;">-->
+<!--                  {{blog.description[0:64] | safe}}...-->
+<!--               </h4>-->
+<!--               {% else: %}-->
+<!--               <h4 class="post-subtitle">-->
+<!--                  {{blog.description | safe}}-->
+<!--               </h4>-->
+<!--               {% endif %}-->
+<!--            </a>-->
+<!--            <div class="row">-->
+<!--               <p class="post-meta col-12">Created by-->
+<!--                  <a href="{{ url_for('profile', user_id=blog.author_id) }}">{{blog.author.name}}</a>-->
+<!--                  on {{blog.created_date}}-->
+<!--               </p>-->
+<!--               <h4 class="col-lg-2 col-md-2 col-sm-3 views">{{blog.views}} 👁️</h4>-->
+<!--            </div>-->
+<!--         </div>-->
+<!--         {% endfor %}-->
+<!--         <hr class="smooth-scroll" style="margin-bottom: 15rem;">-->
+<!--         {% endif %}-->
+         {% if not current_user.is_authenticated %}
+         <hr class="smooth-scroll">
+         {% endif %}
+
+<!--         {% if all_blogs | length > 10 %}-->
+         <div class="container clearfix smooth-scroll btn-hide" style="margin: 3rem 0;">
+         <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('next_page', num=page+1)}}">Next Page</a>
+         </div>
+<!--         {% endif %}-->
+
+         <!-- New Post -->
+         {% if current_user.is_authenticated and (current_user.blogs | length < 2 or current_user.id == 1) %}
+         <div class="smooth-scroll">
+            <hr style="margin-top: 5rem;">
+            <div class="clearfix">
+               <a class="btn btn-filled btn-new-post btn-primary float-right" href="{{url_for('create_blog')}}">Create New Blog</a>
+            </div>
+         </div>
+         {% elif current_user.blogs | length < 2: %}
+         <div class="smooth-scroll">
+            <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
+               You can create your own blogs, by joining the community.
+               <br>
+            </h4>
+         </div>
+         <div class="row smooth-scroll">
+            <div class="col col-lg-9 col-md-9 col-sm-9">
+               Click register, to create a new account:
+            </div>
+
+            <div class="col col-lg-3 col-md-3 col-sm-3">
+               <a class="btn btn-new-post btn-outline-primary btn-open float-right" href="{{ url_for('register')}}">register</a>
+            </div>
+         </div>
+         <hr>
+         <div class="row smooth-scroll">
+            <div class="col col-lg-9 col-md-9 col-sm-9" >
+               If you already have an account, login here:
+            </div>
+            <div class="col col-lg-3 col-md-3 col-sm-3">
+               <a class="btn btn-new-post btn-outline-success btn-open float-right" href="{{ url_for('login')}}">login</a>
+            </div>
+         </div>
+
+
+         {% endif %}
+      </div>
+   </div>
+</div>
+<hr>
+
+</body>
+
+{% include "footer.html" %}
+
