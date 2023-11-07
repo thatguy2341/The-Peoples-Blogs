@@ -86,7 +86,7 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
     border-bottom-right-radius: 1rem;
     background-color: white;
     border: 1px solid #ced4da;
-    height: calc(1.5em + 0.75rem + 10px);
+    height: calc(1.5em + 0.75rem + 9px);
 }
 
 .bar-search {
