@@ -157,11 +157,21 @@ def get_blogs(search, category='Recent'):
         # for blog in found_blogs:
         #     all_blogs.append(blog.to_dict())
 
+
+    # Doesnt work because the match statement is from python 3.10
+    # match category:
+    #     case 'Recent':
+    #         all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
+    #     case 'Popular':
+    #         all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
+    #     case 'Latest':
+    #         all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
+
     if category == 'Recent':
         all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
-    if category == 'Popular':
+    elif category == 'Popular':
         all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
-    if category == 'Latest':
+    else:
         all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
 
     all_blogs_dict = []
