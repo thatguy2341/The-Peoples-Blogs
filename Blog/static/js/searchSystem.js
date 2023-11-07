@@ -5,6 +5,8 @@ const searchBtn = document.querySelector(".btn-search");
 const categoryMenu = document.querySelector(".menu");
 const selectedCategroy = document.querySelector(".selected");
 const blogsContainer = document.querySelector(".blogs-container");
+const categories = document.querySelector(".categories-btns-row");
+const categoriesBtns = document.querySelectorAll(".category-btn");
 SCRIPT_ROOT = SCRIPT_ROOT || "https://the-peoples-blogs.onrender.com/";
 
 class GetInfo {
@@ -18,8 +20,13 @@ class GetInfo {
     this.link = link;
   }
   _getCategory(targetCategory) {
-    if (!targetCategory) this.#category = selectedCategroy.innerText;
-    else this.#category = targetCategory;
+    if (categories.classList.contains("categories-btns-disable")) {
+      if (!targetCategory) this.#category = selectedCategroy.innerText;
+      else this.#category = targetCategory;
+    } else {
+      if (!targetCategory) this.#category = "Recent";
+      else this.#category = targetCategory;
+    }
   }
 
   _getSearch() {
@@ -154,5 +161,9 @@ searchBtn.addEventListener("click", function (e) {
 });
 categoryMenu.addEventListener("click", function (e) {
   if (e.target.classList.contains("option"))
+    info.getBlogs({ targetCategory: e.target.textContent });
+});
+categories.addEventListener("click", function (e) {
+  if (e.target.classList.contains("category-btn"))
     info.getBlogs({ targetCategory: e.target.textContent });
 });

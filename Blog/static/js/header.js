@@ -32,6 +32,8 @@ const filledbtnsDanger = btns.filter((btn) =>
   btn.classList.contains("btn-danger")
 );
 const filledbtnsInfo = btns.filter((btn) => btn.classList.contains("btn-info"));
+const outlineBtnsDark = document.querySelectorAll(".btn-outline-dark");
+
 const anchors = document.querySelectorAll("a");
 const frontImage = document.querySelector(".masthead");
 document
@@ -64,6 +66,7 @@ const darkmode = function () {
     btn?.classList.remove("btn-info");
     btn?.classList.remove("btn-primary");
     btn?.classList.remove("btn-danger");
+    btn?.classList.remove("btn-outline-dark");
   });
   lines.forEach(
     (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
@@ -102,6 +105,9 @@ const lightmode = function () {
   });
   filledbtnsPrimary.forEach((btn) => {
     btn.classList.add("btn-primary");
+  });
+  outlineBtnsDark.forEach((btn) => {
+    btn.classList.add("btn-outline-dark");
   });
 
   lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));

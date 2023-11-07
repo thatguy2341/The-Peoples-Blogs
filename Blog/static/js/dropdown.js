@@ -1,6 +1,7 @@
 "use strict";
 
 const dropdowns = document.querySelectorAll(".dropdown");
+const categoriesBtnsRow = document.querySelector(".categories-btns-row");
 
 dropdowns.forEach((dropdown) => {
   const select = dropdown.querySelector(".select");
@@ -36,11 +37,13 @@ const checkSize = function () {
   if (window.innerWidth <= 576) {
     dropdowns.forEach((dropdown) => dropdown.classList.add("dropdown-disable"));
     document.querySelector(".search-bar").classList.remove("col");
+    categoriesBtnsRow.classList.remove("categories-btns-disable");
   } else {
     dropdowns.forEach((dropdown) =>
       dropdown.classList.remove("dropdown-disable")
     );
     document.querySelector(".search-bar").classList.add("col");
+    categoriesBtnsRow.classList.add("categories-btns-disable");
   }
 };
 
