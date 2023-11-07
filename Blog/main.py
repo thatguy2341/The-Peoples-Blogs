@@ -139,11 +139,12 @@ def get_page():
 
 
 @app.route('/get_blogs/<search>/<category>', methods=['GET'])
-def get_blogs(search, category):
+def get_blogs(search, category='Recent'):
     all_blogs = list()
     if search == 'null':
-        for blog in db.session.query(Blogs).all():
-            all_blogs.append(blog.to_dict())
+        found_blogs = db.session.query(Blogs)
+        # for blog in db.session.query(Blogs).all():
+        # all_blogs.append(blog.to_dict())
 
     else:
         searcher = search.lower()
@@ -153,14 +154,25 @@ def get_blogs(search, category):
 
         ids = [id_[0] for id_ in ids]
         found_blogs = db.session.query(Blogs).filter(Blogs.id.in_(ids))
-        for blog in found_blogs:
-            all_blogs.append(blog.to_dict())
+        # for blog in found_blogs:
+        #     all_blogs.append(blog.to_dict())
 
-    #TODO make categories work here.
+    match category:
+        case 'Recent':
+            all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
+        case 'Popular':
+            all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
+        case 'Latest':
+            all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
+
+    all_blogs_dict = []
+    for blog in all_blogs:
+        all_blogs_dict.append(blog.to_dict())
+
     if not all_blogs:
         return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 
-    return jsonify({'blogs': all_blogs}), 200
+    return jsonify({'blogs': all_blogs_dict}), 200
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
