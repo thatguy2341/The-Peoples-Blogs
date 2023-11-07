@@ -25,6 +25,12 @@
 </header>
 
 <body class="background">
+{% if current_user.is_authenticated and current_user.blogs | length < 2 %}
+<div class="clearfix" style="margin: 3rem 0;">
+   <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}" style="margin-left: 1em;">Create New Blog</a>
+</div>
+{% endif %}
+
 <form class="form container" method="post">
          <div class="row search-row content">
             <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
@@ -58,11 +64,7 @@
 <!-- Main Content -->
 <div class="container">
    
-   {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
-   <div class="clearfix" style="margin: 3rem 0;">
-      <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>
-   </div>
-   {% endif %}
+
 
    <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto ">
