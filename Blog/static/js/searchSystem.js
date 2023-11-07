@@ -5,6 +5,7 @@ const searchBtn = document.querySelector(".btn-search");
 const categoryMenu = document.querySelector(".menu");
 const selectedCategroy = document.querySelector(".selected");
 const blogsContainer = document.querySelector(".blogs-container");
+SCRIPT_ROOT = SCRIPT_ROOT ?? "https://the-peoples-blogs.onrender.com/";
 
 class GetInfo {
   #sectionList = [];
