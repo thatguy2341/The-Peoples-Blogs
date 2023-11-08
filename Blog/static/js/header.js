@@ -32,6 +32,8 @@ const filledbtnsDanger = btns.filter((btn) =>
   btn.classList.contains("btn-danger")
 );
 const filledbtnsInfo = btns.filter((btn) => btn.classList.contains("btn-info"));
+const outlineBtnsDark = document.querySelectorAll(".btn-outline-dark");
+
 const anchors = document.querySelectorAll("a");
 const frontImage = document.querySelector(".masthead");
 document
@@ -64,15 +66,18 @@ const darkmode = function () {
     btn?.classList.remove("btn-info");
     btn?.classList.remove("btn-primary");
     btn?.classList.remove("btn-danger");
+    btn?.classList.remove("btn-outline-dark");
   });
   lines.forEach(
     (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
   );
-  dropdowns.forEach((dropdown) => {
-    dropdown.querySelector(".select").style.color = "white";
-    dropdown.querySelector(".menu").style.color = "white";
-    dropdown.querySelector(".caret").style.borderTop = "6px solid white";
-  });
+  try {
+    dropdowns.forEach((dropdown) => {
+      dropdown.querySelector(".select").style.color = "white";
+      dropdown.querySelector(".menu").style.color = "white";
+      dropdown.querySelector(".caret").style.borderTop = "6px solid white";
+    });
+  } catch (ReferenceError) {}
 
   document.documentElement.style.setProperty("--anchor-color", "white");
 
@@ -101,13 +106,18 @@ const lightmode = function () {
   filledbtnsPrimary.forEach((btn) => {
     btn.classList.add("btn-primary");
   });
+  outlineBtnsDark.forEach((btn) => {
+    btn.classList.add("btn-outline-dark");
+  });
 
   lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
-  dropdowns.forEach((dropdown) => {
-    dropdown.querySelector(".select").style.color = "black";
-    dropdown.querySelector(".menu").style.color = "black";
-    dropdown.querySelector(".caret").style.borderTop = "6px solid black";
-  });
+  try {
+    dropdowns.forEach((dropdown) => {
+      dropdown.querySelector(".select").style.color = "black";
+      dropdown.querySelector(".menu").style.color = "black";
+      dropdown.querySelector(".caret").style.borderTop = "6px solid black";
+    });
+  } catch (ReferenceError) {}
 
   const observer = new IntersectionObserver(
     lazyLoad.bind(frontImage.dataset.srcLight),
