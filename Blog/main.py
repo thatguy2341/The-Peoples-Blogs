@@ -157,13 +157,22 @@ def get_blogs(search, category='Recent'):
         # for blog in found_blogs:
         #     all_blogs.append(blog.to_dict())
 
-    match category:
-        case 'Recent':
-            all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
-        case 'Popular':
-            all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
-        case 'Latest':
-            all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
+
+    # Doesnt work because the match statement is from python 3.10
+    # match category:
+    #     case 'Recent':
+    #         all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
+    #     case 'Popular':
+    #         all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
+    #     case 'Latest':
+    #         all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
+
+    if category == 'Recent':
+        all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
+    elif category == 'Popular':
+        all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
+    else:
+        all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
 
     all_blogs_dict = []
     for blog in all_blogs:
@@ -491,7 +500,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 # TODO: lazy loading images. DONE
-# TODO: category for search
+# TODO: category for search. DONE
 # TODO: profile.
 # TODO: messaging system.
 # TODO: confirmation system for deleting.

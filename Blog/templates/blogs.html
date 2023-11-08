@@ -25,6 +25,12 @@
 </header>
 
 <body class="background">
+{% if current_user.is_authenticated and current_user.blogs | length < 2 %}
+<div class="clearfix" style="margin: 3rem 0;">
+   <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}" style="margin-left: 1em;">Create New Blog</a>
+</div>
+{% endif %}
+
 <form class="form container" method="post">
          <div class="row search-row content">
             <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
@@ -47,6 +53,12 @@
                      </div>
                   </div>
                </div>
+
+               <div class="row categories-btns-row">
+                  <button type="button" class="col btn category-btn btn-outline-dark float-left" style="padding-left: 4.5%;">Popular</button>
+                  <button type="button" class="col btn category-btn btn-outline-dark" style="margin: 0 5% 0 3%;">Recent</button>
+                  <button type="button" class="col btn category-btn btn-outline-dark float-right">Latest</button>
+               </div>
                {% with messages = get_flashed_messages() %}
                   <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
                {% endwith %}
@@ -58,11 +70,7 @@
 <!-- Main Content -->
 <div class="container">
    
-   {% if current_user.is_authenticated and current_user.blogs | length < 2 %}
-   <div class="clearfix" style="margin: 3rem 0;">
-      <a class="btn btn-new-post btn-outline-info float-left" href="{{url_for('create_blog')}}">Create New Blog</a>
-   </div>
-   {% endif %}
+
 
    <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto ">
