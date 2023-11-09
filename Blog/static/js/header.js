@@ -126,3 +126,29 @@ const lightmode = function () {
 
 changeMode.bind(0)();
 viewBtn.addEventListener("click", changeMode.bind(1));
+
+// responsive navbar
+
+const topFill = function () {
+  const nav = document.querySelector("nav");
+  const navItems = document.querySelectorAll(
+    "#mainNav .navbar-nav>li.nav-item>a"
+  );
+  const navBrand = document.querySelector("#mainNav .navbar-brand");
+  if (window.scrollY < 180 && window.innerWidth > 992) {
+    nav.style = `
+    border-bottom: 1px solid #e9ecef;
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    `;
+    navItems.forEach((item) => (item.style = "color: rgb(0, 0, 0, 0.8)"));
+    navBrand.style = "color: rgb(0, 0, 0, 0.8)";
+  } else {
+    nav.style = "";
+    navItems.forEach((item) => (item.style = ""));
+    navBrand.style = "";
+  }
+};
+
+topFill();
+document.addEventListener("scroll", topFill);
