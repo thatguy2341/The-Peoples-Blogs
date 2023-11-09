@@ -66,7 +66,9 @@ const darkmode = function () {
   try {
     submitBtn.classList.toggle("btn-primary");
     submitBtn.classList.toggle("btn-outline-light");
+  } catch (ReferenceError) {}
 
+  try {
     dropdowns.forEach((dropdown) => {
       dropdown.querySelector(".select").style.color = "white";
       dropdown.querySelector(".menu").style.color = "white";
@@ -100,7 +102,8 @@ const lightmode = function () {
   try {
     submitBtn.classList.toggle("btn-primary");
     submitBtn.classList.toggle("btn-outline-light");
-
+  } catch (ReferenceError) {}
+  try {
     dropdowns.forEach((dropdown) => {
       dropdown.querySelector(".select").style.color = "black";
       dropdown.querySelector(".menu").style.color = "black";
