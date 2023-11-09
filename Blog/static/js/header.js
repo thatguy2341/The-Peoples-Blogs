@@ -24,16 +24,8 @@ document.documentElement.style.setProperty("--color-darkModeText", "white");
 const lines = document.querySelectorAll("hr");
 const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
-const btns = new Array(...document.querySelectorAll(".btn"));
-const filledbtnsPrimary = btns.filter((btn) =>
-  btn.classList.contains("btn-primary")
-);
-const filledbtnsDanger = btns.filter((btn) =>
-  btn.classList.contains("btn-danger")
-);
-const filledbtnsInfo = btns.filter((btn) => btn.classList.contains("btn-info"));
-const outlineBtnsDark = document.querySelectorAll(".btn-outline-dark");
-
+const btnsToChange = document.querySelectorAll(".btn[data-type]");
+const submitBtn = document.getElementById("submit");
 const anchors = document.querySelectorAll("a");
 const frontImage = document.querySelector(".masthead");
 document
@@ -59,22 +51,22 @@ const changeMode = function () {
 const darkmode = function () {
   viewBtn.textContent = "Light Mode 🌞";
   body.classList.add("dark-mode-active");
-  btns.forEach((btn) => {
+  btnsToChange.forEach((btn) => {
     if (
       !btn.classList.contains("btn-outline-danger") &&
-      !btn.classList.contains("btn-outline-success")
+      !btn.classList.contains("confirmation-btn")
     )
       btn.classList.add("btn-outline-light");
-
-    btn?.classList.remove("btn-info");
-    btn?.classList.remove("btn-primary");
-    btn?.classList.remove("btn-danger");
-    btn?.classList.remove("btn-outline-dark");
+    btn.classList.remove(btn.dataset.type);
   });
+
   lines.forEach(
     (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
   );
   try {
+    submitBtn.classList.toggle("btn-primary");
+    submitBtn.classList.toggle("btn-outline-light");
+
     dropdowns.forEach((dropdown) => {
       dropdown.querySelector(".select").style.color = "white";
       dropdown.querySelector(".menu").style.color = "white";
@@ -99,22 +91,16 @@ const darkmode = function () {
 const lightmode = function () {
   viewBtn.textContent = "Dark Mode 🌙";
   body.classList.remove("dark-mode-active");
-  btns.forEach((btn) => btn.classList.remove("btn-outline-light"));
-  filledbtnsDanger.forEach((btn) => {
-    btn.classList.add("btn-danger");
-  });
-  filledbtnsInfo.forEach((btn) => {
-    btn.classList.add("btn-info");
-  });
-  filledbtnsPrimary.forEach((btn) => {
-    btn.classList.add("btn-primary");
-  });
-  outlineBtnsDark.forEach((btn) => {
-    btn.classList.add("btn-outline-dark");
+  btnsToChange.forEach((btn) => {
+    btn.classList.remove("btn-outline-light");
+    btn.classList.add(btn.dataset.type);
   });
 
   lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
   try {
+    submitBtn.classList.toggle("btn-primary");
+    submitBtn.classList.toggle("btn-outline-light");
+
     dropdowns.forEach((dropdown) => {
       dropdown.querySelector(".select").style.color = "black";
       dropdown.querySelector(".menu").style.color = "black";

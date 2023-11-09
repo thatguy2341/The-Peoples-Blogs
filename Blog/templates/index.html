@@ -62,7 +62,8 @@
                {% if user.id == admin_user.id %}
 
                <button type="button" data-url="{{url_for('delete_post', post_id=post.id, blog_id=blog.id)}}"
-                       data-context="delete your post" class="btn btn-delete btn-outline-danger float-right">Delete
+                       data-context="delete your post" class="btn btn-delete btn-outline-danger float-right">
+                  Delete
                   post
                </button>
                {% endif %}
@@ -105,6 +106,7 @@
             <div class="col col-lg-6 col-md-6 col-sm-6">
                <button type="button" data-url="{{url_for('delete_blog', blog_id=blog.id)}}"
                        data-context="delete this blog"
+                       data-type="btn-danger"
                        class="btn btn-filled btn-new-post btn-danger float-left post-control">Delete
                   Blog
                </button>
@@ -112,6 +114,7 @@
             <div class="col col-lg-6 col-md-6 col-sm-6">
                <div class="clearfix">
                   <a class="btn btn-filled btn-new-post btn-primary float-right post-control"
+                     data-type="btn-primary"
                      href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
                      Post</a>
                </div>
