@@ -91,6 +91,10 @@ class GetInfo {
 
           blogsContainer.insertAdjacentElement("beforeend", newSection);
         });
+
+      if (this.#infoList.length < this.#page * 10 + 10) {
+        document.querySelector("#next-page").classList.add("hidden");
+      }
       if (smoothScroll) this._addSmoothScrolling();
 
       blogsContainer.insertAdjacentHTML(

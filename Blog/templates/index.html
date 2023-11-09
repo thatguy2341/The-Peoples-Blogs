@@ -8,7 +8,6 @@
         data-src-light="url('{{url_for('static', filename='img/index-light-bg.jpg')}}')"
         data-src-dark="url('{{url_for('static', filename='img/index-light-bg.jpg')}}')"
         style="background-image: url('{{url_for('static', filename='img/index-light-bg-blur.jpg')}}');">
-   <div class="overlay"></div>
    <div class="container">
       <div class="row">
          <div class="col-lg-8 col-md-10 mx-auto">
@@ -26,7 +25,10 @@
 </header>
 
 <!-- Main Content -->
-<div class="container" style="margin-bottom: 5rem;">
+<body>
+
+<div class="container main-content" style="margin-bottom: 5rem;">
+
    <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
          {% if not all_posts: %}
@@ -46,51 +48,52 @@
          </div>
 
          {% else: %}
-         
+
          {% for post in all_posts %}
          <div class="smooth-scroll">
-         <hr style="border-top: 1px solid rgb(0 0 0 / 20%)">
-         <div class="post-preview">
-            <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
-               <h2 class="post-title" id="post-title">
-                  {{post.title}}
-               </h2>
-               
-            </a>
-            {% if user.id == admin_user.id %}
-            
-            <a href="{{url_for('delete_post', post_id=post.id, blog_id=blog.id)}}">
-               <button type="button" class="btn btn-delete btn-outline-danger float-right">Delete post</button>
-            </a>
-            {% endif %}
-            <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
-               <h4 class="post-subtitle" id="post-subtitle">
-                  {{post.subtitle}}
-               </h4>
-            </a>
-            
-            <div class="row">
+            <hr style="border-top: 1px solid rgb(0 0 0 / 20%)">
+            <div class="post-preview">
+               <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
+                  <h2 class="post-title" id="post-title">
+                     {{post.title}}
+                  </h2>
+
+               </a>
                {% if user.id == admin_user.id %}
-               <p class="post-meta col col-lg-10 col-md-10 col-sm-10" style="padding-left: 0;">Posted by
-                  <a href="#">{{admin_user.name}}</a>
-                  on {{post.date}}
-               </p>
-               {% else %}
-               
-               <p class="post-meta col col-lg-10 col-md-10 col-sm-10">Posted by
-                  <a href="#">{{admin_user.name}}</a>
-                  on {{post.date}}
-               </p>
+
+               <button type="button" data-url="{{url_for('delete_post', post_id=post.id, blog_id=blog.id)}}"
+                       data-context="delete your post" class="btn btn-delete btn-outline-danger float-right">Delete
+                  post
+               </button>
                {% endif %}
-               
-               <h4 class="col col-lg-2 col-md-2 col-sm-4 views"> {{post.views}} 👁️</h4>
+               <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
+                  <h4 class="post-subtitle" id="post-subtitle">
+                     {{post.subtitle}}
+                  </h4>
+               </a>
+
+               <div class="row">
+                  {% if user.id == admin_user.id %}
+                  <p class="post-meta col col-lg-10 col-md-10 col-sm-10" style="padding-left: 0;">Posted by
+                     <a href="#">{{admin_user.name}}</a>
+                     on {{post.date}}
+                  </p>
+                  {% else %}
+
+                  <p class="post-meta col col-lg-10 col-md-10 col-sm-10">Posted by
+                     <a href="#">{{admin_user.name}}</a>
+                     on {{post.date}}
+                  </p>
+                  {% endif %}
+
+                  <h4 class="col col-lg-2 col-md-2 col-sm-4 views"> {{post.views}} 👁️</h4>
+               </div>
             </div>
          </div>
-         </div>
-         
+
          {% endfor %}
          {% endif %}
-         
+
          {% if user.id == admin_user.id or all_posts|length > 1 %}
          <hr class="smooth-scroll" style="margin-bottom: 5rem; border-top: 1px solid rgb(0 0 0 / 20%)">
          {% endif %}
@@ -98,23 +101,27 @@
 
          <!-- New Post -->
          {% if user.id == admin_user.id %}
-            <div class="row smooth-scroll">
-               <div class="col col-lg-6 col-md-6 col-sm-6">
-                  <a href="{{url_for('delete_blog', blog_id=blog.id)}}">
-                     <button type="button" class="btn btn-filled btn-new-post btn-danger float-left post-control">Delete Blog</button>
-                  </a>
-               </div>
-               <div class="col col-lg-6 col-md-6 col-sm-6">
-                  <div class="clearfix">
-                     <a class="btn btn-filled btn-new-post btn-primary float-right post-control" href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
-                        Post</a>
-                  </div>
+         <div class="row smooth-scroll">
+            <div class="col col-lg-6 col-md-6 col-sm-6">
+               <button type="button" data-url="{{url_for('delete_blog', blog_id=blog.id)}}"
+                       data-context="delete this blog"
+                       class="btn btn-filled btn-new-post btn-danger float-left post-control">Delete
+                  Blog
+               </button>
+            </div>
+            <div class="col col-lg-6 col-md-6 col-sm-6">
+               <div class="clearfix">
+                  <a class="btn btn-filled btn-new-post btn-primary float-right post-control"
+                     href="{{url_for('add_new_post', blog_id=blog.id)}}">Create
+                     Post</a>
                </div>
             </div>
+         </div>
          {% endif %}
       </div>
    </div>
 </div>
 <hr>
+</body>
 
 {% include "footer.html" %}

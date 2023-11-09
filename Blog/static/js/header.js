@@ -60,7 +60,10 @@ const darkmode = function () {
   viewBtn.textContent = "Light Mode 🌞";
   body.classList.add("dark-mode-active");
   btns.forEach((btn) => {
-    if (!btn.classList.contains("btn-outline-danger"))
+    if (
+      !btn.classList.contains("btn-outline-danger") &&
+      !btn.classList.contains("btn-outline-success")
+    )
       btn.classList.add("btn-outline-light");
 
     btn?.classList.remove("btn-info");
