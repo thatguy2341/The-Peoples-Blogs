@@ -77,9 +77,7 @@ class GetInfo {
           html += `</a>
             <div class="row">
                <p class="post-meta col-12">Created by
-                  <a href="/view_profile/${blog.author_id}">
-                    ${blog.author}
-                  </a>
+                  <a href="/view_profile/${blog.author_id}">${blog.author}</a>
                   on ${blog.created_date}
                </p>
                <h4 class="col-lg-2 col-md-2 col-sm-3 views">${blog.views} 👁️</h4>
