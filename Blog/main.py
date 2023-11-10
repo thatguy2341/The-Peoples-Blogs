@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import date
 from smtplib import SMTP
 
@@ -47,6 +48,11 @@ class Users(db.Model, UserMixin):
     blogs = relationship('Blogs', back_populates="author")
     views = relationship('Views', back_populates="user")  # lazy='dynamic' lets us use query with views from users.
 
+    def to_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns
+                if column.name != ''}
+
+
 
 class Views(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,10 +74,11 @@ class Blogs(db.Model, UserMixin):
 
     def to_dict(self):
         d = {column.name: getattr(self, column.name) for column in self.__table__.columns
-                if column.name != ''}
+             if column.name != ''}
         d.update({'author': self.author.name})
 
         return d
+
 
 class BlogPost(db.Model, UserMixin):
     __tablename__ = "blog_posts"
@@ -140,44 +147,25 @@ def get_page():
 
 @app.route('/get_blogs/<search>/<category>', methods=['GET'])
 def get_blogs(search, category='Recent'):
-    all_blogs = list()
     if search == 'null':
         found_blogs = db.session.query(Blogs)
-        # for blog in db.session.query(Blogs).all():
-        # all_blogs.append(blog.to_dict())
 
     else:
         searcher = search.lower()
         ids = db.session.execute(
             text(f"SELECT blogs.id FROM blogs, users WHERE (LOWER(users.name) LIKE '%{searcher}%' "
                  f"AND blogs.author_id = users.id) OR (LOWER(blogs.name) LIKE '%{searcher}%')")).unique()
-
         ids = [id_[0] for id_ in ids]
         found_blogs = db.session.query(Blogs).filter(Blogs.id.in_(ids))
-        # for blog in found_blogs:
-        #     all_blogs.append(blog.to_dict())
 
+    category_keywords = {
+        'Recent': Blogs.created_date.asc(),
+        'Popular': Blogs.views.desc(),
+        'Latest': Blogs.created_date.desc()
+    }
+    all_blogs = found_blogs.order_by(category_keywords[category]).all()
 
-    # Doesnt work because the match statement is from python 3.10
-    # match category:
-    #     case 'Recent':
-    #         all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
-    #     case 'Popular':
-    #         all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
-    #     case 'Latest':
-    #         all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
-
-    if category == 'Recent':
-        all_blogs = found_blogs.order_by(Blogs.created_date.asc()).all()
-    elif category == 'Popular':
-        all_blogs = found_blogs.order_by(Blogs.views.desc()).all()
-    else:
-        all_blogs = found_blogs.order_by(Blogs.created_date.desc()).all()
-
-    all_blogs_dict = []
-    for blog in all_blogs:
-        all_blogs_dict.append(blog.to_dict())
-
+    all_blogs_dict = [blog.to_dict() for blog in all_blogs]
     if not all_blogs:
         return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 

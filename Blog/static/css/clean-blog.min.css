@@ -561,32 +561,34 @@ border-radius: 2rem;
    margin-top: 1em;
 }
 
+@keyframes shake{
+
+20%, 60% {
+   rotate: 45deg;
+}
+40%, 80% {
+   rotate: -45deg;
+}
+}
+
 .btn-notification {
    border: 0;
    background: transparent;
    float:right;
    display:inline;
+   rotate: 0deg;
 }
+
+.btn-notification:hover {
+  animation: shake 500ms;
+  animation-timing-function: ease-out
+  /* specifies the speed curve of the animation,
+   so it will be fast at start but slow at end */
+}
+
 
 .fill-nav {
     border-bottom: 1px solid #e9ecef;
     background-color: #fff;
     border-bottom: 1px solid #e9ecef;
 }
-/*
-@media screen and (min-width: 992px), screen and (max-height: 15px) {
-   #mainNav{
-
-       font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-   }
-
-   #mainNav .navbar-nav>li.nav-item>a {
-    padding: 10px 20px;
-    color: rgb(0, 0, 0, 0.8);
-   }
-}
-
-.navbar-light .navbar-nav .nav-link {
-     color: rgb(0 0 0 / 55%);
-}
-*/
