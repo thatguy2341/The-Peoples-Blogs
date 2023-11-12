@@ -9,8 +9,9 @@
 
 <!-- Page Header -->
 <header class="masthead lazy-img"
-        data-src-light="url('{{url_for('static', filename='img/index-light-bg.jpg')}}')"
-        data-src-dark="url('{{url_for('static', filename='img/index-light-bg.jpg')}}')"
+        data-start="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
+        data-src-light="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
+        data-src-dark="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
         style="background-image: url('{{url_for('static', filename='img/index-light-bg-blur.jpg')}}');">
    <div class="container">
       <div class="row">
@@ -130,6 +131,7 @@
 
 <!-- Page Header -->
 <header class="masthead lazy-img"
+        data-start="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
         data-src-light="url('{{url_for('static', filename='img/index-light-bg.jpg')}}')"
         data-src-dark="url('{{url_for('static', filename='img/index-light-bg.jpg')}}')"
         style="background-image: url('{{url_for('static', filename='img/index-light-bg-blur.jpg')}}');">

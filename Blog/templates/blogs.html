@@ -11,10 +11,10 @@
 
 
 <header class="masthead lazy-img"
-        data-start="url('{{url_for('static', filename='img/blog-dark-bg.jpg')}}')"
-        style="background-image: url('{{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')"
-        data-src-light="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')"
-        data-src-dark="url('{{url_for('static', filename='img/blog-dark-bg.jpg')}}')">
+        data-start="url({{url_for('static', filename='img/blog-dark-bg.jpg')}})"
+        style="background-image: url({{url_for('static', filename='img/blog-dark-bg.jpg')}}')"
+        data-src-light="url({{url_for('static', filename='img/blog-light-bg.jpg')}})"
+        data-src-dark="url({{url_for('static', filename='img/blog-dark-bg.jpg')}})">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
@@ -135,10 +135,10 @@
 <hr style="border-top: 1px solid rgba(255,255,255,0.5)">
 {% else %}
 <header class="masthead lazy-img"
-        data-start="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')"
-        style="background-image: url('{{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')"
-        data-src-light="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')"
-        data-src-dark="url('{{url_for('static', filename='img/blog-dark-bg.jpg')}}')">
+        data-start="url({{url_for('static', filename='img/blog-light-bg.jpg')}})"
+        style="background-image: url({{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')"
+        data-src-light="url({{url_for('static', filename='img/blog-light-bg.jpg')}})"
+        data-src-dark="url({{url_for('static', filename='img/blog-dark-bg.jpg')}})">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
