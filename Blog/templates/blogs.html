@@ -1,11 +1,15 @@
 {% include "header.html" %}
 
 <head>
+   <script defer type="module" src="{{url_for('static', filename='js/infoSystem.js')}}"></script>
+   <script defer type="module" src="{{url_for('static', filename='js/searchSystem2.0.js')}}"></script>
+   <script async src="{{url_for('static', filename='js/dropdown.js')}}"></script>
    <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
-   <script defer src="{{url_for('static', filename='js/searchSystem2.0.js')}}"></script>
-   <script defer src="{{url_for('static', filename='js/dropdown.js')}}"></script>
 </head>
 <!-- Page Header -->
+{% if DARKMODE: %}
+
+
 <header class="masthead lazy-img"
         style="background-image: url('{{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')"
         data-src-light="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')"
@@ -22,7 +26,129 @@
    </div>
 </header>
 
-<body class="background">
+{% if current_user.is_authenticated and (current_user.blogs | length < 2 or current_user.id == 1) %}
+<div class="clearfix" style="margin: 3rem 0;">
+   <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-light float-left"
+      href="{{url_for('create_blog')}}" style="margin-left: 1em;">Create
+      New Blog</a>
+</div>
+{% endif %}
+
+<form class="form container" method="post">
+   <div class="row search-row content">
+      <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
+         <div class="row">
+            <div class="col col-lg-10 col-md-9 col-sm-9 input-group mb3 search-bar">
+               <input class="form-control bar-search" type="text" autocomplete="off" name="search"
+                      aria-describedby="button-addon2" placeholder="Search For a Blog or Author">
+               <button data-type="btn-outline-light" class="btn btn-outline-light btn-search" type="submit"
+                       id="button-addon2">🔍
+               </button>
+            </div>
+            <div class="col col-lg-2 col-md-3 col-sm-3">
+               <div class="dropdown">
+                  <div class="select" style="color: white;">
+                     <span class="selected">Recent</span>
+                     <div class="caret" style="border-top: 6px solid white;"></div>
+                  </div>
+                  <ul class="menu menu-disable" style="color: white;">
+                     <li class="option">Popular</li>
+                     <li class="option dropdown-active">Recent</li>
+                     <li class="option">Latest</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+
+         <div class="row categories-btns-row">
+            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-light float-left"
+                    style="padding-left: 4.5%;">Popular
+            </button>
+            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-light"
+                    style="margin: 0 5% 0 3%;">Recent
+            </button>
+            <button type="button" data-type="btn-outline-dark"
+                    class="col btn category-btn btn-outline-light float-right">Latest
+            </button>
+         </div>
+         {% with messages = get_flashed_messages() %}
+         <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
+         {% endwith %}
+      </div>
+
+
+   </div>
+</form>
+<!-- Main Content -->
+<div class="container">
+
+
+   <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto ">
+         <div class="blogs-container">
+
+         </div>
+         {% if not current_user.is_authenticated %}
+         <hr class="smooth-scroll" style="border-top: 1px solid rgba(255,255,255,0.5)">
+         {% endif %}
+
+         <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
+            <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-light float-right"
+               href="{{url_for('next_page', num=page+1)}}">Next
+               Page</a>
+         </div>
+
+         {% if current_user.blogs | length <= 2: %}
+         <div class="smooth-scroll">
+            <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
+               You can create your own blogs, by joining the community.
+               <br>
+            </h4>
+         </div>
+         <div class="row smooth-scroll">
+            <div class="col col-lg-9 col-md-9 col-sm-9">
+               Click register, to create a new account:
+            </div>
+
+            <div class="col col-lg-3 col-md-3 col-sm-3">
+               <a data-type="btn-outline-primary" class="btn btn-new-post btn-outline-light btn-open float-right"
+                  href="{{ url_for('register')}}">register</a>
+            </div>
+         </div>
+         <hr style="border-top: 1px solid rgba(255,255,255,0.5)">
+         <div class="row smooth-scroll">
+            <div class="col col-lg-9 col-md-9 col-sm-9">
+               If you already have an account, login here:
+            </div>
+            <div class="col col-lg-3 col-md-3 col-sm-3">
+               <a data-type="btn-outline-primary" class="btn btn-new-post btn-outline-light btn-open float-right"
+                  href="{{ url_for('login')}}">login</a>
+            </div>
+         </div>
+
+
+         {% endif %}
+      </div>
+   </div>
+</div>
+<hr style="border-top: 1px solid rgba(255,255,255,0.5)">
+{% else %}
+<header class="masthead lazy-img"
+        style="background-image: url('{{url_for('static', filename='img/blog-light-bg-blur.jpg')}}')"
+        data-src-light="url('{{url_for('static', filename='img/blog-light-bg.jpg')}}')"
+        data-src-dark="url('{{url_for('static', filename='img/blog-dark-bg.jpg')}}')">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+               <h1>The People's Blogs</h1>
+               <span class="subheading">Feel Free To Post Your Random Thoughts.</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</header>
+
 {% if current_user.is_authenticated and (current_user.blogs | length < 2 or current_user.id == 1) %}
 <div class="clearfix" style="margin: 3rem 0;">
    <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-left"
@@ -58,12 +184,15 @@
          </div>
 
          <div class="row categories-btns-row">
-            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-dark float-left" style="padding-left: 4.5%;">
-               Popular
+            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-dark float-left"
+                    style="padding-left: 4.5%;">Popular
             </button>
-            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-dark" style="margin: 0 5% 0 3%;">Recent
+            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-dark"
+                    style="margin: 0 5% 0 3%;">Recent
             </button>
-            <button type="button" data-type="btn-outline-dark" class="col btn category-btn btn-outline-dark float-right">Latest</button>
+            <button type="button" data-type="btn-outline-dark"
+                    class="col btn category-btn btn-outline-dark float-right">Latest
+            </button>
          </div>
          {% with messages = get_flashed_messages() %}
          <p class="failed-search" style="margin: 5rem auto -4rem; text-align: center;">{{messages[0]}}</p>
@@ -87,7 +216,8 @@
          {% endif %}
 
          <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
-            <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right" href="{{url_for('next_page', num=page+1)}}">Next
+            <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
+               href="{{url_for('next_page', num=page+1)}}">Next
                Page</a>
          </div>
 
@@ -104,7 +234,8 @@
             </div>
 
             <div class="col col-lg-3 col-md-3 col-sm-3">
-               <a data-type="btn-outline-primary" class="btn btn-new-post btn-outline-primary btn-open float-right" href="{{ url_for('register')}}">register</a>
+               <a data-type="btn-outline-primary" class="btn btn-new-post btn-outline-primary btn-open float-right"
+                  href="{{ url_for('register')}}">register</a>
             </div>
          </div>
          <hr>
@@ -124,6 +255,7 @@
    </div>
 </div>
 <hr>
+{% endif %}
 
 
 {% include "footer.html" %}

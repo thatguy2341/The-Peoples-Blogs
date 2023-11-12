@@ -1,49 +1,37 @@
 "use strict";
 
+import { Info } from "./infoSystem.js";
+
 const searchBar = document.querySelector(".bar-search");
 const searchBtn = document.querySelector(".btn-search");
 const categoryMenu = document.querySelector(".menu");
 const selectedCategroy = document.querySelector(".selected");
 const sectionsContainer = document.querySelector(".blogs-container");
 const categories = document.querySelector(".categories-btns-row");
-const categoriesBtns = document.querySelectorAll(".category-btn");
+let search = "";
+let page;
 //SCRIPT_ROOT = SCRIPT_ROOT || "https://the-peoples-blogs.onrender.com/";
 //
 //console.log(SCRIPT_ROOT);
 
-class Info {
-  #sectionList = [];
-  #infoList;
-  #search;
-  #category;
-  #page;
+const getCategory = function (targetCategory) {
+  if (!targetCategory) return selectedCategroy.innerText ?? "Recent";
+  else return targetCategory;
+};
 
-  constructor(link) {
-    this.link = link;
-  }
-  _getCategory(targetCategory) {
-    if (categories.classList.contains("categories-btns-disable")) {
-      if (!targetCategory) this.#category = selectedCategroy.innerText;
-      else this.#category = targetCategory;
-    } else {
-      if (!targetCategory) this.#category = "Recent";
-      else this.#category = targetCategory;
-    }
-  }
+const getSearch = function () {
+  search = searchBar.value;
+  return search;
+};
 
-  _getSearch() {
-    this.#search = searchBar.value;
-  }
+const getPage = async function () {
+  const response = await fetch("/get_page");
+  const data = await response.json();
+  page = Number(data["num"]);
+};
 
-  _getPage() {
-    fetch("/get_page")
-      .then((response) => response.json())
-      .then((data) => (this.#page = Number(data["num"])));
-  }
-  _createHtmlForPost() {}
-
-  _createHtmlForBlog(blog) {
-    let html = `
+const createHtmlForBlog = function (blog) {
+  let html = `
             <hr>
             <div class="post-preview" style="font-size: 1.25rem;">
                 <a href="/get-posts/${blog.id}?raise_view=1">
@@ -51,17 +39,17 @@ class Info {
                 <h1 class="post-title">
                   ${blog.name}
                 </h1>`;
-    if (blog.description > 65) {
-      html += `
+  if (blog.description > 65) {
+    html += `
                 <h4 class="post-subtitle" style="font-size: 1.45rem; font-weight: 300;">
                    ${blog.description.slice(0, 64)}...
                 </h4>`;
-    } else {
-      html += `<h4 class="post-subtitle">
+  } else {
+    html += `<h4 class="post-subtitle">
                 ${blog.description}
              </h4>`;
-    }
-    html += `</a>
+  }
+  html += `</a>
             <div class="row">
                <p class="post-meta col-12">Created by
                   <a href="/view_profile/${blog.author_id}">${blog.author}</a>
@@ -71,125 +59,86 @@ class Info {
             </div>
          </div>`;
 
-    return html;
-  }
+  return html;
+};
 
-  _createElement(data, dataType) {
-    const newSection = document.createElement("div");
-    newSection.innerHTML =
-      dataType === "blogs"
-        ? this._createHtmlForBlog(data)
-        : this._createHtmlForPost();
-    this.#sectionList.push(newSection);
-  }
+const showError = function () {
+  if (blogsInfo.error)
+    document.querySelector(".failed-search").textContent =
+      blogsInfo.error + ` '${search}'`;
+  else document.querySelector(".failed-search").textContent = "";
+};
 
-  _showInfo(smoothScroll, dataType) {
-    sectionsContainer.innerHTML = "";
-    if (!this.#infoList) {
-      sectionsContainer.insertAdjacentHTML(
-        "afterend",
-        `<div style="text-align: center; margin-bottom: 20rem;">
-            <p>
-                It seems that no posts have loaded 😖
-            </p>
-        </div>`
-      );
-    } else {
-      this.#infoList
-        .slice(this.#page * 10, this.#page * 10 + 10)
-        .forEach((blog) => {
-          this._createElement(blog, dataType);
-          sectionsContainer.insertAdjacentElement(
-            "beforeend",
-            this.#sectionList.at(-1)
-          );
+const addAccessories = function () {
+  if (blogsInfo.infoList.length < page * 10 + 10) {
+    document.querySelector("#next-page").classList.add("hidden");
+  }
+  sectionsContainer.insertAdjacentHTML(
+    "beforeend",
+    `<hr class="smooth-scroll" style="margin-bottom: 15rem;">`
+  );
+  if (blogsInfo.infoList.length > 9) {
+    document.querySelector(".btn-hide").style.display = "none";
+  }
+};
+
+const showBlogs = function () {
+  getPage()
+    .then(() => {
+      sectionsContainer.innerHTML = "";
+      blogsInfo.infoList.slice(page * 10, page * 10 + 10).forEach((blog) => {
+        blogsInfo.showInfo({
+          htmlBuilder: createHtmlForBlog,
+          blog: blog,
+          container: sectionsContainer,
         });
-
-      if (this.#infoList.length < this.#page * 10 + 10) {
-        document.querySelector("#next-page").classList.add("hidden");
-      }
-      if (smoothScroll) this._addSmoothScrolling();
-
-      sectionsContainer.insertAdjacentHTML(
-        "beforeend",
-        `<hr class="smooth-scroll" style="margin-bottom: 15rem;">`
-      );
-      if (this.#infoList.length > 9) {
-        document.querySelector(".btn-hide").style.display = "none";
-      }
-    }
-  }
-
-  getInfo({
-    smoothScroll = false,
-    targetCategory = false,
-    dataType = "blogs",
-  }) {
-    if (dataType === "blogs") {
-      this._getPage();
-      this._getCategory(targetCategory);
-      this._getSearch();
-    }
-
-    fetch(`${this.link}/${this.#search || "null"}/${this.#category || "null"}`)
-      .then(function (response) {
-        if (!response.ok) throw `could not find what you searched for`;
-
-        return response.json();
-      })
-      .then(
-        function (data) {
-          this.#infoList = data[dataType];
-          this._showInfo(smoothScroll, dataType);
-          document.querySelector(".failed-search").textContent = "";
-        }.bind(this)
-      )
-      .catch((error) => {
-        document.querySelector(".failed-search").textContent =
-          error + ` '${this.#search}'`;
       });
-  }
 
-  _addSmoothScrolling() {
-    const revealSection = function (entries, observer) {
-      const [entry] = entries;
-      if (entry.isIntersecting) {
-        entry.target.classList.remove("section--hidden");
-        observer.unobserve(entry.target);
-      }
-    };
+      if (this) blogsInfo.addSmoothScrolling();
+      addAccessories();
+    })
+    .catch((error) => (blogsInfo.error = error));
+};
 
-    const observer = new IntersectionObserver(revealSection, {
-      root: null,
-      threshold: 0.25,
-    });
-    this.#sectionList.forEach((section) => {
-      section.classList.add("section--hidden");
-      section.classList.add("smooth-scroll");
-      observer.observe(section);
-    });
-  }
-}
+const blogsInfo = new Info(`get_blogs/null/Recent`);
 
-const info = new Info("/get_blogs");
+blogsInfo.getInfo({
+  dataType: "blogs",
+  showInfoFunc: showBlogs.bind(true),
+});
 
-info.getInfo({ smoothScroll: true });
-
-searchBar.addEventListener("enter", function (e) {
+const startForSearch = function (e) {
   e.preventDefault();
-  info.getInfo({});
+  blogsInfo.link = `get_blogs/${getSearch() || "null"}/${
+    getCategory() || "null"
+  }`;
+
+  blogsInfo
+    .getInfo({
+      dataType: "blogs",
+      showInfoFunc: showBlogs.bind(false),
+    })
+    .then(() => showError());
   searchBar.value = "";
-});
-searchBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  info.getInfo({});
-  searchBar.value = "";
-});
-categoryMenu.addEventListener("click", function (e) {
-  if (e.target.classList.contains("option"))
-    info.getInfo({ targetCategory: e.target.textContent });
-});
-categories.addEventListener("click", function (e) {
-  if (e.target.classList.contains("category-btn"))
-    info.getInfo({ targetCategory: e.target.textContent });
-});
+};
+
+const startForCategory = function (e) {
+  if (e.target.classList.contains(this)) {
+    blogsInfo.link = `get_blogs/${getSearch() || "null"}/${
+      getCategory(e.target.textContent) || "null"
+    }`;
+
+    blogsInfo
+      .getInfo({
+        dataType: "blogs",
+        showInfoFunc: showBlogs.bind(false),
+      })
+      .then(() => showError());
+  }
+};
+
+searchBar.addEventListener("enter", startForSearch);
+searchBtn.addEventListener("click", startForSearch);
+
+categoryMenu.addEventListener("click", startForCategory.bind("option"));
+categories.addEventListener("click", startForCategory.bind("category-btn"));

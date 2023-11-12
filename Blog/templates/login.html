@@ -28,7 +28,11 @@
          <p>{{messages[0]}}</p>
          {% endif %}
          {{ form.csrf_token }}
-         {{ wtf.quick_form(form, button_map={"submit": "primary btn-filled"}) }}
+         {% if DARKMODE: %}
+         {{ wtf.quick_form(form, button_map={'submit': 'outline-light'}) }}
+         {% else %}
+         {{ wtf.quick_form(form, button_map={'submit': 'primary btn-filled'}) }}
+         {% endif %}
          {% endwith %}
       </div>
    </div>
@@ -40,10 +44,18 @@
             Don't have an account?
          </p>
       </div>
+      {% if DARKMODE: %}
+      <div class="col-lg-4 col-md-3 col-sm-6 register-btn">
+         <a data-type="btn-outline-primary" id="register-btn" class="btn btn-new-post btn-outline-light btn-open"
+            href="{{ url_for('register')}}">register</a>
+      </div>
+         {% else %}
       <div class="col-lg-4 col-md-3 col-sm-6 register-btn">
          <a data-type="btn-outline-primary" id="register-btn" class="btn btn-new-post btn-outline-primary btn-open"
             href="{{ url_for('register')}}">register</a>
       </div>
+         {% endif %}
+
 
    </div>
 </div>

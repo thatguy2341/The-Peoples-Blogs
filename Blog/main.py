@@ -112,7 +112,7 @@ login_manager = LoginManager(app=app)
 
 @app.context_processor
 def inject_current_year():
-    return dict(year=date.today().year)
+    return dict(year=date.today().year, DARKMODE=DARKMODE)
 
 
 @login_manager.user_loader
@@ -209,7 +209,8 @@ def create_blog():
 @app.route("/view_profile/<int:user_id>")
 def profile(user_id):
     user = Users.query.get(user_id)
-    return render_template("profile_page.html", user=user)
+    blogs = user.blogs
+    return render_template("profile_page.html", admin_user=user, blogs=blogs)
 
 
 @app.route("/blog/<int:blog_id>/delete")

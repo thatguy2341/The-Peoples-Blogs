@@ -27,7 +27,11 @@
          {{ ckeditor.load(pkg_type="standard") }}
          {{ ckeditor.config(name='body') }}
          {{ form.csrf_token }}
+         {% if DARKMODE: %}
+         {{ wtf.quick_form(form, button_map={'submit': 'outline-light'}) }}
+         {% else %}
          {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
+         {% endif %}
 
       </div>
    </div>

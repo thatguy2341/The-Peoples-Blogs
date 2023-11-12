@@ -32,15 +32,27 @@ document
   .querySelectorAll(".fas-anchor")
   .forEach((a) => (a.style.color = "#212529"));
 
-const lazyLoad = function (entries, observer) {
-  const [entry] = entries;
-  if (entry.isIntersecting) {
-    frontImage.style.backgroundImage = this;
+// lazy loading the masthead.
+const lazyLoad = function () {
+  const observer = new IntersectionObserver(
+    function (entries, observer) {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        frontImage.style.backgroundImage = this;
 
-    frontImage.classList.remove("lazy-img");
-    observer.unobserve(entry.target);
-  }
+        frontImage.classList.remove("lazy-img");
+        observer.unobserve(entry.target);
+      }
+    }.bind(frontImage.dataset.srcDark),
+    {
+      root: null,
+      threshold: 0,
+      rootMargin: "50px",
+    }
+  );
+  observer.observe(frontImage);
 };
+lazyLoad();
 
 const changeMode = function () {
   fetch(`/change_view/${this}`)
@@ -64,8 +76,8 @@ const darkmode = function () {
     (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
   );
   try {
-    submitBtn.classList.toggle("btn-primary");
-    submitBtn.classList.toggle("btn-outline-light");
+    submitBtn.classList.remove("btn-primary");
+    submitBtn.classList.add("btn-outline-light");
   } catch (ReferenceError) {}
 
   try {
@@ -78,16 +90,7 @@ const darkmode = function () {
 
   document.documentElement.style.setProperty("--anchor-color", "white");
 
-  // lazy loading the big image.
-  const observer = new IntersectionObserver(
-    lazyLoad.bind(frontImage.dataset.srcDark),
-    {
-      root: null,
-      threshold: 0,
-      rootMargin: "50px",
-    }
-  );
-  observer.observe(frontImage);
+  lazyLoad();
 };
 
 const lightmode = function () {
@@ -100,8 +103,8 @@ const lightmode = function () {
 
   lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
   try {
-    submitBtn.classList.toggle("btn-primary");
-    submitBtn.classList.toggle("btn-outline-light");
+    submitBtn.classList.add("btn-primary");
+    submitBtn.classList.remove("btn-outline-light");
   } catch (ReferenceError) {}
   try {
     dropdowns.forEach((dropdown) => {
@@ -111,20 +114,9 @@ const lightmode = function () {
     });
   } catch (ReferenceError) {}
 
-  const observer = new IntersectionObserver(
-    lazyLoad.bind(frontImage.dataset.srcLight),
-    {
-      root: null,
-      threshold: 0,
-      rootMargin: "50px",
-    }
-  );
-  observer.observe(frontImage);
-
+  lazyLoad();
   document.documentElement.style.setProperty("--anchor-color", "212529");
 };
-
-changeMode.bind(0)();
 viewBtn.addEventListener("click", changeMode.bind(1));
 
 // responsive navbar

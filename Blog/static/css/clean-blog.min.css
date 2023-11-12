@@ -592,3 +592,6 @@ border-radius: 2rem;
     background-color: #fff;
     border-bottom: 1px solid #e9ecef;
 }
+.light-btn {
+cursor: pointer;
+}
