@@ -33,7 +33,7 @@ document
   .forEach((a) => (a.style.color = "#212529"));
 
 // lazy loading the masthead.
-const lazyLoad = function () {
+const lazyLoad = function (picture) {
   const observer = new IntersectionObserver(
     function (entries, observer) {
       const [entry] = entries;
@@ -43,7 +43,7 @@ const lazyLoad = function () {
         frontImage.classList.remove("lazy-img");
         observer.unobserve(entry.target);
       }
-    }.bind(frontImage.dataset.srcDark),
+    }.bind(picture),
     {
       root: null,
       threshold: 0,
@@ -52,7 +52,7 @@ const lazyLoad = function () {
   );
   observer.observe(frontImage);
 };
-lazyLoad();
+lazyLoad(frontImage.dataset.start);
 
 const changeMode = function () {
   fetch(`/change_view/${this}`)
@@ -90,7 +90,7 @@ const darkmode = function () {
 
   document.documentElement.style.setProperty("--anchor-color", "white");
 
-  lazyLoad();
+  lazyLoad(frontImage.dataset.srcDark);
 };
 
 const lightmode = function () {
@@ -114,7 +114,7 @@ const lightmode = function () {
     });
   } catch (ReferenceError) {}
 
-  lazyLoad();
+  lazyLoad(frontImage.dataset.srcLight);
   document.documentElement.style.setProperty("--anchor-color", "212529");
 };
 viewBtn.addEventListener("click", changeMode.bind(1));
