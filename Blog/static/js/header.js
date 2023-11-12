@@ -21,7 +21,6 @@ navBar.addEventListener("mouseout", makeBold.bind(1));
 document.documentElement.style.setProperty("--color-darkMode", "black");
 document.documentElement.style.setProperty("--color-darkModeText", "white");
 
-const lines = document.querySelectorAll("hr");
 const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
 const btnsToChange = document.querySelectorAll(".btn[data-type]");
@@ -61,6 +60,7 @@ const changeMode = function () {
 };
 
 const darkmode = function () {
+  const lines = document.querySelectorAll("hr");
   viewBtn.textContent = "Light Mode 🌞";
   body.classList.add("dark-mode-active");
   btnsToChange.forEach((btn) => {
@@ -94,6 +94,7 @@ const darkmode = function () {
 };
 
 const lightmode = function () {
+  const lines = document.querySelectorAll("hr");
   viewBtn.textContent = "Dark Mode 🌙";
   body.classList.remove("dark-mode-active");
   btnsToChange.forEach((btn) => {

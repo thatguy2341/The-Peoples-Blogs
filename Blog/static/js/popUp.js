@@ -4,7 +4,7 @@
 
 const closeModalButtons = document.querySelectorAll("[data-close-button]");
 const overlay = document.getElementById("overlay");
-const buttons = document.querySelectorAll(".btn");
+const buttons = document.querySelectorAll("button[data-context]");
 
 const openModal = function (modal, content, url) {
   if (modal == null) return;
@@ -53,11 +53,12 @@ closeModalButtons.forEach((button) => {
 const hide = function () {};
 
 buttons.forEach((btnDanger) => {
-  if (
-    !btnDanger.classList.contains("btn-danger") &&
-    !btnDanger.classList.contains("btn-outline-danger")
-  )
-    return;
+  console.log(btnDanger);
+  // if (
+  //   !btnDanger.classList.contains("btn-danger") &&
+  //   !btnDanger.classList.contains("btn-outline-danger")
+  // )
+  // return;
 
   btnDanger.addEventListener("click", function () {
     const modal = document.querySelector(this.dataset?.modalTarget ?? "#modal");

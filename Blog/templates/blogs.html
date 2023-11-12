@@ -86,16 +86,22 @@
   
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto ">
-      <div class="blogs-container">
+      <div data-dark="true" class="blogs-container">
       
       </div>
+      <hr class="smooth-scroll"  style="border-top: 1px solid rgba(255,255,255,0.5)">
+      <div class="btn-toolbar page-btns" role="toolbar" aria-label="Toolbar with button groups">
+        <div data-btn-map class="btn-group me-2" role="group" aria-label="First group">
+        </div>
+      </div>
+      
       {% if not current_user.is_authenticated %}
       <hr class="smooth-scroll" style="border-top: 1px solid rgba(255,255,255,0.5)">
       {% endif %}
       
       <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
-        <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-light float-right"
-           href="{{url_for('next_page', num=page+1)}}">Next
+        <a data-num='{{page + 1}}' data-type="btn-outline-info" class="btn btn-new-post btn-outline-light float-right"
+           >Next
           Page</a>
       </div>
       
@@ -116,7 +122,7 @@
              href="{{ url_for('register')}}">register</a>
         </div>
       </div>
-      <hr style="border-top: 1px solid rgba(255,255,255,0.5)">
+      <hr class='smooth-scroll' style="border-top: 1px solid rgba(255,255,255,0.5)">
       <div class="row smooth-scroll">
         <div class="col col-lg-9 col-md-9 col-sm-9">
           If you already have an account, login here:
@@ -210,16 +216,22 @@
   
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto ">
-      <div class="blogs-container">
+      <div data-dark="false" class="blogs-container">
       
+      </div>
+      
+      <hr class="smooth-scroll" >
+      <div class="btn-toolbar page-btns" role="toolbar" aria-label="Toolbar with button groups">
+        <div data-btn-map class="btn-group me-2" role="group" aria-label="First group">
+        </div>
       </div>
       {% if not current_user.is_authenticated %}
       <hr class="smooth-scroll">
       {% endif %}
       
       <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
-        <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
-           href="{{url_for('next_page', num=page+1)}}">Next
+        <a data-num='{{page + 1}}' data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
+           >Next
           Page</a>
       </div>
       

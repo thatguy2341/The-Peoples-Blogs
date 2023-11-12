@@ -21,7 +21,7 @@ export class Info {
       );
     } else {
       const newSection = document.createElement("div");
-      newSection.innerHTML = htmlBuilder(blog);
+      newSection.innerHTML = htmlBuilder(blog, container.dataset.dark);
       this.#sectionList.push(newSection);
       container.insertAdjacentElement("beforeend", this.#sectionList.at(-1));
     }

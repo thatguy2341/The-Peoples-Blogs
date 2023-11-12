@@ -504,8 +504,8 @@ border-radius: 2rem;
   background-color: white;
   width: 500px;
   max-width: 80%;
-  height: 180px;
-  max-height: 40%;
+  height: 200px;
+  max-height: 50%;
   display: block;
 }
 
@@ -594,4 +594,17 @@ border-radius: 2rem;
 }
 .light-btn {
 cursor: pointer;
+}
+
+.page-btns {
+    justify-content: center;
+    margin-bottom: 15rem;
+}
+
+.pg-btn {
+    padding: 10px 15px;
+}
+
+.light-line {
+    border-top: 1px solid rgba(255,255,255,0.5);
 }

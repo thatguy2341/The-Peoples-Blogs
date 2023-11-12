@@ -7,6 +7,8 @@ const searchBtn = document.querySelector(".btn-search");
 const categoryMenu = document.querySelector(".menu");
 const selectedCategroy = document.querySelector(".selected");
 const sectionsContainer = document.querySelector(".blogs-container");
+const pageBtnsContainer = document.querySelector("div[data-btn-map]");
+const nextPageBtn = document.querySelector("#next-page");
 const categories = document.querySelector(".categories-btns-row");
 let search = "";
 let page;
@@ -25,14 +27,18 @@ const getSearch = function () {
 };
 
 const getPage = async function () {
-  const response = await fetch("/get_page");
+  const response = await fetch("/get_page/0");
   const data = await response.json();
   page = Number(data["num"]);
 };
 
-const createHtmlForBlog = function (blog) {
+const createHtmlForBlog = function (blog, darkMode) {
   let html = `
-            <hr>
+            ${
+              darkMode === "true"
+                ? `<hr class='smooth-scroll light-line'>`
+                : "<hr class='smooth-scroll'>"
+            }
             <div class="post-preview" style="font-size: 1.25rem;">
                 <a href="/get-posts/${blog.id}?raise_view=1">
 
@@ -73,12 +79,17 @@ const addAccessories = function () {
   if (blogsInfo.infoList.length < page * 10 + 10) {
     document.querySelector("#next-page").classList.add("hidden");
   }
-  sectionsContainer.insertAdjacentHTML(
-    "beforeend",
-    `<hr class="smooth-scroll" style="margin-bottom: 15rem;">`
-  );
   if (blogsInfo.infoList.length > 9) {
     document.querySelector(".btn-hide").style.display = "none";
+  }
+  pageBtnsContainer.innerHTML = "";
+  for (let rep = 0; rep <= page; rep++) {
+    pageBtnsContainer.insertAdjacentHTML(
+      "beforeend",
+      `<a class="btn btn-outline-secondary pg-btn" data-num='${rep}'>${
+        rep + 1
+      }</a>`
+    );
   }
 };
 
@@ -137,8 +148,24 @@ const startForCategory = function (e) {
   }
 };
 
+const movePage = function (e) {
+  fetch("/get_page/" + e.target.dataset.num).then(() => {
+    blogsInfo.getInfo({
+      dataType: "blogs",
+      showInfoFunc: showBlogs.bind(false),
+    });
+  });
+};
+
 searchBar.addEventListener("enter", startForSearch);
 searchBtn.addEventListener("click", startForSearch);
 
 categoryMenu.addEventListener("click", startForCategory.bind("option"));
 categories.addEventListener("click", startForCategory.bind("category-btn"));
+
+pageBtnsContainer.addEventListener("click", function (e) {
+  if (!e.target.classList.contains("pg-btn")) return;
+  movePage(e);
+});
+
+nextPageBtn.addEventListener("click", movePage);

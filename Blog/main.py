@@ -140,8 +140,13 @@ def home_page():
     return render_template('blogs.html', page=NUM)
 
 
-@app.route('/get_page', methods=['GET'])
-def get_page():
+@app.route('/get_page/<int:page>', methods=['GET'])
+def get_page(page=0):
+    global NUM
+    if page and page <= db.session.query(Blogs).count() // 10:
+        NUM = page
+        return
+
     return jsonify({'num': NUM})
 
 
@@ -169,7 +174,7 @@ def get_blogs(search, category='Recent'):
     if not all_blogs:
         return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 
-    return jsonify({'blogs': all_blogs_dict}), 200
+    return jsonify({'blogs': all_blogs_dict[NUM: (NUM + 1) * 10]}), 200
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
