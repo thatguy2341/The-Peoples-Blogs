@@ -47,11 +47,13 @@ class Users(db.Model, UserMixin):
     comments = relationship('Comments', back_populates='author')
     blogs = relationship('Blogs', back_populates="author")
     views = relationship('Views', back_populates="user")  # lazy='dynamic' lets us use query with views from users.
+    total_views = db.Column(db.Integer, nullable=False)
+    posts = relationship('BlogPost', back_populates='author')
+    message_seen = db.Column(db.Integer, nullable=True, unique=True)
 
     def to_dict(self):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns
-                if column.name != ''}
-
+                if column.name != 'password'}
 
 
 class Views(db.Model, UserMixin):
@@ -65,7 +67,7 @@ class Views(db.Model, UserMixin):
 class Blogs(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, nullable=True)
+    description = db.Column(db.String(150), nullable=True)
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     author = relationship("Users", back_populates='blogs')
     created_date = db.Column(db.String(100), nullable=False)
@@ -73,8 +75,7 @@ class Blogs(db.Model, UserMixin):
     views = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
-        d = {column.name: getattr(self, column.name) for column in self.__table__.columns
-             if column.name != ''}
+        d = {column.name: getattr(self, column.name) for column in self.__table__.columns}
         d.update({'author': self.author.name})
 
         return d
@@ -85,6 +86,8 @@ class BlogPost(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     blog_id = db.Column(db.Integer, db.ForeignKey("blogs.id"))
     blog = relationship("Blogs", back_populates="posts")
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    author = relationship("Users", back_populates="posts")
     title = db.Column(db.String(250), unique=False, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(100), nullable=False)
@@ -92,6 +95,12 @@ class BlogPost(db.Model, UserMixin):
     img_url = db.Column(db.String(250), nullable=False)
     comments = relationship('Comments', back_populates='inside_post')
     views = db.Column(db.Integer, nullable=False)
+
+    def to_dict(self):
+        d = {column.name: getattr(self, column.name) for column in self.__table__.columns}
+        d.update({'author': self.author.name})
+
+        return d
 
 
 class Comments(db.Model, UserMixin):
@@ -102,6 +111,14 @@ class Comments(db.Model, UserMixin):
     author = relationship("Users", back_populates='comments')
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
     inside_post = relationship('BlogPost', back_populates="comments")
+
+
+class Messages(db.Model, UserMixin):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    to_id = db.Column(db.Integer, nullable=False, unique=False)
+    from_id = db.Column(db.Integer, nullable=False, unique=False)
+    message = db.Column(db.Text, nullable=False, unique=False)
 
 
 with app.app_context():
@@ -160,8 +177,8 @@ def get_blogs(search, category='Recent'):
         ids = db.session.execute(
             text(f"SELECT blogs.id FROM blogs, users WHERE (LOWER(users.name) LIKE '%{searcher}%' "
                  f"AND blogs.author_id = users.id) OR (LOWER(blogs.name) LIKE '%{searcher}%')")).unique()
-        ids = [id_[0] for id_ in ids]
-        found_blogs = db.session.query(Blogs).filter(Blogs.id.in_(ids))
+        ids = (id_[0] for id_ in ids)
+        found_blogs = db.session.query(Blogs).get(ids)
 
     category_keywords = {
         'Recent': Blogs.created_date.asc(),
@@ -175,6 +192,39 @@ def get_blogs(search, category='Recent'):
         return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 
     return jsonify({'blogs': all_blogs_dict[NUM: (NUM + 1) * 10]}), 200
+
+
+@app.route('/get_blogs_by_user/<int:user_id>', methods=['GET'])
+def get_blogs_by_user(user_id):
+    if user_id < 0 or user_id is None:
+        return jsonify({'Error': f"Sorry, we couldn't find '{user_id}'"}), 404
+
+    user_blogs = db.session.query(Blogs).filter(Blogs.id == user_id) \
+        .order_by(Blogs.created_date.asc()).all()
+    all_blogs_dict = [blog.to_dict() for blog in user_blogs]
+
+    return jsonify({'blogs': all_blogs_dict})
+
+
+@app.route('/get_posts_by_user/<int:user_id>', methods=['GET'])
+def get_posts_by_user(user_id):
+    if user_id < 0 or user_id is None:
+        return jsonify({'Error': f"Sorry, we couldn't find '{user_id}'"}), 404
+
+    user_posts = db.session.query(BlogPost).filter(BlogPost.author_id == user_id) \
+        .order_by(BlogPost.date.asc()).all()
+    all_posts_dict = [post.to_dict() for post in user_posts]
+
+    return jsonify({'posts': all_posts_dict})
+
+
+@app.route('/get_user/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    if user_id < 0 or user_id is None:
+        return jsonify({'Error': f"Sorry, we couldn't find '{user_id}'"}), 404
+
+    user_dict = db.session.query(Users).get(user_id).to_dict()
+    return jsonify({'user': user_dict})
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
@@ -193,7 +243,7 @@ def create_blog():
         new_blog.author = current_user
         new_blog.views = 0
         new_post = BlogPost()
-        new_post.title = "Your First Post"
+        new_post.title = f"{current_user.name} First Post"
         new_post.subtitle = "Here will be the subtitle"
         new_post.body = "This is where your post text goes, feel free to write anything.<br>" \
                         "You can Add Images, using buttons or copy pasting, " \
@@ -202,7 +252,7 @@ def create_blog():
         new_post.blog = new_blog
         new_post.date = date.today().strftime("%B %d, %Y")
         new_post.views = 0
-
+        new_post.author = current_user
         db.session.add(new_post)
         db.session.add(new_blog)
         db.session.commit()
@@ -215,6 +265,7 @@ def create_blog():
 def profile(user_id):
     user = Users.query.get(user_id)
     blogs = user.blogs
+
     return render_template("profile_page.html", admin_user=user, blogs=blogs)
 
 
@@ -269,7 +320,8 @@ def get_all_posts(blog_id):
 
     if current_user.is_authenticated and current_user != blog.author and raise_view:
         if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=blog_id).first() is None:
-            blog.views = blog.views + 1
+            blog.views += 1
+            blog.author.total_views += 1
             new_view = Views()
             new_view.user = current_user
             new_view.blog_id = blog_id
@@ -298,6 +350,8 @@ def register():
         new_user.name = title(form.name.data)
         new_user.password = secured_password
         new_user.joined_date = date.today().strftime("%B %d, %Y")
+        new_user.total_views = 0
+
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -306,6 +360,13 @@ def register():
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
+            new_message = Messages()
+            new_message.from_id = 1
+            new_message.to_id = new_user.id
+            new_message.message = 'Welcome to The People\'s Blogs by Guy Newman'
+            db.session.add(new_message)
+            db.session.commit()
+
             login_user(user=new_user)
             return redirect(url_for('home_page'))
 
@@ -353,6 +414,7 @@ def show_post(post_id):
         if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=requested_post.blog_id,
                                              post_id=post_id).first() is None:
             requested_post.views += 1
+            requested_post.author.total_views += 1
             new_view = Views()
             new_view.user = current_user
             new_view.post_id = post_id
@@ -433,6 +495,7 @@ def add_new_post(blog_id):
             new_post.blog = inside_blog
             new_post.date = date.today().strftime("%B %d, %Y")
             new_post.views = 0
+            new_post.author = current_user
 
             db.session.add(new_post)
             db.session.commit()

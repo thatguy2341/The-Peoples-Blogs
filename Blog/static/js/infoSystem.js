@@ -9,7 +9,7 @@ export class Info {
     this.link = link;
   }
 
-  showInfo({ htmlBuilder, container, blog }) {
+  showInfo({ htmlBuilder, container, info }) {
     if (!this.infoList) {
       container.insertAdjacentHTML(
         "afterend",
@@ -21,7 +21,7 @@ export class Info {
       );
     } else {
       const newSection = document.createElement("div");
-      newSection.innerHTML = htmlBuilder(blog, container.dataset.dark);
+      newSection.innerHTML = htmlBuilder(info);
       this.#sectionList.push(newSection);
       container.insertAdjacentElement("beforeend", this.#sectionList.at(-1));
     }

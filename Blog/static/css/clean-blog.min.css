@@ -474,7 +474,7 @@ background: #0000001c;
 .category-btn{
 border-radius: 2rem;
 justify-content: center;
-padding: 10px 0;
+padding: 18px 0px;
 }
 
 @media screen and (max-width: 477px){
@@ -613,4 +613,21 @@ cursor: pointer;
 
 .light-line {
     border-top: 1px solid rgba(255,255,255,0.5);
+}
+.profile-btns {
+    display: flex;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.user-details {
+    justify-content: space-between;
+    margin: 0 auto;
+    font-size: 90%
+}
+.details {
+    margin: 0 8%;
+}
+.title-detail{
+   font-weight: 700;
 }

@@ -4,7 +4,6 @@
 
 const closeModalButtons = document.querySelectorAll("[data-close-button]");
 const overlay = document.getElementById("overlay");
-const buttons = document.querySelectorAll("button[data-context]");
 
 const openModal = function (modal, content, url) {
   if (modal == null) return;
@@ -49,19 +48,16 @@ closeModalButtons.forEach((button) => {
     closeModal(modal);
   });
 });
+const addPopup = function () {
+  const buttons = document.querySelectorAll("button[data-context]");
 
-const hide = function () {};
-
-buttons.forEach((btnDanger) => {
-  console.log(btnDanger);
-  // if (
-  //   !btnDanger.classList.contains("btn-danger") &&
-  //   !btnDanger.classList.contains("btn-outline-danger")
-  // )
-  // return;
-
-  btnDanger.addEventListener("click", function () {
-    const modal = document.querySelector(this.dataset?.modalTarget ?? "#modal");
-    openModal(modal, this.dataset.context, this.dataset.url);
+  buttons.forEach((btnDanger) => {
+    btnDanger.addEventListener("click", function () {
+      const modal = document.querySelector(
+        this.dataset?.modalTarget ?? "#modal"
+      );
+      openModal(modal, this.dataset.context, this.dataset.url);
+    });
   });
-});
+};
+addPopup();

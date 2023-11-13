@@ -90,6 +90,7 @@ const darkmode = function () {
   } catch (ReferenceError) {}
 
   document.documentElement.style.setProperty("--anchor-color", "white");
+  document.querySelector("[data-dark]").dataset.dark = "True";
 
   lazyLoad(frontImage.dataset.srcDark);
 };
@@ -115,21 +116,26 @@ const lightmode = function () {
       dropdown.querySelector(".caret").style.borderTop = "6px solid black";
     });
   } catch (ReferenceError) {}
+  document.querySelector("[data-dark]").dataset.dark = "";
+  document.documentElement.style.setProperty("--anchor-color", "212529");
 
   lazyLoad(frontImage.dataset.srcLight);
-  document.documentElement.style.setProperty("--anchor-color", "212529");
 };
 viewBtn.addEventListener("click", changeMode.bind(1));
 
 // responsive navbar
+let oldScroll = window.scrollY;
 
-const topFill = function () {
+const topFill = function (e) {
   const nav = document.querySelector("nav");
   const navItems = document.querySelectorAll(
     "#mainNav .navbar-nav>li.nav-item>a"
   );
   const navBrand = document.querySelector("#mainNav .navbar-brand");
-  if (window.scrollY < 180 && window.innerWidth > 992) {
+  if (
+    window.scrollY < oldScroll ||
+    (window.scrollY < 100 && window.innerWidth > 992)
+  ) {
     nav.style = `
     border-bottom: 1px solid #e9ecef;
     background-color: #fff;
@@ -142,6 +148,7 @@ const topFill = function () {
     navItems.forEach((item) => (item.style = ""));
     navBrand.style = "";
   }
+  oldScroll = window.scrollY;
 };
 
 topFill();

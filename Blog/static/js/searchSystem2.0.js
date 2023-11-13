@@ -100,7 +100,7 @@ const showBlogs = function () {
       blogsInfo.infoList.slice(page * 10, page * 10 + 10).forEach((blog) => {
         blogsInfo.showInfo({
           htmlBuilder: createHtmlForBlog,
-          blog: blog,
+          info: blog,
           container: sectionsContainer,
         });
       });
