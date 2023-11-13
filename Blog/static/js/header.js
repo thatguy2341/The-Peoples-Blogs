@@ -67,9 +67,10 @@ const darkmode = function () {
     if (
       !btn.classList.contains("btn-outline-danger") &&
       !btn.classList.contains("confirmation-btn")
-    )
+    ) {
       btn.classList.add("btn-outline-light");
-    btn.classList.remove(btn.dataset.type);
+      btn.classList.remove(btn.dataset.type);
+    }
   });
 
   lines.forEach(

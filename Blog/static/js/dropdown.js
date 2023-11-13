@@ -34,15 +34,18 @@ dropdowns.forEach((dropdown) => {
 });
 
 const checkSize = function () {
-  if (window.innerWidth <= 576) {
-    dropdowns.forEach((dropdown) => dropdown.classList.add("dropdown-disable"));
-    document.querySelector(".search-bar").classList.remove("col");
+  if (window.innerWidth <= 768) {
+    dropdowns.forEach((dropdown) => {
+      dropdown.classList.add("dropdown-disable");
+    });
+    document.querySelector(".search-bar").classList = " input-group search-bar";
     categoriesBtnsRow.classList.remove("categories-btns-disable");
   } else {
     dropdowns.forEach((dropdown) =>
       dropdown.classList.remove("dropdown-disable")
     );
-    document.querySelector(".search-bar").classList.add("col");
+    document.querySelector(".search-bar").classList =
+      " col col-lg-10 col-md-9 col-sm-9 input-group search-bar";
     categoriesBtnsRow.classList.add("categories-btns-disable");
   }
 };

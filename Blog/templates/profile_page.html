@@ -44,39 +44,38 @@
       <div class="smooth-scroll">
         <hr style="border-top: 1px solid rgb(0 0 0 / 20%)">
         <div class="post-preview">
-          <a href="{{ url_for('home_page', blog_id=blog.id, raise_view=1) }}">
+          {% if current_user.id == admin_user.id %}
+          <div class="delete-container">
+            <button type="button" data-url="{{url_for('delete_blog', blog_id=blog.id)}}"
+                    data-context="delete your Blog" class="btn btn-delete btn-outline-danger delete-blog float-right">
+              Delete
+              blog
+            </button>
+          </div>
+          {% endif %}
+          <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
             <h2 class="post-title" id="post-title">
               {{blog.name}}
             </h2>
-          </a>
-          
-          {% if current_user.id == admin_user.id %}
-          
-          <button type="button" data-url="{{url_for('delete_blog', blog_id=blog.id)}}"
-                  data-context="delete your Blog" class="btn btn-delete btn-outline-danger float-right">
-            Delete
-            blog
-          </button>
-          {% endif %}
-          <a href="{{ url_for('home_page', blog_id=blog.id, raise_view=1) }}">
             {% if blog.description | length > 64 %}
             
             <h4 class="post-subtitle">
-              {{blog.description[0: 64] | safe}}...
+              {{blog.description[0: 64] | striptags}}...
             </h4>
             {% else %}
             <h4 class="post-subtitle">
-              {{blog.description | safe}}
+              {{blog.description | striptags}}
             </h4>
             {% endif %}
           </a>
           
-          <div class="row">
-            <p class="post-meta col col-lg-10 col-md-10 col-sm-10">Posted by
+          
+          <div class="row" style="margin-left: 0;">
+            <p class="post-meta">Posted by
               <a href="{{ url_for('profile', user_id=blog.author_id) }}">{{admin_user.name}}</a>
               on {{blog.created_date}}
             </p>
-            <h4 class="col col-lg-2 col-md-2 col-sm-4 views"> {{blog.views}} 👁️</h4>
+            <h4 class="views"> {{blog.views}} 👁️</h4>
           </div>
         </div>
       </div>

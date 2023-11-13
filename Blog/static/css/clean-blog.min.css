@@ -97,18 +97,22 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
 
 }
 
+.delete-container {
+    display: flex;
+    justify-content: right;
+}
 
 .btn-delete{
+display: flex;
   font-size: 14px;
   font-weight: 800;
   padding: 15px 25px;
-  right: -10rem;
-  bottom: 1rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: 10px;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  position: relative;
+  position: absolute;
+  margin-top: 3rem;
 }
 
 @media screen and (max-width: 990px){
@@ -116,8 +120,6 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
   font-size: 14px;
   font-weight: 800;
   padding: 15px 25px;
-  right: -5rem;
-  bottom: 1rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: 10px;
@@ -128,8 +130,6 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
 @media screen and (max-width: 620px){
     .btn-delete{
         padding: 10px 10px;
-        right: 0rem;
-        bottom: 1rem;
     }
 }
 
@@ -137,11 +137,14 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
     .btn-delete{
         padding: 10px 10px;
         right: 0rem;
-        bottom: 1rem;
     }
 }
-.post-meta{
-    padding-right: 5rem;
+.post-subtitle {
+   max-width: 65%;
+}
+
+.post-meta {
+   max-width: 75%;
 }
 
 @media screen and (max-width: 767px) {
@@ -152,7 +155,7 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
     font-size: 1.0rem;
  }
  .post-subtitle{
-    font-size: 20px;
+    font-size: 18px;
  }
 }
 
@@ -164,13 +167,11 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
       font-size: 1rem;
    }
    .post-meta{
-      padding-right: 5rem;
       font-size: 0.9rem;
    }
    .btn-delete {
         font-size: 0.6rem;
         padding: 7px 7px;
-        bottom: 1rem;
    }
 }
 
@@ -188,8 +189,12 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
     .btn-delete{
         padding: 10px 10px;
         right: 0rem;
-        bottom: 1rem;
     }
+}
+
+.post-title {
+    margin: 0;
+    max-width: 70%;
 }
 
 @keyframes animate {
@@ -316,7 +321,7 @@ to {transform: rotate(180deg);}
 
 
 .post-preview>a>.post-title {
-    margin-bottom: 1.5rem;
+ /*   margin-bottom: 1.5rem; */
 
 }
 
@@ -468,6 +473,8 @@ background: #0000001c;
 
 .category-btn{
 border-radius: 2rem;
+justify-content: center;
+padding: 10px 0;
 }
 
 @media screen and (max-width: 477px){
@@ -479,7 +486,6 @@ border-radius: 2rem;
 
 @media screen and (max-width: 330px){
    .category-btn{
-      padding-left: 4%;
       font-size: 55%;
       font-weight: 500;
    }
