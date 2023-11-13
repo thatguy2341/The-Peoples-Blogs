@@ -14,7 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc, text
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm
+from forms import CreatePostForm, RegistrationForm, LoginForm, CommentForm, CreateBlog, ContactForm, Confirm
 
 app = Flask(__name__)
 load_dotenv(".env")  # DO NOT DELETE
@@ -199,7 +199,7 @@ def get_blogs_by_user(user_id):
     if user_id < 0 or user_id is None:
         return jsonify({'Error': f"Sorry, we couldn't find '{user_id}'"}), 404
 
-    user_blogs = db.session.query(Blogs).filter(Blogs.id == user_id) \
+    user_blogs = db.session.query(Blogs).filter(Blogs.author_id == user_id) \
         .order_by(Blogs.created_date.asc()).all()
     all_blogs_dict = [blog.to_dict() for blog in user_blogs]
 
@@ -223,8 +223,30 @@ def get_user(user_id):
     if user_id < 0 or user_id is None:
         return jsonify({'Error': f"Sorry, we couldn't find '{user_id}'"}), 404
 
-    user_dict = db.session.query(Users).get(user_id).to_dict()
+    user_dict = Users.query.get(user_id).to_dict()
     return jsonify({'user': user_dict})
+
+
+@app.route("/edit_user/<int:user_id>", methods=["POST", "GET"])
+def edit_user(user_id):
+    user = Users.query.get(user_id)
+    if current_user.is_authenticated and current_user.id == user.id:
+        edit_form = RegistrationForm(
+            name=user.name,
+            email=user.email,
+        )
+        if request.method == 'POST':
+            user.name = edit_form.name.data
+            user.email = edit_form.email.data
+            user.joined_date = user.joined_date
+            user.total_views = user.total_views
+            user.message_seen = user.message_seen
+            db.session.commit()
+            return redirect(url_for("profile", user_id=user_id))
+
+        return render_template("register.html", form=edit_form)
+
+    return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
 
 @app.route("/create_blog", methods=["GET", "POST"])
@@ -261,12 +283,19 @@ def create_blog():
     return render_template('create_blog.html', form=form, blog_id=None)
 
 
-@app.route("/view_profile/<int:user_id>")
+@app.route("/view_profile/<int:user_id>", methods=['GET', 'POST'])
 def profile(user_id):
     user = Users.query.get(user_id)
-    blogs = user.blogs
+    form = Confirm()
+    if form.validate_on_submit():
+        if check_password_hash(password=form.password.data, pwhash=user.password):
+            return redirect(url_for('edit_user', user_id=user_id))
+        else:
+            flash('wrong password')
+            return render_template("profile_page.html", admin_user=user, blogs=blogs, form=form)
 
-    return render_template("profile_page.html", admin_user=user, blogs=blogs)
+    blogs = user.blogs
+    return render_template("profile_page.html", admin_user=user, blogs=blogs, form=form)
 
 
 @app.route("/blog/<int:blog_id>/delete")

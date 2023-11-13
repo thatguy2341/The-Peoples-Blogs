@@ -9,11 +9,10 @@ const openModal = function (modal, content, url) {
   if (modal == null) return;
 
   const modalBody = modal.querySelector(".modal-body");
-  modalBody.insertAdjacentHTML(
-    "afterbegin",
-    `<div>Are you sure you want to ${content}? </div>`
-  );
-  modalBody.querySelector("a").href = url;
+  if (content) {
+    modalBody.insertAdjacentHTML("afterbegin", `<div>${content}</div>`);
+    modalBody.querySelector("a").href = url;
+  }
 
   modal.classList.add("active");
   overlay.classList.add("active");
@@ -56,7 +55,11 @@ const addPopup = function () {
       const modal = document.querySelector(
         this.dataset?.modalTarget ?? "#modal"
       );
-      openModal(modal, this.dataset.context, this.dataset.url);
+      openModal(
+        modal,
+        `Are you sure you want to ${this.dataset.context}?`,
+        this.dataset.url
+      );
     });
   });
 };

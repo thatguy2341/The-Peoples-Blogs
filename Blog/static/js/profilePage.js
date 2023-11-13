@@ -7,6 +7,14 @@ const infoContainer = document.querySelector("div[data-container-info]");
 const blogsInfo = new Info(`/get_blogs_by_user/${id}`);
 const postsInfo = new Info(`/get_posts_by_user/${id}`);
 const userInfo = new Info(`/get_user/${id}`);
+const editButton = document.querySelector("a[data-confirmation]");
+
+editButton.addEventListener("click", function (e) {
+  const modal = document.querySelector("#edit-modal");
+  modal.classList.add("edit-modal");
+  openModal(modal, "", "");
+  e.stopPropagation();
+});
 
 const hr = function () {
   return `<hr style=" ${

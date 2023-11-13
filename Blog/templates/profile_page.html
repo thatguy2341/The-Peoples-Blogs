@@ -1,3 +1,4 @@
+{% import "bootstrap/wtf.html" as wtf %}
 {% include "header.html" %}
 
 <head>
@@ -13,7 +14,12 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="site-heading">
           {% if current_user.id == admin_user.id %}
-          <h1 data-auth data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile</h1>
+          <h1 data-auth data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile
+            {% if current_user.id == admin_user.id %}
+            <a about="edit-blog" data-confirmation id="edit-image" style="cursor: pointer"
+               data-url>✐</a>
+            {% endif %}
+          </h1>
           {% else %}
           <h1 data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile</h1>
           {% endif %}
@@ -23,7 +29,27 @@
     </div>
   </div>
 </header>
-
+<div class="modal" id="edit-modal" style="color: black;">
+  <div class="modal-header">
+    <div class="title">Confirmation</div>
+    <button data-close-button class="close-button">&times;</button>
+  </div>
+  
+  <div class="modal-body">
+    {% with messages = get_flashed_messages() %}
+    {% if messages: %}
+    <p>{{messages[0]}}</p>
+    {% endif %}
+    {{ form.csrf_token }}
+    {% if DARKMODE: %}
+    {{ wtf.quick_form(form, button_map={'submit': 'outline-light float-right'}) }}
+    {% else %}
+    {{ wtf.quick_form(form, button_map={'submit': 'primary btn-filled float-right'}) }}
+    {% endif %}
+    {% endwith %}
+  </div>
+</div>
+<div id="overlay"></div>
 
 <div class="container main-content" style="margin-bottom: 5rem;">
   

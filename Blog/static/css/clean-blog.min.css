@@ -631,3 +631,7 @@ cursor: pointer;
 .title-detail{
    font-weight: 700;
 }
+.edit-modal {
+    height: 250px;
+    max-height: 80%
+}

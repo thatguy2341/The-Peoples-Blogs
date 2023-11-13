@@ -36,8 +36,10 @@ class CreateBlog(FlaskForm):
     description = CKEditorField("Add A Description Here:", validators=[Length(max=5000)])
     submit = SubmitField("Create Your Blog")
 
+
 class SearchForm(FlaskForm):
     name = SearchField("Enter Blog Name", )
+
 
 class ContactForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -45,3 +47,8 @@ class ContactForm(FlaskForm):
     phone_number = TelField("Phone Number")
     message = TextAreaField("Message", validators=[Length(min=7), Length(max=3000), DataRequired()])
     submit = SubmitField("Send")
+
+
+class Confirm(FlaskForm):
+    password = PasswordField('Enter Password', validators=[DataRequired()])
+    submit = SubmitField("Enter")
