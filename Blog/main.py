@@ -49,6 +49,9 @@ class Users(db.Model, UserMixin):
     views = relationship('Views', back_populates="user")  # lazy='dynamic' lets us use query with views from users.
     total_views = db.Column(db.Integer, nullable=False)
     posts = relationship('BlogPost', back_populates='author')
+    # friends = relationship('Users')
+    message_received = relationship('Messages', back_populates='to')
+    message_sent = relationship('Messages', back_populates='from_')
     message_seen = db.Column(db.Integer, nullable=True, unique=True)
 
     def to_dict(self):
@@ -116,7 +119,11 @@ class Comments(db.Model, UserMixin):
 class Messages(db.Model, UserMixin):
     __tablename__ = 'messages'
     id = db.Column(db.Integer, primary_key=True)
+    to = relationship('Users', back_populates='message_received',
+                      primaryjoin="Messages.to_id == User.id")
     to_id = db.Column(db.Integer, nullable=False, unique=False)
+    from_ = relationship('Users', back_populates='message_sent',
+                         primaryjoin="Messages.to_id == User.id")
     from_id = db.Column(db.Integer, nullable=False, unique=False)
     message = db.Column(db.Text, nullable=False, unique=False)
 
@@ -380,6 +387,13 @@ def register():
         new_user.password = secured_password
         new_user.joined_date = date.today().strftime("%B %d, %Y")
         new_user.total_views = 0
+        new_message = Messages()
+        new_user.message_received = new_message
+        new_message.from_id = 1
+        new_message.to_id = new_user.id
+        new_message.to = new_user
+        new_message.message = 'Welcome to The People\'s Blogs by Guy Newman'
+        db.session.add(new_message)
 
         try:
             db.session.add(new_user)
@@ -389,12 +403,6 @@ def register():
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('login'))
         else:
-            new_message = Messages()
-            new_message.from_id = 1
-            new_message.to_id = new_user.id
-            new_message.message = 'Welcome to The People\'s Blogs by Guy Newman'
-            db.session.add(new_message)
-            db.session.commit()
 
             login_user(user=new_user)
             return redirect(url_for('home_page'))
