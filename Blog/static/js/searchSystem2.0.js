@@ -2,7 +2,7 @@
 
 import { Info } from "./infoSystem.js";
 
-const searchBar = document.querySelector(".bar-search");
+const searchBar = document.querySelector("#bar-search");
 const searchBtn = document.querySelector(".btn-search");
 const categoryMenu = document.querySelector(".menu");
 const selectedCategroy = document.querySelector(".selected");

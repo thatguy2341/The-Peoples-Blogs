@@ -14,7 +14,6 @@ const chatBody = document.querySelector("#chat-body");
 const friendsBtn = document.querySelector("#friends-button-title");
 const chatBtn = document.querySelector("#chat-button-title");
 const friendsInput = document.querySelector("#friends-input");
-const newFriendsContainer = document.querySelector("#new-friend-container");
 
 // NOTIFICATION SYSTEM
 const htmlNotifications = function (notification) {
@@ -205,6 +204,7 @@ friendChatContainer?.addEventListener("click", function (e) {
   button.classList.add("active");
   showChat(button);
   getChat(button.dataset.id);
+  e.stopPropagation();
 });
 
 const readyChat = function () {
@@ -217,6 +217,7 @@ const readyChat = function () {
 const summonChat = function () {
   readyChat();
   chatMainBtn.style.display = "none";
+
   if (window.innerWidth < 800) {
     friendChatContainer.closest(".friends").style.display = "none";
     chatContainer.classList.remove("col-9");
@@ -226,10 +227,8 @@ const summonChat = function () {
     chatContainer.classList.add("col-9");
     chatContainer.classList.remove("col");
   }
-  const modal = document.querySelector("#chat-modal");
-  showFriends(friendChatContainer, htmlForFriendsChat).then(() => {
-    openModal(modal);
-  });
+
+  return showFriends(friendChatContainer, htmlForFriendsChat);
 };
 
 const htmlForFriends = function (friend) {
@@ -272,7 +271,7 @@ const htmlForUsers = function (user) {
   <p class="friend-name">${user.name}
 
     </p>
-    <a about="send a friend request" id="friend-request" style="cursor: pointer;margin: 10px;" data-url="/add_friend/${user.id}">👤+</a>
+    <a about="send a friend request" id="friend-request" style="cursor: pointer;margin: 10px;" data-url="/send_notification/${user.id}/friend_req">👤+</a>
   </div>
   </div>
   `;
@@ -281,14 +280,12 @@ const htmlForUsers = function (user) {
 const getUsers = function () {
   if (!friendsInput.value) return;
   const usersInfo = new Info(`/get_users/${friendsInput.value}`);
-
   usersInfo
     .getInfo({
       dataType: "users",
       showInfoFunc: false,
     })
     .then(() => {
-      friendsInput.value = "";
       const container = document.querySelector("#friends-container");
       container.innerHTML = "";
 
@@ -308,45 +305,22 @@ friendsBody?.addEventListener("click", function (e) {
     e.target.closest("#friends-friend").style.display = "none";
   } else if (e.target.id === "open-chat") {
     readyChat();
-    const modal = document.querySelector("#chat-modal");
-    showFriends(
-      friendChatContainer,
-      htmlForFriendsChat,
-      e.target.dataset.id
-    ).then(() => {
-      openModal(modal);
-    });
+    showFriends(friendChatContainer, htmlForFriendsChat, e.target.dataset.id);
   } else if (e.target.id === "friends-submit") {
     getUsers();
-  } else if ((e.target.id = "friend-request")) {
-    fetch(e.target.dataset.url).then(() => fetch(e.target.dataset.urlDelete));
+  } else if (e.target.id === "friend-request") {
+    fetch(e.target.dataset.url);
     e.target.closest("#notification-row").style.display = "none";
   }
+  e.stopPropagation();
 });
 
 friendsInput.addEventListener("enter", getUsers);
 
-chatMainBtn?.addEventListener("click", summonChat);
+chatMainBtn?.addEventListener("click", function () {
+  const modal = document.querySelector("#chat-modal");
+  summonChat().then(() => {
+    openModal(modal);
+  });
+});
 chatBtn?.addEventListener("click", summonChat);
-
-// const sendNotification = function (id, type) {
-//   fetch(`/send_notification/${id}/${type}`)
-//     .then((response) => {
-//       if (!response.ok) throw new Error("failed");
-//       return response.json();
-//     })
-//     .then((data) => console.log(data["success"]))
-//     .catch(() => console.log("wrong type or spam"));
-// };
-// sendNotification(1, "message");
-
-// const message = function (id, message) {
-//   fetch(`/send_message/${id}?message=${message}`)
-//     .then((response) => {
-//       if (!response.ok) throw new Error("failed");
-//       return response.json();
-//     })
-//     .then((data) => console.log(data["success"]))
-//     .catch(() => console.log("user not friend"));
-// };
-// message(2, "hello there");
