@@ -600,19 +600,6 @@ def register():
         new_user.joined_date = datetime.now().strftime("%B %d, %Y")
         new_user.total_views = 0
 
-        new_message = Messages()
-        new_message.from_ = new_user #Users.query.get(1)
-        new_message.to = new_user
-        new_message.message = 'Welcome to The People\'s Blogs by Guy Newman'
-        new_message.time = datetime.now()
-        db.session.add(new_message)
-
-        new_notification = Notifications()
-        new_notification.from_id = 1
-        new_notification.user = new_user
-        new_notification.type_ = 'message'
-        db.session.add(new_notification)
-
         try:
             db.session.add(new_user)
             db.session.commit()
