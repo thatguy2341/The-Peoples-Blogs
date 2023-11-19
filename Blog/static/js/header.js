@@ -1,5 +1,10 @@
 "use strict";
 
+if (window.innerWidth < 400) {
+  document.querySelector(".navbar-toggler").innerHTML =
+    '<i class="fas fa-bars"></i>';
+}
+
 // Hover on navlinks effect.
 const navBar = document.querySelector(".navbar-collapse");
 
@@ -61,7 +66,7 @@ const changeMode = function () {
 
 const darkmode = function () {
   const lines = document.querySelectorAll("hr");
-  viewBtn.textContent = "Light Mode 🌞";
+  viewBtn.textContent = "🌞Light Mode ";
   body.classList.add("dark-mode-active");
   btnsToChange.forEach((btn) => {
     if (
@@ -90,6 +95,8 @@ const darkmode = function () {
   } catch (ReferenceError) {}
 
   document.documentElement.style.setProperty("--anchor-color", "white");
+  document.documentElement.style.setProperty("--color-darkMode", "black");
+  document.documentElement.style.setProperty("--color-darkModeText", "white");
   document.querySelector("[data-dark]").dataset.dark = "True";
 
   lazyLoad(frontImage.dataset.srcDark);
@@ -97,7 +104,7 @@ const darkmode = function () {
 
 const lightmode = function () {
   const lines = document.querySelectorAll("hr");
-  viewBtn.textContent = "Dark Mode 🌙";
+  viewBtn.textContent = "🌙Dark Mode";
   body.classList.remove("dark-mode-active");
   btnsToChange.forEach((btn) => {
     btn.classList.remove("btn-outline-light");
@@ -118,7 +125,8 @@ const lightmode = function () {
   } catch (ReferenceError) {}
   document.querySelector("[data-dark]").dataset.dark = "";
   document.documentElement.style.setProperty("--anchor-color", "212529");
-
+  document.documentElement.style.setProperty("--color-darkMode", "white");
+  document.documentElement.style.setProperty("--color-darkModeText", "black");
   lazyLoad(frontImage.dataset.srcLight);
 };
 viewBtn.addEventListener("click", changeMode.bind(1));
@@ -126,7 +134,7 @@ viewBtn.addEventListener("click", changeMode.bind(1));
 // responsive navbar
 let oldScroll = window.scrollY;
 
-const topFill = function (e) {
+const topFill = function () {
   const nav = document.querySelector("nav");
   const navItems = document.querySelectorAll(
     "#mainNav .navbar-nav>li.nav-item>a"

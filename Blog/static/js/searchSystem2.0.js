@@ -32,10 +32,10 @@ const getPage = async function () {
   page = Number(data["num"]);
 };
 
-const createHtmlForBlog = function (blog, darkMode) {
+const createHtmlForBlog = function (blog) {
   let html = `
             ${
-              darkMode === "true"
+              darkMode === true
                 ? `<hr class='smooth-scroll light-line'>`
                 : "<hr class='smooth-scroll'>"
             }
@@ -169,3 +169,11 @@ pageBtnsContainer.addEventListener("click", function (e) {
 });
 
 nextPageBtn.addEventListener("click", movePage);
+
+// styling a bit:
+const loginMassge = document.querySelector("#login-msg");
+const registerMessage = document.querySelector("#register-msg");
+if (loginMassge && window.innerWidth < 500) {
+  loginMassge.innerText = "login here:";
+  registerMessage.innerText = "Join:";
+}

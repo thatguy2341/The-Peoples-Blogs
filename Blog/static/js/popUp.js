@@ -4,19 +4,22 @@
 
 const closeModalButtons = document.querySelectorAll("[data-close-button]");
 const overlay = document.getElementById("overlay");
+const mast = document.querySelector(".masthead");
 
 const openModal = function (modal, content, url) {
-  if (modal == null) return;
+  const modalsOpen = document.querySelectorAll(".modal.active");
+  modalsOpen.forEach((modalOpened) => closeModal(modalOpened));
 
+  if (modal == null) return;
   const modalBody = modal.querySelector(".modal-body");
-  if (content) {
-    modalBody.insertAdjacentHTML("afterbegin", `<div>${content}</div>`);
-    modalBody.querySelector("a").href = url;
-  }
+
+  if (content) modalBody.innerHTML = content;
+  if (url) modalBody.querySelector("a").href = url;
 
   modal.classList.add("active");
   overlay.classList.add("active");
   document.querySelector(".main-content")?.classList.add("hide");
+  mast?.classList.add("opaque");
 };
 
 const closeModal = function (modal) {
@@ -24,7 +27,8 @@ const closeModal = function (modal) {
   modal.classList.remove("active");
   overlay.classList.remove("active");
   document.querySelector(".main-content")?.classList.remove("hide");
-  modal.querySelector(".modal-body div").innerHTML = "";
+  mast?.classList.remove("opaque");
+  document.querySelector("#chat-btn").style.display = "inline-block";
 };
 
 overlay.addEventListener("click", () => {
@@ -57,7 +61,8 @@ const addPopup = function () {
       );
       openModal(
         modal,
-        `Are you sure you want to ${this.dataset.context}?`,
+        `Are you sure you want to ${this.dataset.context}?` +
+          '<a class="btn btn-outline-success float-right confirmation-btn">Yes</a>',
         this.dataset.url
       );
     });

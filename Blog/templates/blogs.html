@@ -1,7 +1,6 @@
 {% include "header.html" %}
 
 <head>
-  <script defer type="module" src="{{url_for('static', filename='js/infoSystem.js')}}"></script>
   <script defer type="module" src="{{url_for('static', filename='js/searchSystem2.0.js')}}"></script>
   <script async src="{{url_for('static', filename='js/dropdown.js')}}"></script>
   <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
@@ -167,7 +166,7 @@
 
 <form class="form container" method="post">
   <div class="row search-row content">
-    <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
+    <div class="col-12" id="search-blogs">
       <div class="row">
         <div class="col col-lg-10 col-md-9 col-sm-9 input-group mb3 search-bar">
           <input class="form-control bar-search" type="text" autocomplete="off" name="search"
@@ -242,7 +241,7 @@
         </h4>
       </div>
       <div class="row smooth-scroll">
-        <div class="col col-lg-9 col-md-9 col-sm-9">
+        <div id="register-msg" class="col col-lg-9 col-md-9 col-sm-9">
           Click register, to create a new account:
         </div>
         
@@ -253,7 +252,7 @@
       </div>
       <hr>
       <div class="row smooth-scroll">
-        <div class="col col-lg-9 col-md-9 col-sm-9">
+        <div id="login-msg" class="col col-lg-9 col-md-9 col-sm-9">
           If you already have an account, login here:
         </div>
         <div class="col col-lg-3 col-md-3 col-sm-3">

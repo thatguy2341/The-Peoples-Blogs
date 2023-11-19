@@ -8,9 +8,18 @@
    <meta name="description" content="">
    <meta name="author" content="">
 
-   <title>The People's Blogs</title>
+   <title>People Blogs</title>
+   {% if current_user.is_authenticated %}
+   <script> const userId = {{current_user.id}};</script>
+   {% else %}
+   <script> const userId = false</script>
+   {% endif %}
+   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+           integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
    <script defer src="{{ url_for('static', filename='js/header.js') }}"></script>
    <script defer src="{{url_for('static', filename='js/popUp.js')}}"></script>
+   <script defer type="module" src="{{url_for('static', filename='js/infoSystem.js')}}"></script>
+   <script defer type="module" src="{{url_for('static', filename='js/chatSystem.js')}}"></script>
    <!-- Bootstrap core CSS -->
    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -27,7 +36,7 @@
 
    <!-- creating a global variable in js of the base url of the application (for all js files) -->
    <!--   <script>-->
-   <!--      let SCRIPT_ROOT = {{ request.script_root|tojson }}-->
+   <!--         let SCRIPT_ROOT = {{ request.script_root|tojson }} -->
    <!--   </script>-->
 
 
@@ -35,34 +44,56 @@
 {% if DARKMODE: %}
 <script>
    document.documentElement.style.setProperty("--anchor-color", "white");
+   document.documentElement.style.setProperty("--color-darkMode", "black");
+   document.documentElement.style.setProperty("--color-darkModeText", "white");
+   const darkMode = true;
+
+
+
+
+
+
+
 </script>
 <body class="background dark-mode-active">
 {% else %}
 <script>
    document.documentElement.style.setProperty("--anchor-color", "212529");
+   document.documentElement.style.setProperty("--color-darkMode", "white");
+   document.documentElement.style.setProperty("--color-darkModeText", "black");
+   const darkMode = false;
+
+
+
+
+
+
+
 </script>
 <body class="background">
 {% endif %}
+
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
    <div class="container">
-      <a class="navbar-brand" href="{{url_for('home_page')}}">The People's Blogs</a>
+      <a class="navbar-brand" href="{{url_for('home_page')}}">People Blogs</a>
+
       <div class="justify-content-end">
-         <a class="nav-link btn-notification" type="submit">🔔
+         <a class="nav-link btn-notification" id="notification-bell" type="submit">🔔
          </a>
          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                  data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                 aria-label="Toggle navigation">
-            Menu
+                 aria-label="Toggle navigation" style="margin-top: 2px;"> Menu
             <i class="fas fa-bars"></i>
          </button>
+
       </div>
       <div class="collapse navbar-collapse" id="navbarResponsive">
          <ul class="navbar-nav ml-auto">
             {% if current_user.is_authenticated: %}
             <li class="nav-item active">
                <a class="nav-link" href="{{url_for('profile', user_id=current_user.id)}}"
-                  style="font-size: medium; color: #395B64;">Hello {{current_user.name}} 👋</a>
+                  style="font-size: medium; color: #395B64;">{{current_user.name}} 👋</a>
             </li>
             {% endif %}
             <li class="nav-item">
@@ -88,15 +119,79 @@
             </li>
             <li class="nav-item">
                {% if not DARKMODE: %}
-               <a class="nav-link light-btn" style="cursor: pointer;">Dark Mode 🌙</a>
+               <a class="nav-link light-btn" style="cursor: pointer;">🌙Dark Mode</a>
                {% else %}
-               <a class="nav-link light-btn" style="cursor: pointer;">Light Mode 🌞</a>
+               <a class="nav-link light-btn" style="cursor: pointer;">🌞Light Mode</a>
                {% endif %}
             </li>
          </ul>
       </div>
    </div>
 </nav>
+
+<!--CHAT MODEL-->
+<div class="modal chat-modal edit-modal" id="chat-modal" style="color: black;">
+   <div class="modal-header chat-header">
+      <div class="title">
+         <div class="btn-group" role="group" aria-label="Basic outlined example">
+            <button type="button" id="chat-button-title" class="btn btn-outline-primary title-btn">Chat</button>
+            <button type="button" id="friends-button-title" class="btn btn-outline-primary title-btn">Friends</button>
+         </div>
+      </div>
+      <button data-close-button class="close-button">&times;</button>
+   </div>
+
+   <div class="chat-modal-body" id="chat-body">
+      <div class="chat-container">
+         <div class="row chat-row" style="margin-right: 0;">
+            <div class="col-3 friends">
+               <div class="btn-group-vertical btn-group-friends" id="friends">
+
+               </div>
+            </div>
+            <div class="col-9 chat-area" id="chat-area" style="height: 80%;">
+               <p style="display: flex;justify-content: space-around;">Choose a friend to message</p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="friend-modal-body hidden" id="friends-body">
+      <div class="row search-friends-row">
+         <div class="col input-group friends-search-col">
+            <input class="form-control bar-search" id="friends-input" type="text" autocomplete="off"
+                   placeholder="Search For a New Friend">
+            <button class="btn btn-outline-info btn-search" type="submit" id="friends-submit">🔍
+            </button>
+         </div>
+      </div>
+      <div class="container overflow-auto" id="friends-container">
+
+      </div>
+   </div>
+
+</div>
+
+
+<div id="overlay"></div>
+
+<!--Notifications MODEL-->
+<div class="modal chat-modal overflow-auto" id="notification-modal" style="color: black;">
+   <div class="modal-header">
+      <div class="title">Notifications</div>
+      <button data-close-button class="close-button">&times;</button>
+   </div>
+
+   <div class="modal-body overflow-auto">
+      <div class="cotainer">
+         <div id="notifications-container">
+
+         </div>
+      </div>
+   </div>
+</div>
+
+<!--CONFIRMATION MODEL-->
 
 <div class="modal" id="modal" style="color: black;">
    <div class="modal-header">
@@ -105,11 +200,24 @@
    </div>
 
    <div class="modal-body">
-
-      <a class="btn btn-outline-success float-right confirmation-btn">Yes</a>
    </div>
 </div>
-<div id="overlay"></div>
+
+{% if current_user.is_authenticated %}
+<div class="chat-btn-container">
+   <button class="btn btn-primary btn-chat" id="chat-btn">💬</button>
+</div>
+{% endif %}
+
+<script>
+    window.onbeforeunload = function () {
+        socket.emit('offline', {'id': {{current_user.id}}});
+    }
 
 
-<!-- Warning for danger buttons -->
+
+
+
+
+
+</script>

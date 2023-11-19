@@ -6,13 +6,22 @@ const id = +document.querySelector("h1[data-id]").dataset.id;
 const infoContainer = document.querySelector("div[data-container-info]");
 const blogsInfo = new Info(`/get_blogs_by_user/${id}`);
 const postsInfo = new Info(`/get_posts_by_user/${id}`);
+const chatInfo = new Info(`/get_user_message/${id}`);
+const friendsInfo = new Info(`/get_friends/${userId}`);
 const userInfo = new Info(`/get_user/${id}`);
 const editButton = document.querySelector("a[data-confirmation]");
+const modalBodyInfo = document.querySelector("#edit-modal-body").innerHTML;
+const requestButton = document.querySelector("#friend-request");
 
-editButton.addEventListener("click", function (e) {
+requestButton?.addEventListener("click", function () {
+  fetch(`/send_notification/${this.dataset.id}/friend_req`);
+  this.style.display = "none";
+});
+
+editButton?.addEventListener("click", function (e) {
   const modal = document.querySelector("#edit-modal");
   modal.classList.add("edit-modal");
-  openModal(modal, "", "");
+  openModal(modal, modalBodyInfo, "");
   e.stopPropagation();
 });
 
@@ -100,9 +109,9 @@ const htmlForPosts = function (post) {
             <button type="button" data-url="/blog/${post.blog_id}/delete/${
       post.id
     }"
-                    data-context="delete your Blog" class="btn btn-delete btn-outline-danger delete-blog float-right">
+                    data-context="delete this Post" class="btn btn-delete btn-outline-danger delete-blog float-right">
               Delete
-              blog
+              post
             </button>
           </div>
           <a href="/blog/post/${post.id}?raise_view=1">
@@ -215,11 +224,14 @@ const showUserFunc = function () {
 btnGroup.addEventListener("click", function (e) {
   const button = +e.target.dataset.button;
   if (!button) return;
-  btnGroup
-    .querySelectorAll("button")
-    .forEach((btn) => btn.classList.remove("active"));
-  e.target.classList.add("active");
 
+  if (button !== 3) {
+    btnGroup
+      .querySelectorAll("button")
+      .forEach((btn) => btn.classList.remove("active"));
+
+    e.target.classList.add("active");
+  }
   switch (button) {
     case 1:
       // blogs case
@@ -241,12 +253,10 @@ btnGroup.addEventListener("click", function (e) {
       break;
 
     case 3:
-      // posts case
-      console.log("Chat");
+      document.querySelector("#chat-btn").click();
       break;
 
     case 4:
-      // posts case
       userInfo.getInfo({ dataType: "user", showInfoFunc: showUserFunc });
       break;
   }
