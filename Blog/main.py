@@ -54,7 +54,7 @@ class Users(db.Model, UserMixin):
     friends = relationship('Friends', back_populates='user')
     online = db.Column(db.Integer, nullable=True, default=0)
     notifications = relationship('Notifications', back_populates="user")
-    notification_seen = db.Column(db.Integer, nullable=True, unique=True)
+    notification_seen = db.Column(db.Integer, nullable=True)
 
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns
