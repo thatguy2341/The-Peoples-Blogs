@@ -601,7 +601,7 @@ def register():
         new_user.total_views = 0
 
         new_message = Messages()
-        new_message.from_ = Users.query.get(1)
+        new_message.from_ = new_user #Users.query.get(1)
         new_message.to = new_user
         new_message.message = 'Welcome to The People\'s Blogs by Guy Newman'
         new_message.time = datetime.now()
