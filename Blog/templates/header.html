@@ -48,6 +48,9 @@
    document.documentElement.style.setProperty("--darkmode-border", "1px solid rgba(255,255,255,0.5)");
    const darkMode = true;
 
+
+
+
 </script>
 <body class="background dark-mode-active">
 {% else %}
@@ -59,6 +62,9 @@
    document.documentElement.style.setProperty("--darkmode-border", "1px solid rgba(0,0,0,.1)");
    const darkMode = false;
 
+
+
+
 </script>
 <body class="background">
 {% endif %}
@@ -69,8 +75,16 @@
       <a class="navbar-brand" href="{{url_for('home_page')}}">People Blogs</a>
 
       <div class="justify-content-end">
-         <a class="nav-link btn-notification" id="notification-bell" type="submit">🔔
+
+         {% if current_user.is_authenticated and current_user.notification_seen < current_user.notifications[-1].id%}
+         <a class="nav-link btn-notification" id="notification-bell" type="submit">
+            🔔!
          </a>
+         {% else %}
+         <a class="nav-link btn-notification" id="notification-bell" type="submit">
+            🔔
+         </a>
+         {% endif %}
          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                  data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                  aria-label="Toggle navigation" style="margin-top: 2px;"> Menu

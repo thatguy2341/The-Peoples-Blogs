@@ -52,9 +52,9 @@ class Users(db.Model, UserMixin):
     total_views = db.Column(db.Integer, nullable=False)
     posts = relationship('BlogPost', back_populates='author')
     friends = relationship('Friends', back_populates='user')
-    online = db.Column(db.Integer, nullable=True, default=0)
+    online = db.Column(db.Integer, nullable=True)
     notifications = relationship('Notifications', back_populates="user")
-    notification_seen = db.Column(db.Integer, nullable=True)
+    notification_seen = db.Column(db.Integer, nullable=True, default=0)
 
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns
@@ -454,6 +454,7 @@ def get_notifications(user_id):
         user = Users.query.get(user_id)
         notifications_dict = [notifi.to_dict() for notifi in user.notifications]
         user.notification_seen = user.notifications[-1].id if user.notifications else 0
+        db.session.commit()
         return jsonify({'notifications': notifications_dict})
 
     return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
@@ -601,6 +602,7 @@ def register():
         new_user.password = secured_password
         new_user.joined_date = datetime.now().strftime("%B %d, %Y")
         new_user.total_views = 0
+        new_user.notification_seen = 0
         socket.emit('online', {'id': new_user.id})
         try:
             db.session.add(new_user)

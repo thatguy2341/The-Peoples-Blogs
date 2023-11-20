@@ -104,7 +104,7 @@
           Page</a>
       </div>
       
-      {% if current_user.blogs | length <= 2: %}
+      {% if current_user.blogs | length <= 2 and not current_user.is_authenticated: %}
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
           You can create your own blogs, by joining the community.
@@ -223,9 +223,6 @@
         <div data-btn-map class="btn-group me-2" role="group" aria-label="First group">
         </div>
       </div>
-      {% if not current_user.is_authenticated %}
-      <hr class="smooth-scroll hor-line">
-      {% endif %}
       
       <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
         <a data-num='{{page + 1}}' data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
@@ -233,7 +230,8 @@
           Page</a>
       </div>
       
-      {% if current_user.blogs | length <= 2: %}
+      {% if current_user.blogs | length <= 2 and not current_user.is_authenticated: %}
+      <hr class="smooth-scroll hor-line" style="margin-top: 15rem;">
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
           You can create your own blogs, by joining the community.

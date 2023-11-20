@@ -112,7 +112,7 @@ display: flex;
   border-radius: 10px;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   position: absolute;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 @media screen and (max-width: 990px){
@@ -321,6 +321,8 @@ to {transform: rotate(180deg);}
 
 .views {
    margin: 0;
+   display: flex;
+    flex-direction: row-reverse;
 }
 
 .title-views {
@@ -617,7 +619,7 @@ cursor: pointer;
 
 .page-btns {
     justify-content: center;
-    margin-bottom: 15rem;
+    margin-bottom: 4rem;
 }
 
 .pg-btn {

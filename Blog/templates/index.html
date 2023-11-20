@@ -66,10 +66,10 @@
                </div>
                {% endif %}
                <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
-                  <h2 class="post-title" id="post-title">
+                  <h2 class="post-title text-truncate" id="post-title">
                      {{post.title}}
                   </h2>
-                  <h4 class="post-subtitle" id="post-subtitle">
+                  <h4 class="post-subtitle text-truncate" id="post-subtitle">
                      {{post.subtitle}}
                   </h4>
                </a>

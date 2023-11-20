@@ -38,21 +38,16 @@ const createHtmlForBlog = function (blog) {
             <div class="post-preview" style="font-size: 1.25rem;">
                 <a href="/get-posts/${blog.id}?raise_view=1">
                 <div class="title-views">
-                <h1 class="post-title" id="post-title">
+                <h1 class="post-title text-truncate" id="post-title">
                   ${blog.name}
                 </h1>
                 <h4 class="views">${blog.views} 👁️</h4>
                 </div>`;
-  if (blog.description > 65) {
-    html += `
-                <h4 class="post-subtitle" style="font-size: 1.45rem; font-weight: 300;">
-                   ${blog.description.slice(0, 64)}...
-                </h4>`;
-  } else {
-    html += `<h4 class="post-subtitle">
+
+  html += `<h4 class="post-subtitle text-truncate">
                 ${blog.description}
              </h4>`;
-  }
+
   html += `</a>
             <div class="row">
                <p class="post-meta col">Created by

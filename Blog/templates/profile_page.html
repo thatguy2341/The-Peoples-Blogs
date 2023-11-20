@@ -95,9 +95,8 @@
 
          {% for blog in blogs %}
          <div class="smooth-scroll">
-            <hr class="hor-line">
 
-
+            <hr style="border-top: var(--darkmode-border); margin-top: 3rem;">
             <div class="post-preview">
                {% if current_user.id == admin_user.id %}
                <div class="delete-container">
@@ -109,35 +108,37 @@
                   </button>
                </div>
                {% endif %}
-               <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
-                  <h2 class="post-title" id="post-title">
-                     {{blog.name}}
-                  </h2>
-                  {% if blog.description | length > 64 %}
 
-                  <h4 class="post-subtitle">
-                     {{blog.description[0: 64] | striptags}}...
-                  </h4>
-                  {% else %}
-                  <h4 class="post-subtitle">
-                     {{blog.description | striptags}}
-                  </h4>
-                  {% endif %}
+               <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
+                     <h2 class="post-title text-truncate" id="post-title">
+                        {{blog.name}}
+                     </h2>
+                  <div class="col-md-9 col-sm-9" style="padding-left: 0;">
+                     <h4 class="post-subtitle text-truncate" id="post-subtitle">
+                        {{blog.description | striptags}}
+                     </h4>
+                  </div>
                </a>
 
 
-               <div class="row" style="margin-left: 0;">
-                  <p class="post-meta">Posted by
+               <div class="row post-desc">
+                  <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
                      <a href="{{ url_for('profile', user_id=blog.author_id) }}">{{admin_user.name}}</a>
                      on {{blog.created_date}}
                   </p>
-                  <h4 class="views"> {{blog.views}} 👁️</h4>
+                  <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{blog.views}} 👁️</h4>
                </div>
             </div>
          </div>
-
          {% endfor %}
       </div>
+
+      {% if current_user.id == admin_user.id %}
+         <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
+               href="{{url_for('create_blog')}}" style="margin: 2em 0 0  1em;">Create
+               New Blog</a>
+      {% endif %}
+
       {% endif %}
 
       {% if current_user.id == admin_user.id or all_posts|length > 1 %}

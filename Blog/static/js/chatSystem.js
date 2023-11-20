@@ -62,7 +62,10 @@ notificationBell.addEventListener("click", function () {
       `<div class="container" style="text-align: center;">To see an notifications log in or register</div>`
     );
   } else {
-    showNotifications().then(() => openModal(modalNotification));
+    showNotifications().then(() => {
+      openModal(modalNotification);
+      this.textContent = "🔔";
+    });
   }
 });
 notificationContainer.addEventListener("click", function (e) {
@@ -215,9 +218,8 @@ const readyChat = function () {
   friendsBtn.classList.remove("active");
 };
 
-const summonChat = function (display = true) {
+const summonChat = function () {
   readyChat();
-  if (display) chatMainBtn.style.display = "none";
 
   if (window.innerWidth < 800) {
     friendChatContainer.closest(".friends").style.display = "none";
@@ -233,9 +235,15 @@ const summonChat = function (display = true) {
 };
 
 window.addEventListener("resize", function () {
-  friendsBtn.style.background = "transparent";
-  friendsBtn.style.color = "#007bff";
-  summonChat(false);
+  if (window.innerWidth < 800) {
+    friendChatContainer.closest(".friends").style.display = "none";
+    chatContainer.classList.remove("col-9");
+    chatContainer.classList.add("col");
+  } else {
+    friendChatContainer.closest(".friends").style.display = "block";
+    chatContainer.classList.add("col-9");
+    chatContainer.classList.remove("col");
+  }
 });
 
 const htmlForFriends = function (friend) {
