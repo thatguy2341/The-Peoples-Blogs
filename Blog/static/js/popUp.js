@@ -8,6 +8,7 @@ const mast = document.querySelector(".masthead");
 
 const openModal = function (modal, content, url) {
   const modalsOpen = document.querySelectorAll(".modal.active");
+  document.querySelector("#chat-btn").classList.add("hidden");
   modalsOpen.forEach((modalOpened) => closeModal(modalOpened));
 
   if (modal == null) return;
@@ -28,7 +29,7 @@ const closeModal = function (modal) {
   overlay.classList.remove("active");
   document.querySelector(".main-content")?.classList.remove("hide");
   mast?.classList.remove("opaque");
-  document.querySelector("#chat-btn").style.display = "inline-block";
+  document.querySelector("#chat-btn").classList.remove("hidden");
 };
 
 overlay.addEventListener("click", () => {

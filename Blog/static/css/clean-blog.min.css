@@ -531,7 +531,7 @@ padding: 18px 0px;
 }
 
 .modal.active {
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -45%) scale(1);
 }
 
 .modal-header {
@@ -540,6 +540,7 @@ padding: 18px 0px;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid black;
+  height: 10vh
 }
 
 .modal-header .title {
@@ -687,7 +688,7 @@ right: 6rem
 .title-btn {
 border-radius: 1rem;
 justify-content: center;
-padding: 20px 20px;
+padding: 2vh 20px;
 }
 
 .chat-header {
@@ -698,11 +699,10 @@ background-color: #D2E0FB;
 width: 900px;
 max-width: 80%;
 height: 700px;
-max-height: 70%;
+max-height: 70vh;
 }
 .chat-modal-body {
  height: 100%;
-
 }
 
 .search-friends-row {
@@ -710,7 +710,6 @@ max-height: 70%;
    padding-bottom: 3rem;
    margin: 0 auto;
    display: flex;
-
 }
 
 .friends-search-col{
@@ -768,7 +767,7 @@ max-height: 70%;
    display: flex;
    justify-content: space-around;
    border-bottom: 1px solid black;
-   background: #FFFFDD;
+   background: #87C4FF;
 }
 .chat-container {
    height: 100%;
@@ -777,8 +776,8 @@ max-height: 70%;
    padding: 0;
 }
 .chat {
-   height: 90%; padding-bottom: 4rem; padding-right: 1rem;padding-left: 1rem;
-       display: flex;
+   height: 43vh; padding-right: 1rem;padding-left: 1rem;
+    display: flex;
     flex-direction: column;
 }
 

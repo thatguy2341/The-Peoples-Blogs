@@ -173,7 +173,6 @@ function getChat(id) {
         });
       });
       const messages = chat.querySelectorAll(".message-container");
-      console.log(messages);
       messages[messages.length - 1].scrollIntoView({
         behavior: "smooth",
         block: "end",
