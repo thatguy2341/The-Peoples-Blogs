@@ -3,7 +3,7 @@
 <!-- Page Header -->
 <header class="masthead lazy-img"
         style="background-image: url({{ url_for('static', filename='img/about-bg-blur.jpg')}})"
-        data-start="background-image: url({{ url_for('static', filename='img/about-bg.jpg')}})">
+        data-start="url({{url_for('static', filename='img/about-bg.jpg')}})">
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
@@ -33,6 +33,6 @@
   </div>
 </div>
 
-<hr>
+<hr class="hor-line">
 
 {% include "footer.html" %}

@@ -230,6 +230,25 @@ btnGroup.addEventListener("click", function (e) {
       .querySelectorAll("button")
       .forEach((btn) => btn.classList.remove("active"));
 
+    infoContainer.innerHTML =
+      darkMode === "True"
+        ? `
+        <hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
+      <div class="spinner-container text-color">
+        <div class="spinner-border" role="status">
+        <span class="hidden">Loading...</span>
+        </div>
+      </div>
+      `
+        : `
+    <hr style=" border-top: 1px solid rgb(0 0 0 / 20%) ;">
+      <div class="spinner-container">
+        <div class="spinner-border text-color" role="status">
+        <span class="hidden">Loading...</span>
+        </div>
+      </div>
+      `;
+
     e.target.classList.add("active");
   }
   switch (button) {

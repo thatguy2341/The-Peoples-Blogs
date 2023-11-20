@@ -139,13 +139,7 @@ display: flex;
         right: 0rem;
     }
 }
-.post-subtitle {
-   max-width: 65%;
-}
 
-.post-meta {
-   max-width: 75%;
-}
 
 @media screen and (max-width: 767px) {
  .views{
@@ -161,7 +155,7 @@ display: flex;
 
 @media screen and (max-width: 420px){
    #post-title {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
    }
    #post-subtitle {
       font-size: 1rem;
@@ -326,12 +320,29 @@ to {transform: rotate(180deg);}
 }
 
 .views {
-  text-align: right;
-  margin-top: auto;
-  margin-bottom: auto;
-  position: absolute;
-  right: 1rem;
-  padding-top: 1rem;
+   margin: 0;
+}
+
+.title-views {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-desc{
+   display: flex;
+    align-items: center;
+}
+
+.spinner-container {
+   display: flex;
+    height: 300px;
+    max-height: 40%;
+    justify-content: space-around;
+    align-items: center;
+}
+.text-color {
+   color: var(--color-spinner)
 }
 
 .section--hidden {
@@ -451,7 +462,9 @@ transform: rotate(180deg);
     display: block;
     opacity: 1;
 }
-
+.search-margin {
+   margin-bottom: 3rem;
+}
 
 .dropdown-active {
 background: #0000001c;
@@ -683,7 +696,7 @@ background-color: #D2E0FB;
 width: 900px;
 max-width: 80%;
 height: 700px;
-max-height: 80%;
+max-height: 70%;
 }
 .chat-modal-body {
  height: 100%;
@@ -814,4 +827,11 @@ max-height: 80%;
 
 .message-time {
    font-size: 12px;
+}
+.message-begin {
+   display: flex;justify-content: space-around;
+   padding-left: 15px;
+}
+.hor-line{
+   border-top: var(--darkmode-border);
 }

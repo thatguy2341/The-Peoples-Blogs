@@ -23,8 +23,6 @@ navBar.addEventListener("mouseover", makeBold.bind(0.5));
 navBar.addEventListener("mouseout", makeBold.bind(1));
 
 // Dark and Light Mode.
-document.documentElement.style.setProperty("--color-darkMode", "black");
-document.documentElement.style.setProperty("--color-darkModeText", "white");
 
 const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
@@ -78,9 +76,7 @@ const darkmode = function () {
     }
   });
 
-  lines.forEach(
-    (line) => (line.style.borderTop = "1px solid rgba(255,255,255,0.5)")
-  );
+  lines.forEach((line) => (line.style.borderTop = ""));
   try {
     submitBtn.classList.remove("btn-primary");
     submitBtn.classList.add("btn-outline-light");
@@ -97,13 +93,17 @@ const darkmode = function () {
   document.documentElement.style.setProperty("--anchor-color", "white");
   document.documentElement.style.setProperty("--color-darkMode", "black");
   document.documentElement.style.setProperty("--color-darkModeText", "white");
-  document.querySelector("[data-dark]").dataset.dark = "True";
+  document.documentElement.style.setProperty(
+    "--darkmode-border",
+    "1px solid rgba(255,255,255,0.5)"
+  );
+  const darkData = document?.querySelector("[data-dark]");
+  darkData ? (darkData.dataset.dark = "True") : "";
 
   lazyLoad(frontImage.dataset.srcDark);
 };
 
 const lightmode = function () {
-  const lines = document.querySelectorAll("hr");
   viewBtn.textContent = "🌙Dark Mode";
   body.classList.remove("dark-mode-active");
   btnsToChange.forEach((btn) => {
@@ -111,7 +111,6 @@ const lightmode = function () {
     btn.classList.add(btn.dataset.type);
   });
 
-  lines.forEach((line) => (line.style.borderTop = "1px solid rgba(0,0,0,.1)"));
   try {
     submitBtn.classList.add("btn-primary");
     submitBtn.classList.remove("btn-outline-light");
@@ -123,10 +122,15 @@ const lightmode = function () {
       dropdown.querySelector(".caret").style.borderTop = "6px solid black";
     });
   } catch (ReferenceError) {}
-  document.querySelector("[data-dark]").dataset.dark = "";
+  const darkData = document?.querySelector("[data-dark]");
+  darkData ? (darkData.dataset.dark = "") : "True";
   document.documentElement.style.setProperty("--anchor-color", "212529");
   document.documentElement.style.setProperty("--color-darkMode", "white");
   document.documentElement.style.setProperty("--color-darkModeText", "black");
+  document.documentElement.style.setProperty(
+    "--darkmode-border",
+    "1px solid rgba(0,0,0,.1)"
+  );
   lazyLoad(frontImage.dataset.srcLight);
 };
 viewBtn.addEventListener("click", changeMode.bind(1));
@@ -161,3 +165,18 @@ const topFill = function () {
 
 topFill();
 document.addEventListener("scroll", topFill);
+
+window.addEventListener("beforeunload", function (e) {
+  const inputs = document.querySelectorAll(
+    "[data-important]>form .form-group .form-control"
+  );
+  inputs.forEach((input) => {
+    if (input.value) {
+      e.returnValue = "Any progress you made will not be saved are you sure?";
+    }
+  });
+});
+
+window.addEventListener("unload", function () {
+  if (userId) fetch("/logout/");
+});

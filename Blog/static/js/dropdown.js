@@ -10,12 +10,14 @@ dropdowns.forEach((dropdown) => {
 
   const options = dropdown.querySelectorAll(".menu li");
   const selected = dropdown.querySelector(".selected");
+  const searchRow = dropdown.closest("#search-blogs");
 
   select.addEventListener("click", () => {
     select.classList.toggle("select-clicked");
     caret.classList.toggle("caret-rotate");
     menu.classList.toggle("menu-open");
     menu.classList.remove("menu-disable");
+    searchRow.classList.toggle("search-margin");
   });
 
   menu.addEventListener("click", function (e) {
@@ -25,6 +27,7 @@ dropdowns.forEach((dropdown) => {
       caret.classList.remove("caret-rotate");
       menu.classList.add("menu-disable");
       this.classList.remove("menu-open");
+      searchRow.classList.remove("search-margin");
       options.forEach((option) => {
         option.classList.remove("dropdown-active");
       });

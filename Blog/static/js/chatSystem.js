@@ -168,12 +168,13 @@ function getChat(id) {
           container: chatContainer.querySelector("#chat"),
           info: message,
         });
-        const messages = chat.querySelectorAll(".message-container");
-        messages[messages.length - 1].scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        });
+      });
+      const messages = chat.querySelectorAll(".message-container");
+      console.log(messages);
+      messages[messages.length - 1].scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
       });
     });
 }
@@ -214,9 +215,9 @@ const readyChat = function () {
   friendsBtn.classList.remove("active");
 };
 
-const summonChat = function () {
+const summonChat = function (display = true) {
   readyChat();
-  chatMainBtn.style.display = "none";
+  if (display) chatMainBtn.style.display = "none";
 
   if (window.innerWidth < 800) {
     friendChatContainer.closest(".friends").style.display = "none";
@@ -230,6 +231,12 @@ const summonChat = function () {
 
   return showFriends(friendChatContainer, htmlForFriendsChat);
 };
+
+window.addEventListener("resize", function () {
+  friendsBtn.style.background = "transparent";
+  friendsBtn.style.color = "#007bff";
+  summonChat(false);
+});
 
 const htmlForFriends = function (friend) {
   return `
@@ -254,6 +261,7 @@ const htmlForFriends = function (friend) {
 };
 
 friendsBtn?.addEventListener("click", function () {
+  friendsBtn.style = "";
   friendsBtn.classList.add("active");
   chatBtn.classList.remove("active");
 
@@ -315,7 +323,11 @@ friendsBody?.addEventListener("click", function (e) {
   e.stopPropagation();
 });
 
-friendsInput.addEventListener("enter", getUsers);
+friendsInput.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    getUsers();
+  }
+});
 
 chatMainBtn?.addEventListener("click", function () {
   const modal = document.querySelector("#chat-modal");

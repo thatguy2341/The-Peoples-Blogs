@@ -3,7 +3,7 @@
 import { Info } from "./infoSystem.js";
 
 const searchBar = document.querySelector("#bar-search");
-const searchBtn = document.querySelector(".btn-search");
+const searchBtn = document.querySelector("#button-addon2");
 const categoryMenu = document.querySelector(".menu");
 const selectedCategroy = document.querySelector(".selected");
 const sectionsContainer = document.querySelector(".blogs-container");
@@ -34,17 +34,15 @@ const getPage = async function () {
 
 const createHtmlForBlog = function (blog) {
   let html = `
-            ${
-              darkMode === true
-                ? `<hr class='smooth-scroll light-line'>`
-                : "<hr class='smooth-scroll'>"
-            }
+          <hr class='smooth-scroll hor-line'>
             <div class="post-preview" style="font-size: 1.25rem;">
                 <a href="/get-posts/${blog.id}?raise_view=1">
-
-                <h1 class="post-title">
+                <div class="title-views">
+                <h1 class="post-title" id="post-title">
                   ${blog.name}
-                </h1>`;
+                </h1>
+                <h4 class="views">${blog.views} 👁️</h4>
+                </div>`;
   if (blog.description > 65) {
     html += `
                 <h4 class="post-subtitle" style="font-size: 1.45rem; font-weight: 300;">
@@ -57,11 +55,11 @@ const createHtmlForBlog = function (blog) {
   }
   html += `</a>
             <div class="row">
-               <p class="post-meta col-12">Created by
+               <p class="post-meta col">Created by
                   <a href="/view_profile/${blog.author_id}">${blog.author}</a>
                   on ${blog.created_date}
                </p>
-               <h4 class="col-lg-2 col-md-2 col-sm-3 views">${blog.views} 👁️</h4>
+               
             </div>
          </div>`;
 
@@ -111,19 +109,25 @@ const showBlogs = function () {
     .catch((error) => (blogsInfo.error = error));
 };
 
-const blogsInfo = new Info(`get_blogs/null/Recent`);
-
-blogsInfo.getInfo({
-  dataType: "blogs",
-  showInfoFunc: showBlogs.bind(true),
-});
-
-const startForSearch = function (e) {
-  e.preventDefault();
-  blogsInfo.link = `get_blogs/${getSearch() || "null"}/${
-    getCategory() || "null"
-  }`;
-
+const searchBl = function () {
+  sectionsContainer.innerHTML =
+    darkMode === "True"
+      ? `
+        <hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
+      <div class="spinner-container text-color">
+        <div class="spinner-border" role="status">
+        <span class="hidden">Loading...</span>
+        </div>
+      </div>
+      `
+      : `
+    <hr style=" border-top: 1px solid rgb(0 0 0 / 20%) ;">
+      <div class="spinner-container">
+        <div class="spinner-border text-color" role="status">
+        <span class="hidden">Loading...</span>
+        </div>
+      </div>
+      `;
   blogsInfo
     .getInfo({
       dataType: "blogs",
@@ -133,18 +137,22 @@ const startForSearch = function (e) {
   searchBar.value = "";
 };
 
+const blogsInfo = new Info(`get_blogs/null/Recent`);
+searchBl();
+
+const startForSearch = function () {
+  blogsInfo.link = `get_blogs/${getSearch() || "null"}/${
+    getCategory() || "null"
+  }`;
+  searchBl();
+};
+
 const startForCategory = function (e) {
   if (e.target.classList.contains(this)) {
     blogsInfo.link = `get_blogs/${getSearch() || "null"}/${
       getCategory(e.target.textContent) || "null"
     }`;
-
-    blogsInfo
-      .getInfo({
-        dataType: "blogs",
-        showInfoFunc: showBlogs.bind(false),
-      })
-      .then(() => showError());
+    searchBl();
   }
 };
 
@@ -156,8 +164,9 @@ const movePage = function (e) {
     });
   });
 };
-
-searchBar.addEventListener("enter", startForSearch);
+searchBar.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") startForSearch();
+});
 searchBtn.addEventListener("click", startForSearch);
 
 categoryMenu.addEventListener("click", startForCategory.bind("option"));

@@ -34,7 +34,7 @@
 </div>
 {% endif %}
 
-<form class="form container" method="post">
+<div class="form container">
   <div class="row search-row content">
     <div class="col-lg-12 col-md-12 col-sm-12" id="search-blogs">
       <div class="row">
@@ -78,7 +78,7 @@
   
   
   </div>
-</form>
+</div>
 <!-- Main Content -->
 <div class="container">
   
@@ -88,14 +88,14 @@
       <div data-dark="true" class="blogs-container">
       
       </div>
-      <hr class="smooth-scroll"  style="border-top: 1px solid rgba(255,255,255,0.5)">
+      <hr class="smooth-scroll hor-line">
       <div class="btn-toolbar page-btns" role="toolbar" aria-label="Toolbar with button groups">
         <div data-btn-map class="btn-group me-2" role="group" aria-label="First group">
         </div>
       </div>
       
       {% if not current_user.is_authenticated %}
-      <hr class="smooth-scroll" style="border-top: 1px solid rgba(255,255,255,0.5)">
+      <hr class="smooth-scroll hor-line">
       {% endif %}
       
       <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
@@ -121,7 +121,7 @@
              href="{{ url_for('register')}}">register</a>
         </div>
       </div>
-      <hr class='smooth-scroll' style="border-top: 1px solid rgba(255,255,255,0.5)">
+      <hr class='smooth-scroll hor-line'>
       <div class="row smooth-scroll">
         <div class="col col-lg-9 col-md-9 col-sm-9">
           If you already have an account, login here:
@@ -137,7 +137,7 @@
     </div>
   </div>
 </div>
-<hr style="border-top: 1px solid rgba(255,255,255,0.5)">
+<hr class="hor-line">
 {% else %}
 <header class="masthead lazy-img"
         data-start="url({{url_for('static', filename='img/blog-light-bg.jpg')}})"
@@ -164,7 +164,7 @@
 </div>
 {% endif %}
 
-<form class="form container" method="post">
+<div class="form container">
   <div class="row search-row content">
     <div class="col-12" id="search-blogs">
       <div class="row">
@@ -208,7 +208,7 @@
   
   
   </div>
-</form>
+</div>
 <!-- Main Content -->
 <div class="container">
   
@@ -218,13 +218,13 @@
       <div data-dark="false" class="blogs-container">
       </div>
       
-      <hr class="smooth-scroll" >
+      <hr class="smooth-scroll hor-line">
       <div class="btn-toolbar page-btns" role="toolbar" aria-label="Toolbar with button groups">
         <div data-btn-map class="btn-group me-2" role="group" aria-label="First group">
         </div>
       </div>
       {% if not current_user.is_authenticated %}
-      <hr class="smooth-scroll">
+      <hr class="smooth-scroll hor-line">
       {% endif %}
       
       <div class="container clearfix smooth-scroll btn-hide" id="next-page" style="margin: 3rem 0;">
@@ -250,7 +250,7 @@
              href="{{ url_for('register')}}">register</a>
         </div>
       </div>
-      <hr>
+      <hr class="hor-line">
       <div class="row smooth-scroll">
         <div id="login-msg" class="col col-lg-9 col-md-9 col-sm-9">
           If you already have an account, login here:
@@ -266,7 +266,7 @@
     </div>
   </div>
 </div>
-<hr>
+<hr class="hor-line">
 {% endif %}
 
 

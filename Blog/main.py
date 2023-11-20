@@ -72,7 +72,6 @@ class Friends(db.Model, UserMixin):
     message_seen = db.Column(db.Integer, nullable=True, default=0)
     online = db.Column(db.Integer, nullable=True, default=0)
 
-
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns}
         last_message = db.session.query(Messages).filter(and_(Messages.from_id == self.user_id,
@@ -282,11 +281,14 @@ def get_users(search):
         ids = db.session.execute(
             text(f"SELECT users.id FROM users WHERE LOWER(users.name) LIKE '%{searcher}%'")).unique()
         ids = [id_[0] for id_ in ids]
-        found_users = db.session.query(Users).filter(Users.id.in_(ids))
+        check_friend = [friend.friend_id for friend in current_user.friends]
+        checked_ids = [id_ for id_ in ids if id_ not in check_friend]
+        found_users = db.session.query(Users).filter(Users.id.in_(checked_ids))
 
     all_users_dict = [user.to_dict() for user in found_users]
 
     return jsonify({'users': all_users_dict}), 200
+
 
 @app.route('/get_blogs_by_user/<int:user_id>', methods=['GET'])
 def get_blogs_by_user(user_id):
@@ -352,7 +354,7 @@ def get_user_messages(friend_id):
                                                                  Messages.from_id == user_f.friend_id) |
                                                             and_(Messages.from_id == current_user.id,
                                                                  Messages.to_id == user_f.friend_id)).order_by(
-                                                                Messages.time.asc())
+            Messages.time.asc())
 
         messages_dict = [msg.to_dict('r') if msg.to_id == current_user.id else msg.to_dict('s') for msg in
                          messages_friend]
@@ -599,7 +601,7 @@ def register():
         new_user.password = secured_password
         new_user.joined_date = datetime.now().strftime("%B %d, %Y")
         new_user.total_views = 0
-
+        socket.emit('online', {'id': new_user.id})
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -641,7 +643,7 @@ def login():
     return render_template("login.html", form=form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     socket.emit('offline', {'id': current_user.id})

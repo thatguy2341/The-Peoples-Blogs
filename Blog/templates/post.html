@@ -35,7 +35,7 @@
       <div class="row">
          <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
             {{ post.body|safe }}
-            <hr style="margin-top: 3rem;">
+            <hr class="hor-line" style="margin-top: 3rem;">
             {% if user.id == post.blog.author_id %}
             <div class="clearfix">
                {% if DARKMODE: %}
@@ -103,5 +103,5 @@
    </div>
 </article>
 
-<hr>
+<hr class="hor-line">
 {% include "footer.html" %}

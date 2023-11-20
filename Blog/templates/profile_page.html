@@ -70,7 +70,7 @@
          {% endif %}
       </div>
       {% if not blogs: %}
-      <hr class="smooth-scroll" style="margin-bottom: 5rem; border-top: 1px solid rgb(0 0 0 / 20%)">
+      <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem;">
       <div style="text-align: center;">
          {% if current_user.id == admin_user.id %}
          You haven't written any blogs yet, you can start here:
@@ -95,11 +95,8 @@
 
          {% for blog in blogs %}
          <div class="smooth-scroll">
-            {% if DARKMODE %}
-            <hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
-            {% else %}
-            <hr style="border-top: 1px solid rgb(0 0 0 / 20%);">
-            {% endif %}
+            <hr class="hor-line">
+
 
             <div class="post-preview">
                {% if current_user.id == admin_user.id %}
@@ -144,20 +141,11 @@
       {% endif %}
 
       {% if current_user.id == admin_user.id or all_posts|length > 1 %}
-      {% if DARKMODE %}
-      <hr style="margin-bottom: 5rem; border-top: 1px solid rgba(255, 255, 255, 0.5);">
-      {% else %}
-      <hr class="smooth-scroll" style="margin-bottom: 5rem; border-top: 1px solid rgb(0 0 0 / 20%)">
-      {% endif %}
-
+      <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem;">
       {% endif %}
    </div>
 </div>
-{% if DARKMODE %}
-<hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
-{% else %}
-<hr style="border-top: 1px solid rgb(0 0 0 / 20%);">
-{% endif %}
+<hr class="hor-line">
 
 
 {% include "footer.html"%}

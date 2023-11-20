@@ -14,8 +14,6 @@
    {% else %}
    <script> const userId = false</script>
    {% endif %}
-   <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-           integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
    <script defer src="{{ url_for('static', filename='js/header.js') }}"></script>
    <script defer src="{{url_for('static', filename='js/popUp.js')}}"></script>
    <script defer type="module" src="{{url_for('static', filename='js/infoSystem.js')}}"></script>
@@ -46,13 +44,9 @@
    document.documentElement.style.setProperty("--anchor-color", "white");
    document.documentElement.style.setProperty("--color-darkMode", "black");
    document.documentElement.style.setProperty("--color-darkModeText", "white");
+   document.documentElement.style.setProperty("--color-spinner", "#f8f9fa!important;");
+   document.documentElement.style.setProperty("--darkmode-border", "1px solid rgba(255,255,255,0.5)");
    const darkMode = true;
-
-
-
-
-
-
 
 </script>
 <body class="background dark-mode-active">
@@ -61,13 +55,9 @@
    document.documentElement.style.setProperty("--anchor-color", "212529");
    document.documentElement.style.setProperty("--color-darkMode", "white");
    document.documentElement.style.setProperty("--color-darkModeText", "black");
+   document.documentElement.style.setProperty("--color-spinner", "#212529!important;");
+   document.documentElement.style.setProperty("--darkmode-border", "1px solid rgba(0,0,0,.1)");
    const darkMode = false;
-
-
-
-
-
-
 
 </script>
 <body class="background">
@@ -150,7 +140,7 @@
                </div>
             </div>
             <div class="col-9 chat-area" id="chat-area" style="height: 80%;">
-               <p style="display: flex;justify-content: space-around;">Choose a friend to message</p>
+               <p class="message-begin">Choose a friend to message</p>
             </div>
          </div>
       </div>
@@ -208,9 +198,3 @@
    <button class="btn btn-primary btn-chat" id="chat-btn">💬</button>
 </div>
 {% endif %}
-
-<script>
-    window.onbeforeunload = function () {
-        socket.emit('offline', {'id': {{current_user.id}}});
-    }
-</script>
