@@ -47,10 +47,6 @@
    document.documentElement.style.setProperty("--color-spinner", "#f8f9fa!important;");
    document.documentElement.style.setProperty("--darkmode-border", "1px solid rgba(255,255,255,0.5)");
    const darkMode = true;
-
-
-
-
 </script>
 <body class="background dark-mode-active">
 {% else %}
@@ -61,10 +57,6 @@
    document.documentElement.style.setProperty("--color-spinner", "#212529!important;");
    document.documentElement.style.setProperty("--darkmode-border", "1px solid rgba(0,0,0,.1)");
    const darkMode = false;
-
-
-
-
 </script>
 <body class="background">
 {% endif %}
@@ -76,7 +68,7 @@
 
       <div class="justify-content-end">
 
-         {% if current_user.is_authenticated and current_user.notification_seen < current_user.notifications[-1].id%}
+         {% if current_user.is_authenticated and current_user.notifications and current_user.notification_seen < current_user.notifications[-1].id%}
          <a class="nav-link btn-notification" id="notification-bell" type="submit">
             🔔!
          </a>

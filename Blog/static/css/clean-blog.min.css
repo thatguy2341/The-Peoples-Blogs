@@ -587,10 +587,10 @@ padding: 18px 0px;
 @keyframes shake{
 
 20%, 60% {
-   rotate: 45deg;
+   rotate: 65deg;
 }
 40%, 80% {
-   rotate: -45deg;
+   rotate: -25deg;
 }
 }
 
