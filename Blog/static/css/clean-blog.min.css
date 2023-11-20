@@ -80,6 +80,9 @@ body{font-size:20px;color:#212529;font-family:Lora,'Times New Roman',serif}p{lin
  display: flex;
 }
 
+.site-heading {
+   max-width: 90%;
+}
 
 .btn-search {
     padding: .375em .75em;
@@ -200,7 +203,9 @@ to {transform: rotate(180deg);}
     transform: rotate(180deg);
     animation-duration: 1.5s;
     animation-name: animate;
-    margin: 0.8rem 1rem;
+    margin: 0.5rem 1rem;
+    font-size: 3rem;
+    font-size:
     position: absolute;
     color: #537FE7;
     text-decoration: none;
