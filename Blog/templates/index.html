@@ -64,24 +64,30 @@
                      post
                   </button>
                </div>
-               {% endif %}
                <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
                   <h2 class="post-title text-truncate" id="post-title">
                      {{post.title}}
                   </h2>
-                  <h4 class="post-subtitle text-truncate" id="post-subtitle">
-                     {{post.subtitle}}
-                  </h4>
-               </a>
+                  {% else %}
+                  <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
+                     <h2 class="post-title text-truncate" id="post-title" style="max-width:100%">
+                        {{post.title}}
+                     </h2>
+                     {% endif %}
+
+                     <h4 class="post-subtitle text-truncate" id="post-subtitle">
+                        {{post.subtitle}}
+                     </h4>
+                  </a>
 
 
-               <div class="row post-desc">
-                  <p class="post-meta col-lg-10 col-md-10 col-sm-9">Posted by
-                     <a href="{{ url_for('profile', user_id=post.blog.author_id) }}">{{admin_user.name}}</a>
-                     on {{post.date}}
-                  </p>
-                  <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{post.views}} 👁️</h4>
-               </div>
+                  <div class="row post-desc">
+                     <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
+                        <a href="{{ url_for('profile', user_id=post.blog.author_id) }}">{{admin_user.name}}</a>
+                        on {{post.date}}
+                     </p>
+                     <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{post.views}} 👁️</h4>
+                  </div>
             </div>
          </div>
 
@@ -167,7 +173,7 @@
       {% for post in all_posts %}
       <div class="smooth-scroll">
 
-         <hr  class="hor-line" style="margin-top: 3rem;">
+         <hr class="hor-line" style="margin-top: 3rem;">
          <div class="post-preview">
             {% if user.id == admin_user.id %}
             <div class="delete-container">
@@ -177,24 +183,29 @@
                   post
                </button>
             </div>
-            {% endif %}
             <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
-               <h2 class="post-title" id="post-title">
+               <h2 class="post-title text-truncate" id="post-title">
                   {{post.title}}
                </h2>
-               <h4 class="post-subtitle" id="post-subtitle">
-                  {{post.subtitle}}
-               </h4>
-            </a>
+               {% else %}
+               <a href="{{ url_for('show_post', post_id=post.id, raise_view=1) }}">
+                  <h2 class="post-title text-truncate" id="post-title" style="max-width:100%">
+                     {{post.title}}
+                  </h2>
+                  {% endif %}
+                  <h4 class="post-subtitle" id="post-subtitle">
+                     {{post.subtitle}}
+                  </h4>
+               </a>
 
 
-            <div class="row post-desc">
-               <p class="post-meta col-lg-10 col-md-10 col-sm-9">Posted by
-                  <a href="{{ url_for('profile', user_id=post.blog.author_id) }}">{{admin_user.name}}</a>
-                  on {{post.date}}
-               </p>
-               <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{post.views}} 👁️</h4>
-            </div>
+               <div class="row post-desc">
+                  <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
+                     <a href="{{ url_for('profile', user_id=post.blog.author_id) }}">{{admin_user.name}}</a>
+                     on {{post.date}}
+                  </p>
+                  <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{post.views}} 👁️</h4>
+               </div>
          </div>
       </div>
 

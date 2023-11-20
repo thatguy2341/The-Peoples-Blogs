@@ -318,8 +318,12 @@ to {transform: rotate(180deg);}
  /*   margin-bottom: 1.5rem; */
 
 }
+.navbar-brand{
+   margin-right:0;
+}
 
 .views {
+   padding: 0;
    margin: 0;
    display: flex;
     flex-direction: row-reverse;
@@ -594,6 +598,7 @@ padding: 18px 0px;
 }
 
 .btn-notification {
+   padding: 10px 0 0 10px;
    border: 0;
    background: transparent;
    float:right;
@@ -723,15 +728,16 @@ max-height: 70vh;
 
 .friends {
    border-right: 1px solid black;
-   padding-right: 0;
+   padding: 0;
 }
 .friends-friend {
-   margin: 0 10px;
     justify-content: space-between;
    display: flex;
    align-items: center;
-   border-bottom: 1px solid black;
-   border-top: 1px solid black;
+   border: 1px solid black;
+   border-radius: 20px;
+   margin: 5px 1%;
+   background-color: #F2FFE9;
 }
 
 .friend-message {
@@ -760,6 +766,7 @@ max-height: 70vh;
 }
 
 .chat-row {
+   padding-left: 15px;
    height: 100%;
 }
 
