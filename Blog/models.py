@@ -1,4 +1,4 @@
-from . import db
+from __init__ import db
 from sqlalchemy import and_, DateTime
 from sqlalchemy.orm import relationship
 from flask import Blueprint

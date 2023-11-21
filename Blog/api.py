@@ -1,9 +1,9 @@
-from . import db
+from __init__ import db
 from datetime import datetime
 from flask import redirect, url_for, abort, request, jsonify, Blueprint
 from flask_login import login_required, current_user
 from sqlalchemy import text, and_
-from .models import Users, Friends, Messages, Notifications, Blogs, BlogPost
+from models import Users, Friends, Messages, Notifications, Blogs, BlogPost
 
 
 api = Blueprint('api', __name__)

@@ -1,12 +1,12 @@
-from . import db
+from __init__ import db
 from datetime import datetime
 from flask import Blueprint, flash, request, redirect, render_template, url_for
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import exc
-from .api import title
-from .models import Users
-from .forms import RegistrationForm, LoginForm
+from api import title
+from models import Users
+from forms import RegistrationForm, LoginForm
 
 auth = Blueprint('auth', __name__)
 

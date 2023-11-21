@@ -1,13 +1,13 @@
 from smtplib import SMTP
 import os
-from . import db
+from __init__ import db
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, abort, request, jsonify
 from flask_login import login_required, current_user
 from werkzeug.security import check_password_hash
-from .forms import CreatePostForm, RegistrationForm, CommentForm, CreateBlog, ContactForm, Confirm
-from .models import Users, Views, Blogs, BlogPost, Comments
-from .api import title
+from forms import CreatePostForm, RegistrationForm, CommentForm, CreateBlog, ContactForm, Confirm
+from models import Users, Views, Blogs, BlogPost, Comments
+from api import title
 
 NUM = 0
 MY_GMAIL = os.getenv("GMAIL")

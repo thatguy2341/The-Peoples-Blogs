@@ -18,10 +18,10 @@ def create_app():
 
     db.init_app(app)
 
-    from .auth import auth
-    from .pages import pages
-    from .api import api
-    from .models import Users, Friends, Views, Messages, Notifications, Blogs, BlogPost, Comments
+    from auth import auth
+    from pages import pages
+    from api import api
+    from models import Users, Friends, Views, Messages, Notifications, Blogs, BlogPost, Comments
 
     app.register_blueprint(auth, url_prefix="/")
     app.register_blueprint(pages, url_prefix="/")

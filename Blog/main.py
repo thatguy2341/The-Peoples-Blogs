@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import LoginManager
-from Blog import create_app
+from __init__ import create_app
 app = create_app()
 
 ckeditor = CKEditor(app)
