@@ -16,6 +16,7 @@ const friendsBtn = document.querySelector("#friends-button-title");
 const chatBtn = document.querySelector("#chat-button-title");
 const friendsInput = document.querySelector("#friends-input");
 const containerFreinds = document.querySelector("#friends-container");
+const chatInfo = new Info();
 
 // NOTIFICATION SYSTEM
 const htmlNotifications = function (notification) {
@@ -125,8 +126,20 @@ const sendMessage = function (buttonClicked) {
       return response.json();
     })
     .then(() => {
-      getChat(buttonClicked);
       fetch(`/send_notification/${buttonClicked.dataset.id}/message`);
+      chatInfo.link = `/get_user_message/${buttonClicked.dataset.friendId}`;
+      chatInfo
+        .getInfo({
+          dataType: "messages",
+          showInfoFunc: false,
+        })
+        .then(() => {
+          chatInfo.showInfo({
+            htmlBuilder: htmlForChat,
+            container: chatContainer.querySelector("#chat"),
+            info: chatInfo.infoList[chatInfo.infoList.length - 1],
+          });
+        });
     })
     .catch(() => console.log("user not friend"));
   this.value = "";
@@ -195,9 +208,8 @@ window.addEventListener("resize", checkSize);
 function getChat(buttonClicked) {
   showChat(buttonClicked);
   summonChat();
-  const chatInfo = new Info(
-    `/get_user_message/${buttonClicked.dataset.friendId}`
-  );
+
+  chatInfo.link = `/get_user_message/${buttonClicked.dataset.friendId}`;
   chatInfo
     .getInfo({
       dataType: "messages",
