@@ -64,7 +64,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
    <div class="container">
-      <a class="navbar-brand" href="{{url_for('home_page')}}">People Blogs</a>
+      <a class="navbar-brand" href="{{url_for('pages.home_page')}}">People Blogs</a>
 
       <div class="justify-content-end">
 
@@ -88,30 +88,30 @@
          <ul class="navbar-nav ml-auto">
             {% if current_user.is_authenticated: %}
             <li class="nav-item active">
-               <a class="nav-link" href="{{url_for('profile', user_id=current_user.id)}}"
+               <a class="nav-link" href="{{url_for('pages.profile', user_id=current_user.id)}}"
                   style="font-size: medium; color: #395B64;">{{current_user.name}} 👋</a>
             </li>
             {% endif %}
             <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('home_page') }}">Home</a>
+               <a class="nav-link" href="{{ url_for('pages.home_page') }}">Home</a>
             </li>
             {% if not current_user.is_authenticated: %}
             <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+               <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+               <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
             </li>
             {% else: %}
             <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+               <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
             </li>
             {% endif %}
             <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('about') }}">About</a>
+               <a class="nav-link" href="{{ url_for('pages.about') }}">About</a>
             </li>
             <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
+               <a class="nav-link" href="{{ url_for('pages.contact') }}">Contact</a>
             </li>
             <li class="nav-item">
                {% if not DARKMODE: %}

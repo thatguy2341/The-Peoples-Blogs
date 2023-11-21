@@ -46,12 +46,12 @@
       {% if DARKMODE: %}
       <div class="col-lg-4 col-md-3 col-sm-6 register-btn">
          <a data-type="btn-outline-primary" id="register-btn" class="btn btn-new-post btn-outline-light btn-open"
-            href="{{ url_for('register')}}">register</a>
+            href="{{ url_for('auth.register')}}">register</a>
       </div>
          {% else %}
       <div class="col-lg-4 col-md-3 col-sm-6 register-btn">
          <a data-type="btn-outline-primary" id="register-btn" class="btn btn-new-post btn-outline-primary btn-open"
-            href="{{ url_for('register')}}">register</a>
+            href="{{ url_for('auth.register')}}">register</a>
       </div>
          {% endif %}
 

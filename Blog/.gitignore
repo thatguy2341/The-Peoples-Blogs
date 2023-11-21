@@ -2,10 +2,11 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask
 
 ### Flask ###
-instance/*
+../instance/blog.db
+!../instance/.gitignore
+../instance
 !instance/.gitignore
 .webassets-cache
-Blog/.env
 /message
 
 ### Flask.Python Stack ###
@@ -136,7 +137,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+.env
 # Spyder project settings
 .spyderproject
 .spyproject

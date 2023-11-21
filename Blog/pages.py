@@ -1,26 +1,29 @@
 from smtplib import SMTP
 import os
+from . import db
+from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, abort, request, jsonify
 from flask_login import login_required, current_user
 from werkzeug.security import check_password_hash
-from forms import CreatePostForm, RegistrationForm, CommentForm, CreateBlog, ContactForm, Confirm
-from . import db
-from models import *
-from main import title
+from .forms import CreatePostForm, RegistrationForm, CommentForm, CreateBlog, ContactForm, Confirm
+from .models import Users, Views, Blogs, BlogPost, Comments
+from .api import title
 
 NUM = 0
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
 MY_PASS = os.getenv("PASS")
 pages = Blueprint('pages', __name__)
+DARKMODE = False
 
 
-@pages.route("/", methods=["GET", "POST"])
-def home_page():
-    global NUM
-    NUM = request.args.get("num") if request.args.get("num") is not None else 0
+@pages.route('/change_view/<change>', methods=['GET', 'POST'])
+def change_view_mode(change):
+    global DARKMODE
+    if change == '1':
+        DARKMODE = not DARKMODE
+    return jsonify({'mode': DARKMODE})
 
-    return render_template('blogs.html', page=NUM)
 
 @pages.route('/get_page/<int:page>', methods=['GET'])
 def get_page(page=0):
@@ -30,6 +33,16 @@ def get_page(page=0):
         return
 
     return jsonify({'num': NUM})
+
+# ------------------------- Site Functionallity --------------------------------------
+
+@pages.route("/", methods=["GET", "POST"])
+def home_page():
+    global NUM
+    NUM = request.args.get("num") if request.args.get("num") is not None else 0
+
+    return render_template('blogs.html', page=NUM)
+
 
 @pages.route("/edit_user/<int:user_id>", methods=["POST", "GET"])
 def edit_user(user_id):

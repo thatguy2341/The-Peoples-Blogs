@@ -76,7 +76,7 @@
          You haven't written any blogs yet, you can start here:
          <div class="clearfix" style="margin: 3rem 0;">
             <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-center"
-               href="{{url_for('create_blog')}}" style="margin-left: 1em;">Create
+               href="{{url_for('pages.create_blog')}}" style="margin-left: 1em;">Create
                New Blog</a>
          </div>
          {% else: %}
@@ -100,7 +100,7 @@
             <div class="post-preview">
                {% if current_user.id == admin_user.id %}
                <div class="delete-container">
-                  <button type="button" data-url="{{url_for('delete_blog', blog_id=blog.id)}}"
+                  <button type="button" data-url="{{url_for('api.delete_blog', blog_id=blog.id)}}"
                           data-context="delete your Blog"
                           class="btn btn-delete btn-outline-danger delete-blog float-right">
                      Delete
@@ -109,7 +109,7 @@
                </div>
                {% endif %}
 
-               <a href="{{ url_for('get_all_posts', blog_id=blog.id, raise_view=1) }}">
+               <a href="{{ url_for('pages.get_all_posts', blog_id=blog.id, raise_view=1) }}">
                      <h2 class="post-title text-truncate" id="post-title">
                         {{blog.name}}
                      </h2>
@@ -123,7 +123,7 @@
 
                <div class="row post-desc">
                   <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
-                     <a href="{{ url_for('profile', user_id=blog.author_id) }}">{{admin_user.name}}</a>
+                     <a href="{{ url_for('pages.profile', user_id=blog.author_id) }}">{{admin_user.name}}</a>
                      on {{blog.created_date}}
                   </p>
                   <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{blog.views}} 👁️</h4>
@@ -135,7 +135,7 @@
 
       {% if current_user.id == admin_user.id %}
          <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
-               href="{{url_for('create_blog')}}" style="margin: 2em 0 0 1em;">Create
+               href="{{url_for('pages.create_blog')}}" style="margin: 2em 0 0 1em;">Create
                New Blog</a>
       {% endif %}
 
