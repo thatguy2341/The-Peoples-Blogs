@@ -76,7 +76,6 @@ const darkmode = function () {
     }
   });
 
-  lines.forEach((line) => (line.style.borderTop = ""));
   try {
     submitBtn.classList.remove("btn-primary");
     submitBtn.classList.add("btn-outline-light");
@@ -165,8 +164,14 @@ const topFill = function () {
 
 topFill();
 document.addEventListener("scroll", topFill);
+let stop = true;
+
+document.querySelector("#submit")?.addEventListener("click", function () {
+  stop = false;
+});
 
 window.addEventListener("beforeunload", function (e) {
+  if (!stop) return;
   const inputs = document.querySelectorAll(
     "[data-important]>form .form-group .form-control"
   );

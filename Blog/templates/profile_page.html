@@ -15,7 +15,7 @@
             <div class="site-heading">
 
                {% if current_user.id == admin_user.id %}
-               <h1 data-auth data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile
+               <h1 data-auth data-id="{{admin_user.id}}" style="font-size: 200%;" >{{admin_user.name}}'s Profile
                   <a about="edit user details" data-confirmation id="edit-image" style="cursor: pointer"
                      data-url>✐</a>
                </h1>
@@ -24,7 +24,7 @@
                <h1 data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile
                   {% if current_user not in admin_user.friends and current_user != admin_user and
                   current_user.is_authenticated %}
-                  <a about="send a friend request" id="friend-request" style="cursor: pointer; font-size: 50px"
+                  <a about="send a friend request" id="friend-request" style="cursor: pointer;font-size: 3rem;"
                      data-url data-id="{{admin_user.id}}">👤+</a>
                </h1>
                {% endif %}
@@ -135,7 +135,7 @@
 
       {% if current_user.id == admin_user.id %}
          <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
-               href="{{url_for('create_blog')}}" style="margin: 2em 0 0  1em;">Create
+               href="{{url_for('create_blog')}}" style="margin: 2em 0 0 1em;">Create
                New Blog</a>
       {% endif %}
 

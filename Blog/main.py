@@ -273,17 +273,13 @@ def get_blogs(search, category='Recent'):
 
 @app.route('/get_users/<search>', methods=['GET'])
 def get_users(search):
-    if search == 'null':
-        found_users = current_user.friends
-
-    else:
-        searcher = search.lower()
-        ids = db.session.execute(
-            text(f"SELECT users.id FROM users WHERE LOWER(users.name) LIKE '%{searcher}%'")).unique()
-        ids = [id_[0] for id_ in ids]
-        check_friend = [friend.friend_id for friend in current_user.friends]
-        checked_ids = [id_ for id_ in ids if id_ not in check_friend]
-        found_users = db.session.query(Users).filter(Users.id.in_(checked_ids))
+    searcher = search.lower()
+    ids = db.session.execute(
+        text(f"SELECT users.id FROM users WHERE LOWER(users.name) LIKE '%{searcher}%'")).unique()
+    ids = [id_[0] for id_ in ids]
+    check_friend = [friend.friend_id for friend in current_user.friends]
+    checked_ids = [id_ for id_ in ids if (id_ not in check_friend) and id_ != current_user.id]
+    found_users = db.session.query(Users).filter(Users.id.in_(checked_ids))
 
     all_users_dict = [user.to_dict() for user in found_users]
 
@@ -364,12 +360,12 @@ def get_user_messages(friend_id):
     return jsonify({'failed': 'user not friend'}), 404
 
 
-@app.route('/send_message/<int:user_id>', methods=['GET'])
-def send_message(user_id):
-    user = db.session.get(Users, user_id)
-    if [friend.friend_id for friend in user.friends if friend.friend_id == current_user.id]:
+@app.route('/send_message/<int:friend_id>', methods=['GET'])
+def send_message(friend_id):
+    user_f = db.session.get(Friends, friend_id)
+    if user_f in current_user.friends:
         new_message = Messages()
-        new_message.to = user
+        new_message.to = db.session.query(Users).get(user_f.friend_id)
         new_message.message = request.args.get('message')
         new_message.from_ = current_user
         new_message.time = datetime.now()
@@ -383,7 +379,7 @@ def send_message(user_id):
 @app.route('/send_notification/<int:user_id>/<type_>', methods=['GET'])
 def send_notification(user_id, type_):
     if type_ in ['message', 'friend_req']:
-        user = Users.query.get(user_id)
+        user = Users.query.get(db.session.query(Friends).get(user_id).friend_id)
         for notification in user.notifications:
             if notification.type_ == type_ and notification.from_id == current_user.id:
                 return jsonify({'failed': 'spam notification'}), 404

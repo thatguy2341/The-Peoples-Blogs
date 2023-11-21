@@ -26,11 +26,7 @@ editButton?.addEventListener("click", function (e) {
 });
 
 const hr = function () {
-  return `<hr style=" ${
-    infoContainer.dataset.dark === "True"
-      ? "border-top: 1px solid rgba(255, 255, 255, 0.5)"
-      : "border-top: 1px solid rgb(0 0 0 / 20%)"
-  } ;"> `;
+  return `<hr style="border-top: var(--darkmode-border);"> `;
 };
 
 const htmlForBlogs = function (blog) {
@@ -118,20 +114,19 @@ const htmlForPosts = function (post) {
             <h2 class="post-title" id="post-title">
               ${post.title}
             </h2>
-              <h4 class="post-subtitle">
-              ${
-                post.subtitle.length > 64
-                  ? post.subtitle.slice(0, 64) + "..."
-                  : post.subtitle
-              }
-            </h4>
+            <h4 class="post-subtitle text-truncate">
+            ${post.subtitle}
+          </h4>
             </a>
-            <div class="row" style="margin-left: 0;">
-            <p class="post-meta">Posted by
+            <div class="row post-desc">
+            <p class="col-9 col-lg-10 col-md-10 col-sm-9 post-meta">Posted by
               <a href="/view_profile/${id}">${post.author}</a>
               on ${post.date}
             </p>
-            <h4 class="views"> ${post.views} 👁️</h4>
+            <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> ${
+              post.views
+            } 👁️</h4>
+            </div>
           </div>
         </div>
       </div>`;
@@ -145,20 +140,19 @@ const htmlForPosts = function (post) {
             <h2 class="post-title" id="post-title">
               ${post.title}
             </h2>
-              <h4 class="post-subtitle">
-              ${
-                post.subtitle.length > 64
-                  ? post.subtitle.slice(0, 64) + "..."
-                  : post.subtitle
-              }
+              <h4 class="post-subtitle text-truncate">
+              ${post.subtitle}
             </h4>
             </a>
-            <div class="row" style="margin-left: 0;">
-            <p class="post-meta">Posted by
+            <div class="row post-desc">
+            <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
               <a href="/view_profile/${id}">${post.author}</a>
               on ${post.date}
             </p>
-            <h4 class="views"> ${post.views} 👁️</h4>
+            <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> ${
+              post.views
+            } 👁️</h4>
+            </div>
           </div>
         </div>
       </div>`;
@@ -230,18 +224,8 @@ btnGroup.addEventListener("click", function (e) {
       .querySelectorAll("button")
       .forEach((btn) => btn.classList.remove("active"));
 
-    infoContainer.innerHTML =
-      darkMode === "True"
-        ? `
-        <hr style="border-top: 1px solid rgba(255, 255, 255, 0.5);">
-      <div class="spinner-container text-color">
-        <div class="spinner-border" role="status">
-        <span class="hidden">Loading...</span>
-        </div>
-      </div>
-      `
-        : `
-    <hr style=" border-top: 1px solid rgb(0 0 0 / 20%) ;">
+    infoContainer.innerHTML = `
+        ${hr()}
       <div class="spinner-container">
         <div class="spinner-border text-color" role="status">
         <span class="hidden">Loading...</span>

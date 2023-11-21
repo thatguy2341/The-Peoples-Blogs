@@ -14,6 +14,7 @@ const chatBody = document.querySelector("#chat-body");
 const friendsBtn = document.querySelector("#friends-button-title");
 const chatBtn = document.querySelector("#chat-button-title");
 const friendsInput = document.querySelector("#friends-input");
+const containerFreinds = document.querySelector("#friends-container");
 
 // NOTIFICATION SYSTEM
 const htmlNotifications = function (notification) {
@@ -72,7 +73,7 @@ notificationContainer.addEventListener("click", function (e) {
   if (e.target.classList.contains("delete-btn")) {
     fetch(e.target.dataset.url);
     e.target.closest("#notification-row").style.display = "none";
-  } else if ((e.target.id = "friend-request")) {
+  } else if (e.target.id === "friend-request") {
     fetch(e.target.dataset.url).then(() => fetch(e.target.dataset.urlDelete));
     e.target.closest("#notification-row").style.display = "none";
   }
@@ -124,6 +125,7 @@ const sendMessage = function (id) {
     })
     .then(() => {
       getChat(id);
+      fetch(`/send_notification/${id}/message`);
     })
     .catch(() => console.log("user not friend"));
   this.value = "";
@@ -173,7 +175,7 @@ function getChat(id) {
         });
       });
       const messages = chat.querySelectorAll(".message-container");
-      messages[messages.length - 1].scrollIntoView({
+      messages[messages.length - 1]?.scrollIntoView({
         behavior: "smooth",
         block: "end",
         inline: "nearest",
@@ -275,13 +277,12 @@ friendsBtn?.addEventListener("click", function () {
   chatBody.classList.add("hidden");
   friendsBody.classList.remove("hidden");
 
-  const containerFreinds = document.querySelector("#friends-container");
   showFriends(containerFreinds, htmlForFriends);
 });
 
 const htmlForUsers = function (user) {
   return `
-  <div style="padding: 0 20%;">
+  <div style="padding: 0 10%;">
   <div class="row friends-friend new-friend" id="friends-friend">
   <p class="friend-name">${user.name}
 
@@ -293,7 +294,7 @@ const htmlForUsers = function (user) {
 };
 
 const getUsers = function () {
-  if (!friendsInput.value) return;
+  if (!friendsInput.value) return showFriends(containerFreinds, htmlForFriends);
   const usersInfo = new Info(`/get_users/${friendsInput.value}`);
   usersInfo
     .getInfo({
@@ -303,7 +304,6 @@ const getUsers = function () {
     .then(() => {
       const container = document.querySelector("#friends-container");
       container.innerHTML = "";
-
       usersInfo.infoList.forEach((user) => {
         usersInfo.showInfo({
           htmlBuilder: htmlForUsers,
@@ -325,7 +325,7 @@ friendsBody?.addEventListener("click", function (e) {
     getUsers();
   } else if (e.target.id === "friend-request") {
     fetch(e.target.dataset.url);
-    e.target.closest("#notification-row").style.display = "none";
+    e.target.closest("#friends-friend").style.display = "none";
   }
   e.stopPropagation();
 });

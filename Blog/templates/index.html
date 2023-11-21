@@ -17,7 +17,7 @@
       <div class="row">
          <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-               <h1>{{blog.name}}
+               <h1 class="title-heading">{{blog.name}}
                   {% if user.id == admin_user.id %}
                   <a about="edit-blog" id="edit-image" href="{{url_for('edit_blog', blog_id=blog.id)}}">✐</a>
                   {% endif %}
@@ -136,7 +136,7 @@
       <div class="row">
          <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-               <h1>{{blog.name}}
+               <h1 class="title-heading">{{blog.name}}
                   {% if user.id == admin_user.id %}
                   <a about="edit-blog" id="edit-image" href="{{url_for('edit_blog', blog_id=blog.id)}}">✐</a>
                   {% endif %}
