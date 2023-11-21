@@ -2,10 +2,6 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask
 
 ### Flask ###
-../instance/blog.db
-!../instance/.gitignore
-../instance
-!instance/.gitignore
 .webassets-cache
 /message
 

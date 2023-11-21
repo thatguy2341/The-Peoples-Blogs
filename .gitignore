@@ -1,0 +1,10 @@
+./instance/blog.db/.gitignore
+!../instance/blog.db/.gitignore
+!../instance/.gitignore
+../instance
+!instance/.gitignore
+.instance
+!blog.db/.gitignore
+../instance/blog.db
+blog.gitignore
+.blog/.gitignore
