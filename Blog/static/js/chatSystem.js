@@ -8,6 +8,7 @@ const notificationBell = document.querySelector("#notification-bell");
 const notificationContainer = document.querySelector(
   "#notifications-container"
 );
+const modal = document.querySelector("#chat-modal");
 const chatContainer = document.querySelector("#chat-area");
 const friendsBody = document.querySelector("#friends-body");
 const chatBody = document.querySelector("#chat-body");
@@ -84,9 +85,9 @@ notificationContainer.addEventListener("click", function (e) {
 const htmlForFriendsChat = function (friend, newSection) {
   newSection.classList.add("friend-container");
   return `
-  <button type="button" class="btn btn-outline-secondary friend-row" data-id="${
-    friend.id
-  }">
+  <button type="button" class="btn btn-outline-secondary friend-row" data-name="${
+    friend.friend_name
+  }" data-id="${friend.friend_id}" data-friend-id="${friend.id}">
   <div class="friend-name"><div class="name">${friend.friend_name}</div> ${
     friend.online ? '<i class="fas">🟢</i>' : '<i class="fas">🔴</i>'
   }
@@ -117,15 +118,15 @@ const htmlForChat = function (message) {
 `;
 };
 
-const sendMessage = function (id) {
-  fetch(`/send_message/${id}?message=${this.value}`)
+const sendMessage = function (buttonClicked) {
+  fetch(`/send_message/${buttonClicked.dataset.friendId}?message=${this.value}`)
     .then((response) => {
       if (!response.ok) throw new Error("failed");
       return response.json();
     })
     .then(() => {
-      getChat(id);
-      fetch(`/send_notification/${id}/message`);
+      getChat(buttonClicked);
+      fetch(`/send_notification/${buttonClicked.dataset.id}/message`);
     })
     .catch(() => console.log("user not friend"));
   this.value = "";
@@ -141,7 +142,7 @@ const showChat = function (buttonClicked) {
    </div>`;
   chatContainer.innerHTML = `
   <div class="chat-title">
-    Chat with ${buttonClicked.querySelector(".name").textContent}
+    Chat with ${buttonClicked.dataset.name}
   </div>
   <div class="chat overflow-auto" id="chat"> </div>`;
 
@@ -151,22 +152,59 @@ const showChat = function (buttonClicked) {
   const button = inputContainer.querySelector(".btn-input");
   input.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-      sendMessage.bind(this)(buttonClicked.dataset.id);
+      sendMessage.bind(this)(buttonClicked);
     }
   });
-  button.addEventListener("click", sendMessage.bind(input));
+  button.addEventListener("click", function () {
+    sendMessage.bind(input)(buttonClicked);
+  });
+  input.focus();
 };
 
-function getChat(id) {
-  const chatInfo = new Info(`/get_user_message/${id}`);
+const readyChat = function () {
+  chatBody.classList.remove("hidden");
+  friendsBody.classList.add("hidden");
+  chatBtn.classList.add("active");
+  friendsBtn.classList.remove("active");
+};
+
+const checkSize = function () {
+  if (window.innerWidth < 800) {
+    friendChatContainer.closest(".friends").style.display = "none";
+    chatContainer.classList.remove("col-9");
+    modal.classList.add("full-screen");
+    chatContainer.querySelector("#chat")?.classList.add("chat-full");
+  } else {
+    friendChatContainer.closest(".friends").style.display = "block";
+    chatContainer.classList.add("col-9");
+    modal.classList.remove("full-screen");
+    chatContainer.querySelector("#chat")?.classList.remove("chat-full");
+
+    showFriends(friendChatContainer, htmlForFriendsChat).then(() => {});
+  }
+};
+
+const summonChat = function (id = false) {
+  readyChat();
+  checkSize();
+  if (id) friendChatContainer.querySelector(`.btn[data-id="${id}"]`)?.click();
+};
+
+window.addEventListener("resize", checkSize);
+
+function getChat(buttonClicked) {
+  showChat(buttonClicked);
+  summonChat();
+  const chatInfo = new Info(
+    `/get_user_message/${buttonClicked.dataset.friendId}`
+  );
   chatInfo
     .getInfo({
       dataType: "messages",
       showInfoFunc: false,
     })
     .then(() => {
-      const chat = chatContainer.querySelector("#chat");
-      chat.innerHTML = "";
+      chatContainer.querySelector("#chat").innerHTML = "";
       chatInfo.infoList?.forEach((message) => {
         chatInfo.showInfo({
           htmlBuilder: htmlForChat,
@@ -174,7 +212,7 @@ function getChat(id) {
           info: message,
         });
       });
-      const messages = chat.querySelectorAll(".message-container");
+      const messages = chatContainer.querySelectorAll(".message-container");
       messages[messages.length - 1]?.scrollIntoView({
         behavior: "smooth",
         block: "end",
@@ -196,7 +234,6 @@ const showFriends = async function (container, html, id = false) {
       container: container,
       info: friend,
     });
-    if (id) container.querySelector(`.btn[data-id="${id}"]`).click();
   });
 };
 
@@ -207,44 +244,8 @@ friendChatContainer?.addEventListener("click", function (e) {
     btn.classList.remove("active")
   );
   button.classList.add("active");
-  showChat(button);
-  getChat(button.dataset.id);
+  getChat(button);
   e.stopPropagation();
-});
-
-const readyChat = function () {
-  chatBody.classList.remove("hidden");
-  friendsBody.classList.add("hidden");
-  chatBtn.classList.add("active");
-  friendsBtn.classList.remove("active");
-};
-
-const summonChat = function () {
-  readyChat();
-
-  if (window.innerWidth < 800) {
-    friendChatContainer.closest(".friends").style.display = "none";
-    chatContainer.classList.remove("col-9");
-    chatContainer.classList.add("col");
-  } else {
-    friendChatContainer.closest(".friends").style.display = "block";
-    chatContainer.classList.add("col-9");
-    chatContainer.classList.remove("col");
-  }
-
-  return showFriends(friendChatContainer, htmlForFriendsChat);
-};
-
-window.addEventListener("resize", function () {
-  if (window.innerWidth < 800) {
-    friendChatContainer.closest(".friends").style.display = "none";
-    chatContainer.classList.remove("col-9");
-    chatContainer.classList.add("col");
-  } else {
-    friendChatContainer.closest(".friends").style.display = "block";
-    chatContainer.classList.add("col-9");
-    chatContainer.classList.remove("col");
-  }
 });
 
 const htmlForFriends = function (friend) {
@@ -252,16 +253,16 @@ const htmlForFriends = function (friend) {
   <div class="row friends-friend" id="friends-friend">
       <p class="friend-name">${friend.friend_name}
       ${
-        friend.online
+        +friend.online
           ? '<i class="fas" style="padding-left: 1em; font-size: 14px;">🟢</i>'
           : '<i class="fas" style="padding-left: 1em; font-size: 14px;">🔴</i>'
       }
       
       </p>
       <div>
-      <a id="open-chat" data-id="${
-        friend.friend_id
-      }" style="cursor: pointer; margin: 10px;">💬</a>
+      <a id="open-chat" data-friend-id="${friend.id}" data-name="${
+    friend.friend_name
+  }" data-id="${friend.friend_id}" style="cursor: pointer; margin: 10px;">💬</a>
       <a class="close-button delete-btn" data-url="/remove_friend/${friend.id}" 
       id="remove-friend">👤x</a>
       </div>
@@ -319,8 +320,13 @@ friendsBody?.addEventListener("click", function (e) {
     fetch(e.target.dataset.url);
     e.target.closest("#friends-friend").style.display = "none";
   } else if (e.target.id === "open-chat") {
-    readyChat();
-    showFriends(friendChatContainer, htmlForFriendsChat, e.target.dataset.id);
+    if (
+      friendChatContainer.querySelector(
+        `.btn[data-id="${e.target.dataset.id}"]`
+      )
+    )
+      summonChat(e.target.dataset.id);
+    else getChat(e.target);
   } else if (e.target.id === "friends-submit") {
     getUsers();
   } else if (e.target.id === "friend-request") {
@@ -337,9 +343,7 @@ friendsInput.addEventListener("keydown", function (e) {
 });
 
 chatMainBtn?.addEventListener("click", function () {
-  const modal = document.querySelector("#chat-modal");
-  summonChat().then(() => {
-    openModal(modal);
-  });
+  summonChat();
+  openModal(modal);
 });
 chatBtn?.addEventListener("click", summonChat);

@@ -850,3 +850,20 @@ max-height: 70vh;
 .hor-line{
    border-top: var(--darkmode-border);
 }
+
+.full-screen{
+   top: 45%;
+   height: 100vh;
+   max-height: 100vh;
+   width: 100%;
+   max-width: 100%;
+   margin: 0;
+   padding: 0;
+   z-index: 2000;
+}
+
+.chat-full {
+     height: 1000px;
+    max-height: 80vh;
+    padding-bottom: 100px;
+}

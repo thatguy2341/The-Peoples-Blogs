@@ -52,7 +52,7 @@ class Users(db.Model, UserMixin):
     total_views = db.Column(db.Integer, nullable=False)
     posts = relationship('BlogPost', back_populates='author')
     friends = relationship('Friends', back_populates='user')
-    online = db.Column(db.Integer, nullable=True)
+    online = db.Column(db.Integer, nullable=True, default=0)
     notifications = relationship('Notifications', back_populates="user")
     notification_seen = db.Column(db.Integer, nullable=True, default=0)
 
@@ -69,8 +69,6 @@ class Friends(db.Model, UserMixin):
     user = relationship('Users', back_populates='friends', foreign_keys=[user_id])
     friend_name = db.Column(db.String(200), nullable=False)
     friend_id = db.Column(db.Integer, nullable=False)
-    message_seen = db.Column(db.Integer, nullable=True, default=0)
-    online = db.Column(db.Integer, nullable=True, default=0)
 
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns}
@@ -80,7 +78,7 @@ class Friends(db.Model, UserMixin):
                                                               Messages.to_id == self.user_id)).order_by(
             Messages.time.desc()).first()
         data.update({'last_message': last_message.message if last_message is not None else None})
-        data.update({'online': self.online})
+        data.update({'online': db.session.query(Users).get(self.friend_id).online})
         return data
 
 
@@ -175,7 +173,7 @@ class Notifications(db.Model, UserMixin):
             'message': 'You have recieved a new message from ',
             'friend_req': 'You have recieved a friend request from ',
         }
-        d.update({'message': type_dict.get(self.type_) + Users.query.get(self.from_id).name})
+        d.update({'message': type_dict.get(self.type_) + db.session.query(Users).get(self.from_id).name})
 
         return d
 
@@ -204,6 +202,15 @@ def title(string: str):
         string += word.title() + ' ' if word not in dont_cap or word.isupper() else word + ' '
     return string.strip(' ').title()
 
+def online(data):
+    user = Users.query.get(data['id'])
+    user.online = 1
+    db.session.commit()
+
+def offline(data):
+    user = Users.query.get(data['id'])
+    user.online = 0
+    db.session.commit()
 
 # ------------------------- Site Functionality --------------------------------------
 
@@ -226,22 +233,7 @@ def get_page(page=0):
     return jsonify({'num': NUM})
 
 
-@socket.on('online')
-def online(data):
-    user = Users.query.get(data['id'])
-    user.online = 1
-    friends = db.session.query(Friends).filter(Friends.friend_id == data['id'])
-    for friend in friends:
-        friend.online = 1
 
-
-@socket.on('offline')
-def disconnect(data):
-    user = Users.query.get(data['id'])
-    user.online = 0
-    friends = db.session.query(Friends).filter(Friends.friend_id == data['id'])
-    for friend in friends:
-        friend.online = 0
 
 
 @app.route('/get_blogs/<search>/<category>', methods=['GET'])
@@ -379,7 +371,7 @@ def send_message(friend_id):
 @app.route('/send_notification/<int:user_id>/<type_>', methods=['GET'])
 def send_notification(user_id, type_):
     if type_ in ['message', 'friend_req']:
-        user = Users.query.get(db.session.query(Friends).get(user_id).friend_id)
+        user = Users.query.get(user_id)
         for notification in user.notifications:
             if notification.type_ == type_ and notification.from_id == current_user.id:
                 return jsonify({'failed': 'spam notification'}), 404
@@ -399,7 +391,7 @@ def send_notification(user_id, type_):
 @login_required
 def get_friends(user_id):
     if current_user.id == user_id:
-        user = Users.query.get(user_id)
+        user = db.session.query(Users).get(user_id)
         friends = [friend.to_dict() for friend in user.friends]
         return jsonify({'friends': friends}), 200
 
@@ -434,7 +426,7 @@ def remove_friend(friend_id):
     friend = db.session.get(Friends, friend_id)
     if friend in current_user.friends:
         user_as_friend = db.session.query(Friends).filter(Friends.friend_id == current_user.id,
-                                                          Friends.user_id == friend.friend_id)
+                                                          Friends.user_id == friend.friend_id).first()
         db.session.delete(user_as_friend)
         db.session.delete(friend)
         db.session.commit()
@@ -599,10 +591,11 @@ def register():
         new_user.joined_date = datetime.now().strftime("%B %d, %Y")
         new_user.total_views = 0
         new_user.notification_seen = 0
-        socket.emit('online', {'id': new_user.id})
+
         try:
             db.session.add(new_user)
             db.session.commit()
+            online({'id': new_user.id})
         except exc.IntegrityError:
             db.session.rollback()
             flash("You already signed in with this email before, log in instead!")
@@ -629,7 +622,7 @@ def login():
         user = Users.query.filter_by(email=given_email).first()
         if user is not None:
             if check_password_hash(password=given_password, pwhash=user.password):
-                socket.emit('online', {'id': user.id})
+                online({'id': user.id})
                 login_user(user)
                 return redirect(url_for("home_page"))
 
@@ -644,7 +637,7 @@ def login():
 @app.route('/logout/')
 @login_required
 def logout():
-    socket.emit('offline', {'id': current_user.id})
+    offline({'id': current_user.id})
     logout_user()
     return redirect(url_for('home_page'))
 
