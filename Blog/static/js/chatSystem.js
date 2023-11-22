@@ -175,12 +175,12 @@ const showChat = function (buttonClicked) {
   input.focus();
 };
 
-const readyChat = function () {
+const readyChat = function (buttonRow) {
   chatBody.classList.remove("hidden");
   friendsBody.classList.add("hidden");
   chatBtn.classList.add("active");
   friendsBtn.classList.remove("active");
-  if (window.innerWidth > 800)
+  if (window.innerWidth > 800 && !buttonRow)
     showFriends(friendChatContainer, htmlForFriendsChat);
 };
 
@@ -202,8 +202,8 @@ const checkSize = function () {
   }
 };
 
-const summonChat = function (id = false) {
-  readyChat();
+const summonChat = function (id = false, buttonRow = false) {
+  readyChat(buttonRow);
   checkSize();
   if (id) friendChatContainer.querySelector(`.btn[data-id="${id}"]`)?.click();
 };
@@ -212,16 +212,22 @@ window.addEventListener("resize", checkSize);
 
 function getChat(buttonClicked) {
   showChat(buttonClicked);
-  summonChat();
+  summonChat(false, buttonClicked.classList.contains("friend-row"));
 
   chatInfo.link = `/get_user_message/${buttonClicked.dataset.friendId}`;
+  chatContainer.querySelector("#chat").innerHTML = `
+  <div class="spinner-container">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
   chatInfo
     .getInfo({
       dataType: "messages",
       showInfoFunc: false,
     })
     .then(() => {
-      chatContainer.querySelector("#chat").innerHTML = "";
+      chatContainer.querySelector("#chat").innerHTML = ``;
       chatInfo.infoList?.forEach((message) => {
         chatInfo.showInfo({
           htmlBuilder: htmlForChat,
@@ -240,6 +246,22 @@ function getChat(buttonClicked) {
 
 const showFriends = async function (container, html) {
   const friendsInfo = new Info(`/get_friends/${userId}`);
+  if (container.id === "friends") {
+    container.innerHTML = `
+  <div class="spinner-container" style="position: fixed;left: 10%; top: 30%;">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
+  } else {
+    container.innerHTML = `
+  <div class="spinner-container">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
+  }
+
   await friendsInfo.getInfo({
     dataType: "friends",
     showInfoFunc: false,
@@ -337,13 +359,14 @@ friendsBody?.addEventListener("click", function (e) {
     fetch(e.target.dataset.url);
     e.target.closest("#friends-friend").style.display = "none";
   } else if (e.target.id === "open-chat") {
-    if (
-      friendChatContainer.querySelector(
-        `.btn[data-id="${e.target.dataset.id}"]`
-      )
-    )
-      summonChat(e.target.dataset.id);
-    else getChat(e.target);
+    // if (
+    //   friendChatContainer.querySelector(
+    //     `.btn[data-id="${e.target.dataset.id}"]`
+    //   )
+    // )
+    //   summonChat(e.target.dataset.id);
+    // else
+    getChat(e.target);
   } else if (e.target.id === "friends-submit") {
     getUsers();
   } else if (e.target.id === "friend-request") {
