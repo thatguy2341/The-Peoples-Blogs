@@ -1,9 +1,8 @@
 {% include "header.html" %}
-
+{% set current_user = session.current_user %}
 <head>
   <script defer type="module" src="{{url_for('static', filename='js/searchSystem2.0.js')}}"></script>
   <script async src="{{url_for('static', filename='js/dropdown.js')}}"></script>
-  <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
 </head>
 <!-- Page Header -->
 {% if DARKMODE: %}
@@ -26,7 +25,8 @@
   </div>
 </header>
 
-{% if current_user.is_authenticated and (current_user.blogs | length < 2 or current_user.id == 1) %}
+{% if is_authenticated
+ and (current_user.blogs | length < 2 or current_user.id == 1) %}
 <div class="clearfix" style="margin: 3rem 0;">
   <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-light float-left"
      href="{{url_for('pages.create_blog')}}" style="margin-left: 1em;">Create
@@ -94,7 +94,8 @@
         </div>
       </div>
       
-      {% if not current_user.is_authenticated %}
+      {% if not is_authenticated
+ %}
       <hr class="smooth-scroll hor-line">
       {% endif %}
       
@@ -104,7 +105,8 @@
           Page</a>
       </div>
       
-      {% if current_user.blogs | length <= 2 and not current_user.is_authenticated: %}
+      {% if current_user.blogs | length <= 2 and not is_authenticated
+: %}
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">
           You can create your own blogs, by joining the community.
@@ -156,7 +158,8 @@
   </div>
 </header>
 
-{% if current_user.is_authenticated and (current_user.blogs | length < 2 or current_user.id == 1) %}
+{% if is_authenticated
+ and (current_user.blogs | length < 2 or current_user.id == 1) %}
 <div class="clearfix" style="margin: 3rem 0;">
   <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-left"
      href="{{url_for('pages.create_blog')}}" style="margin-left: 1em;">Create
@@ -230,7 +233,8 @@
           Page</a>
       </div>
       
-      {% if current_user.blogs | length <= 2 and not current_user.is_authenticated: %}
+      {% if current_user.blogs | length <= 2 and not is_authenticated
+: %}
       <hr class="smooth-scroll hor-line" style="margin-top: 15rem;">
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem;">

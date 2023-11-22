@@ -17,6 +17,16 @@ const chatBtn = document.querySelector("#chat-button-title");
 const friendsInput = document.querySelector("#friends-input");
 const containerFreinds = document.querySelector("#friends-container");
 const chatInfo = new Info();
+let phone_mode = window.innerWidth < 800;
+let chatOpen;
+const date = new Date();
+
+const getTime = function () {
+  const hour = date.getHours() || "00";
+  const minutes =
+    date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes();
+  return `${hour}:${minutes}`;
+};
 
 // NOTIFICATION SYSTEM
 const htmlNotifications = function (notification) {
@@ -90,7 +100,9 @@ const htmlForFriendsChat = function (friend, newSection) {
     friend.friend_name
   }" data-id="${friend.friend_id}" data-friend-id="${friend.id}">
   <div class="friend-name"><div class="name">${friend.friend_name}</div> ${
-    friend.online ? '<i class="fas">🟢</i>' : '<i class="fas">🔴</i>'
+    friend.online
+      ? `<i class="fas" data-id="${friend.friend_id}" id="online">🟢</i>`
+      : `<i class="fas" data-id="${friend.friend_id}" id="online">🔴</i>`
   }
   </div>
   <div class="friend-message text-truncate">${
@@ -120,6 +132,24 @@ const htmlForChat = function (message) {
 };
 
 const sendMessage = function (buttonClicked) {
+  const last_message = modal.querySelector(
+    `.friend-row[data-id="${buttonClicked.dataset.friendId}"] .friend-message`
+  );
+  last_message.innerText = this.value;
+
+  chatInfo.showInfo({
+    htmlBuilder: htmlForChat,
+    container: chatContainer.querySelector("#chat"),
+    info: {
+      message: this.value,
+      time: `${getTime()}`,
+      type: "s",
+    },
+  });
+  socket.emit("send_message", {
+    id: buttonClicked.dataset.id,
+    message: this.value,
+  });
   fetch(`/send_message/${buttonClicked.dataset.friendId}?message=${this.value}`)
     .then((response) => {
       if (!response.ok) throw new Error("failed");
@@ -128,18 +158,10 @@ const sendMessage = function (buttonClicked) {
     .then(() => {
       fetch(`/send_notification/${buttonClicked.dataset.id}/message`);
       chatInfo.link = `/get_user_message/${buttonClicked.dataset.friendId}`;
-      chatInfo
-        .getInfo({
-          dataType: "messages",
-          showInfoFunc: false,
-        })
-        .then(() => {
-          chatInfo.showInfo({
-            htmlBuilder: htmlForChat,
-            container: chatContainer.querySelector("#chat"),
-            info: chatInfo.infoList[chatInfo.infoList.length - 1],
-          });
-        });
+      chatInfo.getInfo({
+        dataType: "messages",
+        showInfoFunc: false,
+      });
     })
     .catch(() => console.log("user not friend"));
   this.value = "";
@@ -157,7 +179,7 @@ const showChat = function (buttonClicked) {
   <div class="chat-title">
     Chat with ${buttonClicked.dataset.name}
   </div>
-  <div class="chat overflow-auto" id="chat"> </div>`;
+  <div class="chat overflow-auto" id="chat" data-id="${buttonClicked.dataset.id}"> </div>`;
 
   chatContainer.insertAdjacentElement("afterbegin", inputContainer);
 
@@ -174,11 +196,13 @@ const showChat = function (buttonClicked) {
   input.focus();
 };
 
-const readyChat = function () {
+const readyChat = function (buttonRow) {
   chatBody.classList.remove("hidden");
   friendsBody.classList.add("hidden");
   chatBtn.classList.add("active");
   friendsBtn.classList.remove("active");
+  if (window.innerWidth > 800 && !buttonRow)
+    showFriends(friendChatContainer, htmlForFriendsChat);
 };
 
 const checkSize = function () {
@@ -187,18 +211,20 @@ const checkSize = function () {
     chatContainer.classList.remove("col-9");
     modal.classList.add("full-screen");
     chatContainer.querySelector("#chat")?.classList.add("chat-full");
-  } else {
+    phone_mode = true;
+  } else if (window.innerWidth > 800 && phone_mode) {
     friendChatContainer.closest(".friends").style.display = "block";
     chatContainer.classList.add("col-9");
     modal.classList.remove("full-screen");
     chatContainer.querySelector("#chat")?.classList.remove("chat-full");
 
-    showFriends(friendChatContainer, htmlForFriendsChat).then(() => {});
+    showFriends(friendChatContainer, htmlForFriendsChat);
+    phone_mode = false;
   }
 };
 
-const summonChat = function (id = false) {
-  readyChat();
+const summonChat = function (id = false, buttonRow = false) {
+  readyChat(buttonRow);
   checkSize();
   if (id) friendChatContainer.querySelector(`.btn[data-id="${id}"]`)?.click();
 };
@@ -207,16 +233,23 @@ window.addEventListener("resize", checkSize);
 
 function getChat(buttonClicked) {
   showChat(buttonClicked);
-  summonChat();
+  summonChat(false, buttonClicked.classList.contains("friend-row"));
 
   chatInfo.link = `/get_user_message/${buttonClicked.dataset.friendId}`;
+  chatContainer.querySelector("#chat").innerHTML = `
+  <div class="spinner-container">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
   chatInfo
     .getInfo({
       dataType: "messages",
       showInfoFunc: false,
     })
     .then(() => {
-      chatContainer.querySelector("#chat").innerHTML = "";
+      chatOpen = buttonClicked.dataset.id;
+      chatContainer.querySelector("#chat").innerHTML = ``;
       chatInfo.infoList?.forEach((message) => {
         chatInfo.showInfo({
           htmlBuilder: htmlForChat,
@@ -233,8 +266,24 @@ function getChat(buttonClicked) {
     });
 }
 
-const showFriends = async function (container, html, id = false) {
+const showFriends = async function (container, html) {
   const friendsInfo = new Info(`/get_friends/${userId}`);
+  if (container.id === "friends") {
+    container.innerHTML = `
+  <div class="spinner-container" style="position: fixed;left: 10%; top: 30%;">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
+  } else {
+    container.innerHTML = `
+  <div class="spinner-container">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
+  }
+
   await friendsInfo.getInfo({
     dataType: "friends",
     showInfoFunc: false,
@@ -266,8 +315,8 @@ const htmlForFriends = function (friend) {
       <p class="friend-name">${friend.friend_name}
       ${
         +friend.online
-          ? '<i class="fas" style="padding-left: 1em; font-size: 14px;">🟢</i>'
-          : '<i class="fas" style="padding-left: 1em; font-size: 14px;">🔴</i>'
+          ? `<i class="fas" id="online" data-id="${friend.friend_id}" style="padding-left: 1em; font-size: 14px;">🟢</i>`
+          : `<i class="fas" id="online" data-id="${friend.friend_id}" style="padding-left: 1em; font-size: 14px;">🔴</i>`
       }
       
       </p>
@@ -332,13 +381,7 @@ friendsBody?.addEventListener("click", function (e) {
     fetch(e.target.dataset.url);
     e.target.closest("#friends-friend").style.display = "none";
   } else if (e.target.id === "open-chat") {
-    if (
-      friendChatContainer.querySelector(
-        `.btn[data-id="${e.target.dataset.id}"]`
-      )
-    )
-      summonChat(e.target.dataset.id);
-    else getChat(e.target);
+    getChat(e.target);
   } else if (e.target.id === "friends-submit") {
     getUsers();
   } else if (e.target.id === "friend-request") {
@@ -359,3 +402,40 @@ chatMainBtn?.addEventListener("click", function () {
   openModal(modal);
 });
 chatBtn?.addEventListener("click", summonChat);
+
+socket.on("connected", function (data) {
+  modal
+    .querySelectorAll(`#online[data-id="${data["id"]}"]`)
+    .forEach((element) => {
+      element.textContent = "🟢";
+    });
+});
+
+socket.on("disconnected", function (data) {
+  modal
+    .querySelectorAll(`#online[data-id="${data["id"]}"]`)
+    .forEach((element) => {
+      element.textContent = "🔴";
+    });
+});
+
+socket.on("send_message", function (data) {
+  const last_message = modal.querySelector(
+    `.friend-row[data-id="${data.id}"] .friend-message`
+  );
+
+  if (data.to === userId) {
+    last_message.innerText = data.message;
+    console.log(chat.dataset.id == data.id);
+    if (chat && +chat.dataset.id === data.id)
+      chatInfo.showInfo({
+        htmlBuilder: htmlForChat,
+        container: chatContainer.querySelector("#chat"),
+        info: {
+          message: data.message,
+          time: `${getTime()}`,
+          type: "r",
+        },
+      });
+  }
+});

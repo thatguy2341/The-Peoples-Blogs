@@ -1,6 +1,6 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% include "header.html" %}
-
+{% set current_user = session.current_user %}
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('{{post.img_url}}')">
    <div class="overlay"></div>
@@ -36,7 +36,7 @@
          <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
             {{ post.body|safe }}
             <hr class="hor-line" style="margin-top: 3rem;">
-            {% if user.id == post.blog.author_id %}
+            {% if current_user.id == post.blog.author_id %}
             <div class="clearfix">
                {% if DARKMODE: %}
                <a data-type="btn-primary" class="btn btn-filled btn-outline-light float-right"
@@ -67,7 +67,8 @@
                   </li>
                </ul>
             </div>
-            {% if current_user.is_authenticated: %}
+            {% if is_authenticated
+: %}
             <div style="font-weight: 900;">
                {{ ckeditor.load(pkg_type="basic") }}
                {{ ckeditor.config(name='body') }}

@@ -2,9 +2,12 @@ from flask import Flask
 from dotenv import load_dotenv  # DO NOT DELETE
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv, environ
+from flask_socketio import SocketIO
 
 load_dotenv(".env")  # DO NOT DELETE
 db = SQLAlchemy()
+socket = SocketIO()
+
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +20,7 @@ def create_app():
     app.app_context().push()
 
     db.init_app(app)
+    socket.init_app(app=app)
 
     from auth import auth
     from pages import pages
@@ -28,5 +32,6 @@ def create_app():
     app.register_blueprint(api, url_prefix="/")
     with app.app_context():
         db.create_all()
-    return app
 
+
+    return app

@@ -1,6 +1,6 @@
 {% include "header.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-
+{% set current_user = session.current_user %}
 <!-- Page Header-->
 <header class="masthead lazy-img"
         style="background-image: url('{{ url_for('static', filename='img/contact-bg-blur.jpg')}}')"

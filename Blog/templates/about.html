@@ -1,5 +1,5 @@
 {% include "header.html" %}
-
+{% set current_user = session.current_user %}
 <!-- Page Header -->
 <header class="masthead lazy-img"
         style="background-image: url({{ url_for('static', filename='img/about-bg-blur.jpg')}})"
