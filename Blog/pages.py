@@ -3,51 +3,54 @@ import os
 from __init__ import db
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, abort, request, jsonify
-from flask_login import login_required, current_user
 from werkzeug.security import check_password_hash
 from forms import CreatePostForm, RegistrationForm, CommentForm, CreateBlog, ContactForm, Confirm
-from models import Users, Views, Blogs, BlogPost, Comments
-from api import title
+from models import Users, Views, Blogs, BlogPost, Comments, session
+from auth import login_required, title
 
-NUM = 0
 MY_GMAIL = os.getenv("GMAIL")
 TO_GMAIL = os.getenv("TO_GMAIL")
 MY_PASS = os.getenv("PASS")
 pages = Blueprint('pages', __name__)
-DARKMODE = False
 
 
 @pages.route('/change_view/<change>', methods=['GET', 'POST'])
 def change_view_mode(change):
-    global DARKMODE
     if change == '1':
-        DARKMODE = not DARKMODE
-    return jsonify({'mode': DARKMODE})
+        if session.get('id'):
+            user = db.session.query(Users).get(session['id'])
+            user.dark_mode = not user.dark_mode
+            db.session.commit()
+            session['dark_mode'] = user.dark_mode
+        else:
+            session['dark_mode'] = not session['dark_mode']
+
+    return jsonify({'mode': session['dark_mode']})
 
 
 @pages.route('/get_page/<int:page>', methods=['GET'])
 def get_page(page=0):
-    global NUM
     if page and page <= db.session.query(Blogs).count() // 10:
-        NUM = page
+        session['page'] = page
         return
 
-    return jsonify({'num': NUM})
+    return jsonify({'num': session['page']})
+
 
 # ------------------------- Site Functionallity --------------------------------------
 
 @pages.route("/", methods=["GET", "POST"])
 def home_page():
-    global NUM
-    NUM = request.args.get("num") if request.args.get("num") is not None else 0
+    session['page'] = request.args.get("num") if request.args.get("num") is not None else 0
 
-    return render_template('blogs.html', page=NUM)
+    return render_template('blogs.html', page=session['page'])
 
 
 @pages.route("/edit_user/<int:user_id>", methods=["POST", "GET"])
+@login_required
 def edit_user(user_id):
     user = Users.query.get(user_id)
-    if current_user.is_authenticated and current_user.id == user.id:
+    if session['id'] == user.id:
         edit_form = RegistrationForm(
             name=user.name,
             email=user.email,
@@ -70,6 +73,7 @@ def edit_user(user_id):
 @pages.route("/create_blog", methods=["GET", "POST"])
 @login_required
 def create_blog():
+    current_user = db.session.query(Users).get(session['id'])
     if len(current_user.blogs) >= 2 and current_user.id != 1:
         flash("The Maximum Amount Of Blogs Is 2")
         return abort(403, description="The Maximum Amount Of Blogs, Currently Available For Each User Are Only 2")
@@ -102,10 +106,11 @@ def create_blog():
 
 
 @pages.route("/blog/<int:blog_id>/edit-blog", methods=["POST", "GET"])
+@login_required
 def edit_blog(blog_id):
     blog = Blogs.query.get(blog_id)
-
-    if current_user.is_authenticated and current_user.id == blog.author_id:
+    current_user = db.session.query(Users).get(session['id'])
+    if current_user.id == blog.author_id:
         edit_form = CreateBlog(
             name=blog.name,
             description=blog.description,
@@ -145,8 +150,10 @@ def get_all_posts(blog_id):
     posts = BlogPost.query.filter_by(blog_id=blog_id).all()
     admin_user = blog.author
 
-    if current_user.is_authenticated and current_user != blog.author and raise_view:
-        if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=blog_id).first() is None:
+    if session.get('id'):
+        current_user = db.session.query(Users).get(session['id'])
+        if db.session.query(Views).filter_by(user_id=current_user.id,
+                                             blog_id=blog_id).first() is None and current_user != blog.author and raise_view:
             blog.views += 1
             blog.author.total_views += 1
             new_view = Views()
@@ -155,7 +162,7 @@ def get_all_posts(blog_id):
             db.session.add(new_view)
 
     db.session.commit()
-    return render_template("index.html", all_posts=posts, user=current_user, admin_user=admin_user, blog=blog)
+    return render_template("index.html", all_posts=posts, admin_user=admin_user, blog=blog)
 
 
 @pages.route("/blog/post/<int:post_id>", methods=["POST", "GET"])
@@ -163,9 +170,10 @@ def show_post(post_id):
     form = CommentForm()
     requested_post = BlogPost.query.get(post_id)
     raise_view = request.args.get("raise_view")
-    if current_user.is_authenticated and current_user != requested_post.blog.author and raise_view:
+    if session.get('id'):
+        current_user = db.session.query(Users).get(session['id'])
         if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=requested_post.blog_id,
-                                             post_id=post_id).first() is None:
+                                             post_id=post_id).first() is None and current_user != requested_post.blog.author and raise_view:
             requested_post.views += 1
             requested_post.author.total_views += 1
             new_view = Views()
@@ -173,27 +181,30 @@ def show_post(post_id):
             new_view.post_id = post_id
             new_view.blog_id = requested_post.blog_id
             db.session.add(new_view)
-    db.session.commit()
-    post_comments = requested_post.comments
-    if current_user.is_authenticated and form.validate_on_submit():
-        new_comment = Comments()
-        new_comment.text = form.comment.data
-        new_comment.author = current_user
-        new_comment.inside_post = requested_post
-        db.session.add(new_comment)
-        db.session.commit()
+            db.session.commit()
+
+        if form.validate_on_submit():
+            new_comment = Comments()
+            new_comment.text = form.comment.data
+            new_comment.author = current_user
+            new_comment.inside_post = requested_post
+            db.session.add(new_comment)
+            db.session.commit()
     elif form.validate_on_submit():
         flash("You Need To Log In Or Register To Comment On Posts")
         return redirect(url_for("pages.login"))
 
-    return render_template("post.html", post=requested_post, user=current_user, form=form, comments=post_comments)
+    post_comments = requested_post.comments
+
+    return render_template("post.html", post=requested_post, form=form, comments=post_comments)
 
 
 @pages.route("/blog/<int:blog_id>/new-post", methods=["POST", "GET"])
+@login_required
 def add_new_post(blog_id):
     inside_blog = Blogs.query.get(blog_id)
-
-    if current_user.is_authenticated and current_user.id == inside_blog.author_id:
+    current_user = db.session.query(Users).get(session['id'])
+    if current_user.id == inside_blog.author_id:
         form = CreatePostForm()
         if form.validate_on_submit():
             new_post = BlogPost()
@@ -215,10 +226,11 @@ def add_new_post(blog_id):
 
 
 @pages.route("/blog/<int:blog_id>/edit-post/<int:post_id>", methods=["POST", "GET"])
+@login_required
 def edit_post(post_id, blog_id):
     inside_blog = Blogs.query.get(blog_id)
-
-    if current_user.is_authenticated and current_user.id == inside_blog.author_id:
+    current_user = db.session.query(Users).get(session['id'])
+    if current_user.id == inside_blog.author_id:
         post = BlogPost.query.get(post_id)
         edit_form = CreatePostForm(
             title=post.title,

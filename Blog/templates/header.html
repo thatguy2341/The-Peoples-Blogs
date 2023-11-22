@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-
+   {% set current_user = session.current_user %}
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <meta name="description" content="">
    <meta name="author" content="">
 
    <title>People Blogs</title>
-   {% if current_user.is_authenticated %}
+   {% if is_authenticated %}
    <script> const userId = {{current_user.id}};</script>
    {% else %}
    <script> const userId = false</script>
@@ -68,7 +68,7 @@
 
       <div class="justify-content-end">
 
-         {% if current_user.is_authenticated and current_user.notifications and current_user.notification_seen < current_user.notifications[-1].id%}
+         {% if is_authenticated and current_user.notifications and current_user.notification_seen < current_user.notifications[-1].id%}
          <a class="nav-link btn-notification" id="notification-bell" type="submit">
             🔔!
          </a>
@@ -86,7 +86,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbarResponsive">
          <ul class="navbar-nav ml-auto">
-            {% if current_user.is_authenticated: %}
+            {% if is_authenticated: %}
             <li class="nav-item active">
                <a class="nav-link" href="{{url_for('pages.profile', user_id=current_user.id)}}"
                   style="font-size: medium; color: #395B64;">{{current_user.name}} 👋</a>
@@ -95,7 +95,7 @@
             <li class="nav-item">
                <a class="nav-link" href="{{ url_for('pages.home_page') }}">Home</a>
             </li>
-            {% if not current_user.is_authenticated: %}
+            {% if not is_authenticated: %}
             <li class="nav-item">
                <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
             </li>
@@ -199,7 +199,7 @@
    </div>
 </div>
 
-{% if current_user.is_authenticated %}
+{% if is_authenticated %}
 <div class="chat-btn-container">
    <button class="btn btn-primary btn-chat" id="chat-btn">💬</button>
 </div>

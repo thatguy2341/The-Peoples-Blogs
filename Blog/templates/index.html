@@ -3,7 +3,7 @@
    <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
 </head>
 
-
+{% set current_user = session.current_user %}
 <!-- Main Content -->
 {% if DARKMODE: %}
 
@@ -18,7 +18,7 @@
          <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
                <h1 class="title-heading">{{blog.name}}
-                  {% if user.id == admin_user.id %}
+                  {% if current_user.id == admin_user.id %}
                   <a about="edit-blog" id="edit-image" href="{{url_for('pages.edit_blog', blog_id=blog.id)}}">✐</a>
                   {% endif %}
                </h1>
@@ -56,7 +56,7 @@
 
             <hr style="border-top: var(--darkmode-border); margin-top: 3rem;">
             <div class="post-preview">
-               {% if user.id == admin_user.id %}
+               {% if current_user.id == admin_user.id %}
                <div class="delete-container">
                   <button type="button" data-url="{{url_for('api.delete_post', post_id=post.id, blog_id=blog.id)}}"
                           data-context="delete your post" class="btn btn-delete btn-outline-danger">
@@ -94,13 +94,13 @@
          {% endfor %}
          {% endif %}
 
-         {% if user.id == admin_user.id or all_posts|length > 1 %}
+         {% if current_user.id == admin_user.id or all_posts|length > 1 %}
          <hr class="smooth-scroll hor-line" style="margin: 3rem 0;">
          {% endif %}
 
 
          <!-- New Post -->
-         {% if user.id == admin_user.id %}
+         {% if current_user.id == admin_user.id %}
          <div class="row smooth-scroll">
             <div class="col col-lg-6 col-md-6 col-sm-6">
                <button type="button" data-url="{{url_for('api.delete_blog', blog_id=blog.id)}}"
@@ -137,7 +137,7 @@
          <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
                <h1 class="title-heading">{{blog.name}}
-                  {% if user.id == admin_user.id %}
+                  {% if current_user.id == admin_user.id %}
                   <a about="edit-blog" id="edit-image" href="{{url_for('pages.edit_blog', blog_id=blog.id)}}">✐</a>
                   {% endif %}
                </h1>
@@ -175,7 +175,7 @@
 
          <hr class="hor-line" style="margin-top: 3rem;">
          <div class="post-preview">
-            {% if user.id == admin_user.id %}
+            {% if current_user.id == admin_user.id %}
             <div class="delete-container">
                <button type="button" data-url="{{url_for('api.delete_post', post_id=post.id, blog_id=blog.id)}}"
                        data-context="delete your post" class="btn btn-delete btn-outline-danger">
@@ -212,13 +212,13 @@
       {% endfor %}
       {% endif %}
 
-      {% if user.id == admin_user.id or all_posts|length > 1 %}
+      {% if current_user.id == admin_user.id or all_posts|length > 1 %}
       <hr class="smooth-scroll hor-line" style="margin: 3rem 0;">
       {% endif %}
 
 
       <!-- New Post -->
-      {% if user.id == admin_user.id %}
+      {% if current_user.id == admin_user.id %}
       <div class="row smooth-scroll">
          <div class="col col-lg-6 col-md-6 col-sm-6">
             <button type="button" data-url="{{url_for('api.delete_blog', blog_id=blog.id)}}"

@@ -1,14 +1,11 @@
 from __init__ import db
 from sqlalchemy import and_, DateTime
 from sqlalchemy.orm import relationship
-from flask import Blueprint
-from flask_login import UserMixin
-
-
+from flask import Blueprint, session
 models = Blueprint('auth', __name__)
 
 
-class Users(db.Model, UserMixin):
+class Users(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
@@ -24,6 +21,14 @@ class Users(db.Model, UserMixin):
     online = db.Column(db.Integer, nullable=True, default=0)
     notifications = relationship('Notifications', back_populates="user")
     notification_seen = db.Column(db.Integer, nullable=True, default=0)
+    dark_mode = db.Column(db.Boolean, default=False)
+
+    def is_authenticated(self):
+        """Checks if the user is loaded in"""
+        print(session[str(self.id)])
+        if session[str(self.id)]:
+            return True
+        return False
 
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns

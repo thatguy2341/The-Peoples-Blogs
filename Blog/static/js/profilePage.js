@@ -43,24 +43,23 @@ const htmlForBlogs = function (blog) {
           </button>
         </div>
         <a href="/get-posts/${blog.id}?raise_view=1">
-          <h2 class="post-title" id="post-title">
+          <h2 class="post-title text-truncate" id="post-title">
             ${blog.name}
           </h2>
-            <h4 class="post-subtitle">
-            ${
-              blog.description.length > 64
-                ? blog.description.slice(0, 64).replace(/(<([^>]+)>)/gi, "") +
-                  "..."
-                : blog.description.replace(/(<([^>]+)>)/gi, "")
-            }
+          <div class="col-md-9 col-sm-9" style="padding-left: 0;">
+            <h4 class="post-subtitle text-truncate">
+            ${blog.description.replace(/(<([^>]+)>)/gi, "")}
           </h4>
+          </div>
           </a>
-          <div class="row" style="margin-left: 0;">
-          <p class="post-meta">Posted by
+          <div class="row post-desc" style="margin-left: 0;">
+          <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
             <a href="/view_profile/${id}">${blog.author}</a>
             on ${blog.created_date}
           </p>
-          <h4 class="views"> ${blog.views} 👁️</h4>
+          <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> ${
+            blog.views
+          } 👁️</h4>
         </div>
       </div>
     </div>`;
@@ -71,24 +70,23 @@ const htmlForBlogs = function (blog) {
     <div class="post-preview">
 
         <a href="/get-posts/${blog.id}?raise_view=1">
-          <h2 class="post-title" id="post-title">
+          <h2 class="post-title text-truncate" id="post-title">
             ${blog.name}
           </h2>
-            <h4 class="post-subtitle">
-            ${
-              blog.description.length > 64
-                ? blog.description.slice(0, 64).replace(/(<([^>]+)>)/gi, "") +
-                  "..."
-                : blog.description.replace(/(<([^>]+)>)/gi, "")
-            }
+          <div class="col-md-9 col-sm-9" style="padding-left: 0;">
+            <h4 class="post-subtitle text-truncate">
+            ${blog.description.replace(/(<([^>]+)>)/gi, "")}
           </h4>
+          </div>
           </a>
-          <div class="row" style="margin-left: 0;">
-          <p class="post-meta">Posted by
+          <div class="row post-desc" style="margin-left: 0;">
+          <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
             <a href="/view_profile/${id}">${blog.author}</a>
             on ${blog.created_date}
           </p>
-          <h4 class="views"> ${blog.views} 👁️</h4>
+          <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> ${
+            blog.views
+          } 👁️</h4>
         </div>
       </div>
     </div>`;

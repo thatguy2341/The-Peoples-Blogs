@@ -17,6 +17,7 @@ const chatBtn = document.querySelector("#chat-button-title");
 const friendsInput = document.querySelector("#friends-input");
 const containerFreinds = document.querySelector("#friends-container");
 const chatInfo = new Info();
+let phone_mode = window.innerWidth < 800;
 
 // NOTIFICATION SYSTEM
 const htmlNotifications = function (notification) {
@@ -179,21 +180,25 @@ const readyChat = function () {
   friendsBody.classList.add("hidden");
   chatBtn.classList.add("active");
   friendsBtn.classList.remove("active");
+  if (window.innerWidth > 800)
+    showFriends(friendChatContainer, htmlForFriendsChat);
 };
 
 const checkSize = function () {
-  if (window.innerWidth < 800) {
+  if (window.innerWidth < 800 && !phone_mode) {
     friendChatContainer.closest(".friends").style.display = "none";
     chatContainer.classList.remove("col-9");
     modal.classList.add("full-screen");
     chatContainer.querySelector("#chat")?.classList.add("chat-full");
-  } else {
+    phone_mode = true;
+  } else if (window.innerWidth > 800 && phone_mode) {
     friendChatContainer.closest(".friends").style.display = "block";
     chatContainer.classList.add("col-9");
     modal.classList.remove("full-screen");
     chatContainer.querySelector("#chat")?.classList.remove("chat-full");
 
-    showFriends(friendChatContainer, htmlForFriendsChat).then(() => {});
+    showFriends(friendChatContainer, htmlForFriendsChat);
+    phone_mode = false;
   }
 };
 
@@ -233,7 +238,7 @@ function getChat(buttonClicked) {
     });
 }
 
-const showFriends = async function (container, html, id = false) {
+const showFriends = async function (container, html) {
   const friendsInfo = new Info(`/get_friends/${userId}`);
   await friendsInfo.getInfo({
     dataType: "friends",

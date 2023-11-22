@@ -1,6 +1,6 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% include "header.html" %}
-
+{% set current_user = session.current_user %}
 <head>
    <script defer type="module" src="{{url_for('static', filename='js/infoSystem.js')}}"></script>
    <script defer type="module" src="{{url_for('static', filename='js/profilePage.js')}}"></script>
@@ -23,7 +23,8 @@
                {% else %}
                <h1 data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile
                   {% if current_user not in admin_user.friends and current_user != admin_user and
-                  current_user.is_authenticated %}
+                  is_authenticated
+ %}
                   <a about="send a friend request" id="friend-request" style="cursor: pointer;font-size: 3rem;"
                      data-url data-id="{{admin_user.id}}">👤+</a>
                </h1>

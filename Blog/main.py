@@ -2,26 +2,27 @@ from datetime import datetime
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
-from flask_login import LoginManager
 from __init__ import create_app
+from models import Users, session
+
 app = create_app()
 
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app=app, size=50, default="mp")
-login_manager = LoginManager(app=app)
 
 @app.context_processor
-def inject_current_year():
-    from Blog.pages import DARKMODE
-    return dict(year=datetime.now().year, DARKMODE=DARKMODE)
+def inject_current_data():
+    if session.get('dark_mode') is None:
+        session['dark_mode'] = False
 
+    if session.get('id'):
+        user = Users.query.get(session['id'])
+        session['current_user'] = user.to_dict()
+        return dict(year=datetime.now().year, DARKMODE=user.dark_mode, is_authenticated=True)
 
-@login_manager.user_loader
-def load_user(user_id):
-    from Blog.models import Users
-    return Users.query.get(user_id)
-
+    session['current_user'] = Users().to_dict()
+    return dict(year=datetime.now().year, DARKMODE=session['dark_mode'], is_authenticated=False)
 
 if __name__ == "__main__":
     app.run(debug=True)

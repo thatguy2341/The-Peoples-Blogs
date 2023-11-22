@@ -1,5 +1,5 @@
 {% import "bootstrap/wtf.html" as wtf %}
-
+{% set current_user = session.current_user %}
 {% block content %}
 {% include "header.html" %}
 <!-- Page Header -->
