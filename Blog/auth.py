@@ -1,10 +1,8 @@
 from __init__ import db, socket
 from datetime import datetime
 from flask import Blueprint, flash, request, redirect, render_template, url_for, abort
-from flask import Blueprint, flash, request, redirect, render_template, url_for, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import exc
-from models import Users, session
 from models import Users, session
 from forms import RegistrationForm, LoginForm
 
@@ -60,7 +58,6 @@ def offline(data):
 @auth.route('/register', methods=["POST", "GET"])
 def register():
     if session.get('id'):
-    if session.get('id'):
         # Bug if user logs in from phone it doesn't redirect to home_page. try and fix probably problem with csrf
         return redirect(url_for('pages.home_page'))
 
@@ -108,8 +105,6 @@ def login():
     if request.method == "POST":
         given_email = form.email.data
         given_password = form.password.data
-        user = db.session.query(Users).filter_by(email=given_email).first()
-        if user:
         user = db.session.query(Users).filter_by(email=given_email).first()
         if user:
             if check_password_hash(password=given_password, pwhash=user.password):
