@@ -1,153 +1,202 @@
-{% import "bootstrap/wtf.html" as wtf %}
-{% include "header.html" %}
-{% set current_user = session.current_user %}
+{% import "bootstrap/wtf.html" as wtf %} {% include "header.html" %} {% set
+current_user = session.current_user %}
 <head>
-   <script defer type="module" src="{{url_for('static', filename='js/infoSystem.js')}}"></script>
-   <script defer type="module" src="{{url_for('static', filename='js/profilePage.js')}}"></script>
+  <script
+    defer
+    type="module"
+    src="{{url_for('static', filename='js/infoSystem.js')}}"
+  ></script>
+  <script
+    defer
+    type="module"
+    src="{{url_for('static', filename='js/profilePage.js')}}"
+  ></script>
 </head>
 
-<header class="masthead"
-        style="background-image: url('https://images.unsplash.com/photo-1520809227329-2f94844a9635?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80')">
-   <div class="overlay"></div>
-   <div class="container">
-      <div class="row">
-         <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
+<header
+  class="masthead"
+  style="
+    background-image: url('https://images.unsplash.com/photo-1520809227329-2f94844a9635?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
+  "
+>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading">
+          {% if current_user.id == admin_user.id %}
+          <h1 data-auth data-id="{{admin_user.id}}" style="font-size: 200%">
+            {{admin_user.name}}'s Profile
+            <a
+              about="edit user details"
+              data-confirmation
+              id="edit-image"
+              style="cursor: pointer"
+              data-url
+              >✐</a
+            >
+          </h1>
 
-               {% if current_user.id == admin_user.id %}
-               <h1 data-auth data-id="{{admin_user.id}}" style="font-size: 200%;" >{{admin_user.name}}'s Profile
-                  <a about="edit user details" data-confirmation id="edit-image" style="cursor: pointer"
-                     data-url>✐</a>
-               </h1>
-
-               {% else %}
-               <h1 data-id="{{admin_user.id}}">{{admin_user.name}}'s Profile
-                  {% if current_user not in admin_user.friends and current_user != admin_user and
-                  is_authenticated
- %}
-                  <a about="send a friend request" id="friend-request" style="cursor: pointer;font-size: 3rem;"
-                     data-url data-id="{{admin_user.id}}">👤+</a>
-               </h1>
-               {% endif %}
-               {% endif %}
-               <span class="subheading">Joined on {{admin_user.joined_date}}</span>
-            </div>
-         </div>
+          {% else %}
+          <h1 data-id="{{admin_user.id}}">
+            {{admin_user.name}}'s Profile {% if current_user not in
+            admin_user.friends and current_user != admin_user and
+            is_authenticated %}
+            <a
+              about="send a friend request"
+              id="friend-request"
+              style="cursor: pointer; font-size: 3rem"
+              data-url
+              data-id="{{admin_user.id}}"
+              >👤+</a
+            >
+          </h1>
+          {% endif %} {% endif %}
+          <span class="subheading">Joined on {{admin_user.joined_date}}</span>
+        </div>
       </div>
-   </div>
+    </div>
+  </div>
 </header>
-<div class="modal" id="edit-modal" style="color: black;">
-   <div class="modal-header">
-      <div class="title">Confirmation</div>
-      <button data-close-button class="close-button">&times;</button>
-   </div>
+<div class="modal" id="edit-modal" style="color: black">
+  <div class="modal-header">
+    <div class="title">Confirmation</div>
+    <button data-close-button class="close-button">&times;</button>
+  </div>
 
-   <div class="modal-body" id="edit-modal-body">
-      {% with messages = get_flashed_messages() %}
-      {% if messages: %}
-      <p>{{messages[0]}}</p>
-      {% endif %}
-      {{ form.csrf_token }}
-      {% if DARKMODE: %}
-      {{ wtf.quick_form(form, button_map={'submit': 'outline-light float-right'}) }}
-      {% else %}
-      {{ wtf.quick_form(form, button_map={'submit': 'primary btn-filled float-right'}) }}
-      {% endif %}
-      {% endwith %}
-   </div>
+  <div class="modal-body" id="edit-modal-body">
+    {% with messages = get_flashed_messages() %} {% if messages: %}
+    <p>{{messages[0]}}</p>
+    {% endif %} {{ form.csrf_token }} {% if DARKMODE: %} {{ wtf.quick_form(form,
+    button_map={'submit': 'outline-light float-right'}) }} {% else %} {{
+    wtf.quick_form(form, button_map={'submit': 'primary btn-filled
+    float-right'}) }} {% endif %} {% endwith %}
+  </div>
 </div>
 <div id="overlay"></div>
 
-<div class="container main-content" style="margin-bottom: 5rem;">
-
-   <div class="col-lg-8 col-md-10 mx-auto">
-      <div data-button-map class="btn-group profile-btns categories-btns-row" role="group"
-           aria-label="Basic outlined example">
-         <button data-button="1" type="button" class="btn btn-outline-info active category-btn">Blogs</button>
-         <button data-button='2' type="button" class="btn btn-outline-info category-btn">Posts</button>
-         {% if current_user.id == admin_user.id %}
-         <button data-button='3' type="button" class="btn btn-outline-info category-btn">Chat</button>
-         <button data-button='4' type="button" class="btn btn-outline-info category-btn">Details</button>
-         {% endif %}
-      </div>
-      {% if not blogs: %}
-      <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem;">
-      <div style="text-align: center;">
-         {% if current_user.id == admin_user.id %}
-         You haven't written any blogs yet, you can start here:
-         <div class="clearfix" style="margin: 3rem 0;">
-            <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-center"
-               href="{{url_for('pages.create_blog')}}" style="margin-left: 1em;">Create
-               New Blog</a>
-         </div>
-         {% else: %}
-         <p>
-            It seems that the creator hasn't posted anything yet 😖
-         </p>
-         <p>
-            Log in to your account at the top to create your own blog!
-         </p>
-         {% endif %}
-      </div>
-
-      {% else: %}
-      <div data-container-info data-dark="{{ DARKMODE }}">
-
-
-         {% for blog in blogs %}
-         <div class="smooth-scroll">
-
-            <hr style="border-top: var(--darkmode-border); margin-top: 3rem;">
-            <div class="post-preview">
-               {% if current_user.id == admin_user.id %}
-               <div class="delete-container">
-                  <button type="button" data-url="{{url_for('api.delete_blog', blog_id=blog.id)}}"
-                          data-context="delete your Blog"
-                          class="btn btn-delete btn-outline-danger delete-blog float-right">
-                     Delete
-                     blog
-                  </button>
-               </div>
-               {% endif %}
-
-               <a href="{{ url_for('pages.get_all_posts', blog_id=blog.id, raise_view=1) }}">
-                     <h2 class="post-title text-truncate" id="post-title">
-                        {{blog.name}}
-                     </h2>
-                  <div class="col-md-9 col-sm-9" style="padding-left: 0;">
-                     <h4 class="post-subtitle text-truncate" id="post-subtitle">
-                        {{blog.description | striptags}}
-                     </h4>
-                  </div>
-               </a>
-
-
-               <div class="row post-desc">
-                  <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">Posted by
-                     <a href="{{ url_for('pages.profile', user_id=blog.author_id) }}">{{admin_user.name}}</a>
-                     on {{blog.created_date}}
-                  </p>
-                  <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views"> {{blog.views}} 👁️</h4>
-               </div>
-            </div>
-         </div>
-         {% endfor %}
-      </div>
-
+<div class="container main-content" style="margin-bottom: 5rem">
+  <div class="col-lg-8 col-md-10 mx-auto">
+    <div
+      data-button-map
+      class="btn-group profile-btns categories-btns-row"
+      role="group"
+      aria-label="Basic outlined example"
+    >
+      <button
+        data-button="1"
+        type="button"
+        class="btn btn-outline-info active category-btn"
+      >
+        Blogs
+      </button>
+      <button
+        data-button="2"
+        type="button"
+        class="btn btn-outline-info category-btn"
+      >
+        Posts
+      </button>
       {% if current_user.id == admin_user.id %}
-         <a data-type="btn-outline-info" class="btn btn-new-post btn-outline-info float-right"
-               href="{{url_for('pages.create_blog')}}" style="margin: 2em 0 0 1em;">Create
-               New Blog</a>
+      <button
+        data-button="3"
+        type="button"
+        class="btn btn-outline-info category-btn"
+      >
+        Chat
+      </button>
+      <button
+        data-button="4"
+        type="button"
+        class="btn btn-outline-info category-btn"
+      >
+        Details
+      </button>
       {% endif %}
+    </div>
+    {% if not blogs: %}
+    <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem" />
+    <div style="text-align: center">
+      {% if current_user.id == admin_user.id %} You haven't written any blogs
+      yet, you can start here:
+      <div class="clearfix" style="margin: 3rem 0">
+        <a
+          data-type="btn-outline-info"
+          class="btn btn-new-post btn-outline-info float-center"
+          href="{{url_for('pages.create_blog')}}"
+          style="margin-left: 1em"
+          >Create New Blog</a
+        >
+      </div>
+      {% else: %}
+      <p>It seems that the creator hasn't posted anything yet 😖</p>
+      <p>Log in to your account at the top to create your own blog!</p>
+      {% endif %}
+    </div>
 
-      {% endif %}
+    {% else: %}
+    <div data-container-info data-dark="{{ DARKMODE }}">
+      {% for blog in blogs %}
+      <div class="smooth-scroll">
+        <hr style="border-top: var(--darkmode-border); margin-top: 3rem" />
+        <div class="post-preview">
+          {% if current_user.id == admin_user.id %}
+          <div class="delete-container">
+            <button
+              type="button"
+              data-url="{{url_for('api.delete_blog', blog_id=blog.id)}}"
+              data-context="delete your Blog"
+              class="btn btn-delete btn-outline-danger delete-blog float-right"
+            >
+              Delete blog
+            </button>
+          </div>
+          {% endif %}
 
-      {% if current_user.id == admin_user.id or all_posts|length > 1 %}
-      <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem;">
-      {% endif %}
-   </div>
+          <a
+            href="{{ url_for('pages.get_all_posts', blog_id=blog.id, raise_view=1) }}"
+          >
+            <h2 class="post-title text-truncate" id="post-title">
+              {{blog.name}}
+            </h2>
+            <div class="col-md-9 col-sm-9" style="padding-left: 0">
+              <h4 class="post-subtitle text-truncate" id="post-subtitle">
+                {{blog.description | striptags}}
+              </h4>
+            </div>
+          </a>
+
+          <div class="row post-desc">
+            <p class="post-meta col-9 col-lg-10 col-md-10 col-sm-9">
+              Posted by
+              <a href="{{ url_for('pages.profile', user_id=blog.author_id) }}"
+                >{{admin_user.name}}</a
+              >
+              on {{blog.created_date}}
+            </p>
+            <h4 class="col-3 col-lg-2 col-md-2 col-sm-3 views">
+              {{blog.views}} 👁️
+            </h4>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if current_user.id == admin_user.id %}
+    <a
+      data-type="btn-outline-info"
+      class="btn btn-new-post btn-outline-info float-right"
+      href="{{url_for('pages.create_blog')}}"
+      style="margin: 2em 0 0 1em"
+      >Create New Blog</a
+    >
+    {% endif %} {% endif %} {% if current_user.id == admin_user.id or
+    all_posts|length > 1 %}
+    <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem" />
+    {% endif %}
+  </div>
 </div>
-<hr class="hor-line">
-
+<hr class="hor-line" />
 
 {% include "footer.html"%}

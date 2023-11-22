@@ -203,6 +203,8 @@ const readyChat = function (buttonRow) {
   friendsBtn.classList.remove("active");
   if (window.innerWidth > 800 && !buttonRow)
     showFriends(friendChatContainer, htmlForFriendsChat);
+  if (window.innerWidth > 800 && !buttonRow)
+    showFriends(friendChatContainer, htmlForFriendsChat);
 };
 
 const checkSize = function () {
@@ -213,11 +215,15 @@ const checkSize = function () {
     chatContainer.querySelector("#chat")?.classList.add("chat-full");
     phone_mode = true;
   } else if (window.innerWidth > 800 && phone_mode) {
+    phone_mode = true;
+  } else if (window.innerWidth > 800 && phone_mode) {
     friendChatContainer.closest(".friends").style.display = "block";
     chatContainer.classList.add("col-9");
     modal.classList.remove("full-screen");
     chatContainer.querySelector("#chat")?.classList.remove("chat-full");
 
+    showFriends(friendChatContainer, htmlForFriendsChat);
+    phone_mode = false;
     showFriends(friendChatContainer, htmlForFriendsChat);
     phone_mode = false;
   }
@@ -234,8 +240,15 @@ window.addEventListener("resize", checkSize);
 function getChat(buttonClicked) {
   showChat(buttonClicked);
   summonChat(false, buttonClicked.classList.contains("friend-row"));
+  summonChat(false, buttonClicked.classList.contains("friend-row"));
 
   chatInfo.link = `/get_user_message/${buttonClicked.dataset.friendId}`;
+  chatContainer.querySelector("#chat").innerHTML = `
+  <div class="spinner-container">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
   chatContainer.querySelector("#chat").innerHTML = `
   <div class="spinner-container">
     <div class="spinner-border text-color" role="status">
@@ -268,6 +281,22 @@ function getChat(buttonClicked) {
 
 const showFriends = async function (container, html) {
   const friendsInfo = new Info(`/get_friends/${userId}`);
+  if (container.id === "friends") {
+    container.innerHTML = `
+  <div class="spinner-container" style="position: fixed;left: 10%; top: 30%;">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
+  } else {
+    container.innerHTML = `
+  <div class="spinner-container">
+    <div class="spinner-border text-color" role="status">
+      <span class="hidden">Loading...</span>
+    </div>
+  </div>`;
+  }
+
   if (container.id === "friends") {
     container.innerHTML = `
   <div class="spinner-container" style="position: fixed;left: 10%; top: 30%;">

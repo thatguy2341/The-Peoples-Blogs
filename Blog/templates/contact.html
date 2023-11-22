@@ -1,10 +1,11 @@
-{% include "header.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% set current_user = session.current_user %}
+{% include "header.html" %} {% import "bootstrap/wtf.html" as wtf %} {% set
+current_user = session.current_user %}
 <!-- Page Header-->
-<header class="masthead lazy-img"
-        style="background-image: url('{{ url_for('static', filename='img/contact-bg-blur.jpg')}}')"
-        data-start="url({{ url_for('static', filename='img/contact-bg.jpg')}})">
+<header
+  class="masthead lazy-img"
+  style="background-image: url('{{ url_for('static', filename='img/contact-bg-blur.jpg')}}')"
+  data-start="url({{ url_for('static', filename='img/contact-bg.jpg')}})"
+>
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
@@ -23,28 +24,25 @@
   <div class="container">
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
-        <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as
-          possible!</p>
-        {% with messages = get_flashed_messages() %}
-        {% if messages: %}
-        <p style="color: red; font-size: 1.3rem; padding-top: 3rem;">{{messages[0]}}</p>
-        {% endif %}
-        {% endwith %}
-        
-        {{ ckeditor.load(pkg_type="basic") }}
-        {{ ckeditor.config(name='body') }}
-        {% if DARKMODE: %}
-        {{ wtf.quick_form(form, button_map={'submit': 'outline-light'}) }}
-        {% else %}
-        {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
-        {% endif %}
-      
+        <p>
+          Want to get in touch? Fill out the form below to send me a message and
+          I will get back to you as soon as possible!
+        </p>
+        {% with messages = get_flashed_messages() %} {% if messages: %}
+        <p style="color: red; font-size: 1.3rem; padding-top: 3rem">
+          {{messages[0]}}
+        </p>
+        {% endif %} {% endwith %} {{ ckeditor.load(pkg_type="basic") }} {{
+        ckeditor.config(name='body') }} {% if DARKMODE: %} {{
+        wtf.quick_form(form, button_map={'submit': 'outline-light'}) }} {% else
+        %} {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }} {% endif
+        %}
       </div>
     </div>
   </div>
 </main>
 <!-- Footer-->
-<hr class="hor-line">
+<hr class="hor-line" />
 {% include "footer.html" %}
 
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
