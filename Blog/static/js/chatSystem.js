@@ -185,7 +185,7 @@ const readyChat = function () {
 };
 
 const checkSize = function () {
-  if (window.innerWidth < 800 && !phone_mode) {
+  if (window.innerWidth < 800) {
     friendChatContainer.closest(".friends").style.display = "none";
     chatContainer.classList.remove("col-9");
     modal.classList.add("full-screen");
