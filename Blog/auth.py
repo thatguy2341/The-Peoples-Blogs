@@ -34,18 +34,12 @@ def online(data):
     user.online = 1
     session['id'] = user.id
     session[str(user.id)] = True
-    session['id'] = user.id
-    session[str(user.id)] = True
     db.session.commit()
     socket.emit('connected', {'id': user.id})
 
 
 def offline(data):
     user = Users.query.get(data['id'])
-    user.online = 0
-    session['id'] = 0
-    session[str(user.id)] = False
-    session.clear()
     session['dark_mode'] = user.dark_mode
     session['id'] = 0
     session[str(user.id)] = False
@@ -122,8 +116,6 @@ def login():
 @auth.route('/logout/')
 @login_required
 def logout():
-    offline({'id': session['id']})
-    # logout_user()
     offline({'id': session['id']})
     # logout_user()
     return redirect(url_for('pages.home_page'))
