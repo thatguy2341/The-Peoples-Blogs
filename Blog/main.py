@@ -18,8 +18,7 @@ def inject_current_data():
 
     if session.get('id'):
         user = db.session.get(Users, session['id'])
-        new_notification = user.notification_seen < user.notifications[-1].id if user.notifications else False
-        print(new_notification)
+        new_notification = not user.notification_seen
         session['current_user'] = user.to_dict()
         return dict(year=datetime.now().year, DARKMODE=user.dark_mode, is_authenticated=True,
                     new_notification=new_notification)

@@ -215,8 +215,6 @@ const checkSize = function () {
     chatContainer.querySelector("#chat")?.classList.add("chat-full");
     phone_mode = true;
   } else if (window.innerWidth > 800 && phone_mode) {
-    phone_mode = true;
-  } else if (window.innerWidth > 800 && phone_mode) {
     friendChatContainer.closest(".friends").style.display = "block";
     chatContainer.classList.add("col-9");
     modal.classList.remove("full-screen");

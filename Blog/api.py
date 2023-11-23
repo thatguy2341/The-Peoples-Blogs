@@ -128,26 +128,6 @@ def send_message(friend_id):
     return jsonify({'failed': 'user not friend'}), 404
 
 
-@api.route('/send_notification/<int:user_id>/<type_>', methods=['GET'])
-def send_notification(user_id, type_):
-    if type_ in ['message', 'friend_req']:
-        current_user = db.session.query(Users).get(session['id'])
-        user = Users.query.get(user_id)
-        for notification in user.notifications:
-            if notification.type_ == type_ and notification.from_id == current_user.id:
-                return jsonify({'failed': 'spam notification'}), 404
-
-        new_notification = Notifications()
-        new_notification.from_id = current_user.id
-        new_notification.user = user
-        new_notification.type_ = type_
-        db.session.add(new_notification)
-        db.session.commit()
-        return jsonify({'success': 'true'}), 200
-
-    return jsonify({'failed': 'wrong type'}), 404
-
-
 @api.route('/get_friends/<int:user_id>', methods=['Get'])
 @login_required
 def get_friends(user_id):
@@ -196,6 +176,27 @@ def remove_friend(friend_id):
         return jsonify({}), 200
 
     return jsonify({'failed': 'user doesnt have that friend'}), 404
+
+
+@api.route('/send_notification/<int:user_id>/<type_>', methods=['GET'])
+def send_notification(user_id, type_):
+    if type_ in ['message', 'friend_req']:
+        current_user = db.session.query(Users).get(session['id'])
+        user = Users.query.get(user_id)
+        for notification in user.notifications:
+            if notification.type_ == type_ and notification.from_id == current_user.id:
+                return jsonify({'failed': 'spam notification'}), 404
+
+        new_notification = Notifications()
+        new_notification.from_id = current_user.id
+        new_notification.user = user
+        new_notification.type_ = type_
+        db.session.add(new_notification)
+        user.notification_seen = 0
+        db.session.commit()
+        return jsonify({'success': 'true'}), 200
+
+    return jsonify({'failed': 'wrong type'}), 404
 
 
 @api.route('/get_notifications/<int:user_id>', methods=['Get'])
