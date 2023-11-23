@@ -8,6 +8,7 @@ const notificationBell = document.querySelector("#notification-bell");
 const notificationContainer = document.querySelector(
   "#notifications-container"
 );
+const friendsInfo = new Info();
 const modal = document.querySelector("#chat-modal");
 const chatContainer = document.querySelector("#chat-area");
 const friendsBody = document.querySelector("#friends-body");
@@ -132,11 +133,12 @@ const htmlForChat = function (message) {
 };
 
 const sendMessage = function (buttonClicked) {
-  const last_message = modal.querySelector(
-    `.friend-row[data-id="${buttonClicked.dataset.friendId}"] .friend-message`
-  );
-  last_message.innerText = this.value;
-
+  if (!phone_mode) {
+    const last_message = modal.querySelector(
+      `.friend-row[data-id="${buttonClicked.dataset.friendId}"] .friend-message`
+    );
+    last_message.innerText = this.value;
+  }
   chatInfo.showInfo({
     htmlBuilder: htmlForChat,
     container: chatContainer.querySelector("#chat"),
@@ -214,16 +216,23 @@ const checkSize = function () {
     modal.classList.add("full-screen");
     chatContainer.querySelector("#chat")?.classList.add("chat-full");
     phone_mode = true;
-  } else if (window.innerWidth > 800 && phone_mode) {
+  } else if (window.innerWidth > 800) {
     friendChatContainer.closest(".friends").style.display = "block";
     chatContainer.classList.add("col-9");
     modal.classList.remove("full-screen");
     chatContainer.querySelector("#chat")?.classList.remove("chat-full");
 
-    showFriends(friendChatContainer, htmlForFriendsChat);
-    phone_mode = false;
-    showFriends(friendChatContainer, htmlForFriendsChat);
-    phone_mode = false;
+    if (phone_mode) {
+      friendChatContainer.innerHTML = "";
+      friendsInfo.infoList?.forEach((friend) => {
+        friendsInfo.showInfo({
+          htmlBuilder: htmlForFriendsChat,
+          container: friendChatContainer,
+          info: friend,
+        });
+      });
+      phone_mode = false;
+    }
   }
 };
 
@@ -278,7 +287,7 @@ function getChat(buttonClicked) {
 }
 
 const showFriends = async function (container, html) {
-  const friendsInfo = new Info(`/get_friends/${userId}`);
+  friendsInfo.link = `/get_friends/${userId}`;
   if (container.id === "friends") {
     container.innerHTML = `
   <div class="spinner-container" style="position: fixed;left: 10%; top: 30%;">

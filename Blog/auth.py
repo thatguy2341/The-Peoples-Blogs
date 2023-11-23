@@ -11,7 +11,7 @@ auth = Blueprint('auth', __name__)
 
 def login_required(func):
     def wrapper(*args, **kwargs):
-        if Users.query.get(session['id']).is_authenticated:
+        if session.get('id') and Users.query.get(session['id']).is_authenticated:
             return func(*args, **kwargs)
         else:
             return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
@@ -40,13 +40,20 @@ def online(data):
 
 def offline(data):
     user = Users.query.get(data['id'])
-    session['dark_mode'] = user.dark_mode
     session['id'] = 0
     session[str(user.id)] = False
     session.clear()
     session['dark_mode'] = user.dark_mode
+    user.online = 0
     db.session.commit()
     socket.emit('disconnected', {'id': user.id})
+
+
+# @socket.on('disconnect')
+# def disconnect():
+#     if session.get('id'):
+#         offline({'id': session['id']})
+#     return redirect(url_for('pages.home_page'))
 
 
 @auth.route('/register', methods=["POST", "GET"])
@@ -80,9 +87,6 @@ def register():
             flash("You already signed in with this email before, log in instead!")
             return redirect(url_for('auth.login'))
         else:
-
-            # login_user(user=new_user)
-            # login_user(user=new_user)
             return redirect(url_for('pages.home_page'))
 
     return render_template("register.html", form=form)
@@ -117,5 +121,4 @@ def login():
 @login_required
 def logout():
     offline({'id': session['id']})
-    # logout_user()
     return redirect(url_for('pages.home_page'))

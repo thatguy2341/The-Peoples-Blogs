@@ -164,6 +164,11 @@ const topFill = function () {
 
 topFill();
 document.addEventListener("scroll", topFill);
+
+//////////////////////////////////////
+// Log out system
+
+// If user is inputing something important:
 let stop = true;
 
 document.querySelector("#submit")?.addEventListener("click", function () {
@@ -182,6 +187,20 @@ window.addEventListener("beforeunload", function (e) {
   });
 });
 
-window.addEventListener("unload", function () {
+// On user exits logout user:
+const logUserOut = function () {
   if (userId) fetch("/logout/");
-});
+};
+window.addEventListener("unload", logUserOut);
+
+// On user inactive logout user:
+let logout = setTimeout(logUserOut, 1800_000);
+
+const repeat = function () {
+  clearTimeout(logout);
+  logout = setTimeout(logUserOut, 1800_000);
+};
+window.addEventListener("click", repeat);
+window.addEventListener("scroll", repeat);
+document.addEventListener("pointermove", repeat);
+document.addEventListener("keypress", repeat);
