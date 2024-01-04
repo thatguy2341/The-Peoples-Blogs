@@ -27,7 +27,7 @@
     ></script>
     <script>
       const socket = io.connect(
-        "http://" + document.domain + ":" + location.port
+        document.domain + ":" + location.port
       );
     </script>
 
@@ -298,7 +298,7 @@
 
       <!--Notifications MODEL-->
       <div
-        class="modal chat-modal overflow-auto"
+        class="modal notification-modal overflow-auto"
         id="notification-modal"
         style="color: black"
       >

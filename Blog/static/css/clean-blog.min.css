@@ -802,7 +802,14 @@ max-height: 70vh;
     width: -webkit-fill-available
 }
 
-.friend-modal-body {
+.notification-modal {
+   width: 900px;
+   max-width: 80%;
+   height: 500px;
+   max-height: 50vh;
+}
+.notification-modal.active {
+   transform: translate(-50%, -60%) scale(1);
 }
 
 .friend {

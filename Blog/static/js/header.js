@@ -200,7 +200,7 @@ const repeat = function () {
   clearTimeout(logout);
   logout = setTimeout(logUserOut, 1800_000);
 };
-window.addEventListener("click", repeat);
-window.addEventListener("scroll", repeat);
+document.addEventListener("click", repeat);
+document.addEventListener("scroll", repeat);
 document.addEventListener("pointermove", repeat);
 document.addEventListener("keypress", repeat);

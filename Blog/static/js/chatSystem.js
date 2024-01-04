@@ -135,7 +135,7 @@ const htmlForChat = function (message) {
 const sendMessage = function (buttonClicked) {
   if (!phone_mode) {
     const last_message = modal.querySelector(
-      `.friend-row[data-id="${buttonClicked.dataset.friendId}"] .friend-message`
+      `.friend-row[data-id="${buttonClicked.dataset.id}"] .friend-message`
     );
     last_message.innerText = this.value;
   }

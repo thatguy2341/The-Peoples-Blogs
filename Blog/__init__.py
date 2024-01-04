@@ -11,12 +11,14 @@ socket = SocketIO()
 
 def create_app():
     app = Flask(__name__)
-    if environ.get("LOCAL") == "True":
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-    else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = getenv("DATABASE_URL")
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 
-    app.config['SECRET_KEY'] = getenv("SECRET_KEY")
+    # if environ.get("LOCAL") == "T":
+    #     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+    # else:
+    #     app.config['SQLALCHEMY_DATABASE_URI'] = getenv("DATABASE_URL")
+
+    app.config['SECRET_KEY'] =  "eahfeshfseh;iuhf;iusliuhfs;iuh"#getenv("SECRET_KEY")
     app.app_context().push()
 
     db.init_app(app)
