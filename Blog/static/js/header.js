@@ -2,12 +2,11 @@
 
 const body = document.querySelector("body");
 
-export const socket = io({ autoConnect: false });
+// export const socket = io({ autoConnect: false });
 export const darkMode = body.dataset.darkMode === "True";
 export const userId = Number(body.dataset.id);
 
-socket.connect(document.domain + ":" + location.port);
-console.log(document.domain + ":" + location.port);
+// socket.connect(document.domain + ":" + location.port);
 
 if (darkMode) {
   document.documentElement.style.setProperty("--anchor-color", "white");
