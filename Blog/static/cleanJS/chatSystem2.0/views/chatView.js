@@ -219,12 +219,9 @@ class ChatView extends PopupView {
     this.#input.focus();
   }
 
-  showFriendDisconnect(data) {
-    this.modal
-      .querySelectorAll(`#online[data-id="${data["id"]}"]`)
-      .forEach((element) => {
-        element.textContent = "🔴";
-      });
+  showFriendDisconnected(data) {
+    this.modal.querySelector(`#online[data-id="${data["id"]}"]`).textContent =
+      "🔴";
   }
 
   showFriendConnected(data) {

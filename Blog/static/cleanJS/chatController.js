@@ -122,7 +122,7 @@ const init = function () {
   addSocketListeners(
     userId,
     chatView.showFriendConnected.bind(chatView),
-    chatView.showFriendDisconnect.bind(chatView),
+    chatView.showFriendDisconnected.bind(chatView),
     chatView.recieveMessage.bind(chatView)
   );
   checkSize();

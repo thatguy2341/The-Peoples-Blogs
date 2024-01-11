@@ -22,8 +22,6 @@ class FriendsView extends View {
   }
 
   markUp(friend) {
-    console.log(friend);
-
     return `
     <div class="row friends-friend" id="friends-friend">
         <p class="friend-name">${friend.friend_name}
