@@ -26,10 +26,10 @@ export const getChatMessages = async function ({ friendId }) {
 };
 
 export const sendMessage = async function (message, { friendId, id }) {
-  // socket.emit("send_message", {
-  //   id: id,
-  //   message: message,
-  // });
+  socket.emit("send_message", {
+    id: id,
+    message: message,
+  });
   await send(
     `/send_message/${friendId}?message=${message}`,
     "problem sending message"
@@ -74,11 +74,11 @@ export const addSocketListeners = function (
   disconnectCallback,
   reciveMessage
 ) {
-  //   socket.on("connected", connectCallBack);
-  //   socket.on("disconnected", disconnectCallback);
-  //   socket.on("send_message", function (data) {
-  //     if (data.to === userId) {
-  //       reciveMessage(data);
-  //     }
-  //   });
+  socket.on("connected", connectCallBack);
+  socket.on("disconnected", disconnectCallback);
+  socket.on("send_message", function (data) {
+    if (data.to === userId) {
+      reciveMessage(data);
+    }
+  });
 };

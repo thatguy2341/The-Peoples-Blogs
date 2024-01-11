@@ -119,12 +119,12 @@ const init = function () {
     chatWFriend
   );
   friendsView.addInputListener(constrolGetUsers);
-  // addSocketListeners(
-  //   userId,
-  //   chatView.showFriendConnected.bind(chatView),
-  //   chatView.showFriendDisconnected.bind(chatView),
-  //   chatView.recieveMessage.bind(chatView)
-  // );
+  addSocketListeners(
+    userId,
+    chatView.showFriendConnected.bind(chatView),
+    chatView.showFriendDisconnected.bind(chatView),
+    chatView.recieveMessage.bind(chatView)
+  );
   checkSize();
 };
 init();

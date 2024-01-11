@@ -27,8 +27,8 @@ def inject_current_data():
 
 
 if __name__ == "__main__":
-    # socket.run(app, debug=True)
-    app.run()
+    socket.run(app, debug=True)
+    # app.run()
 
 # TODO: lazy loading images. DONE
 # TODO: category for search. DONE
