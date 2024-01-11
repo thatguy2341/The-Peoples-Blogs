@@ -1,6 +1,6 @@
 "use strict";
 
-// import { socket } from "../../js/header.js";
+import { socket } from "../../js/header.js";
 
 export const state = { friends: [], messages: [], users: [] };
 const timeoutSeconds = 15;
