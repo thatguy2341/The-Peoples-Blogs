@@ -1,11 +1,11 @@
 from smtplib import SMTP
 import os
-from __init__ import db
+from __init__ import db, session
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, abort, request, jsonify
 from werkzeug.security import check_password_hash
 from forms import CreatePostForm, RegistrationForm, CommentForm, CreateBlog, ContactForm, Confirm
-from models import Users, Views, Blogs, BlogPost, Comments, session
+from models import Users, Views, Blogs, BlogPost, Comments
 from auth import login_required, title
 
 MY_GMAIL = os.getenv("GMAIL")
@@ -32,7 +32,6 @@ def change_view_mode(change):
 def get_page(page=0):
     if page and page <= db.session.query(Blogs).count() // 10:
         session['page'] = page
-        return
 
     return jsonify({'num': session['page']})
 
@@ -60,7 +59,7 @@ def edit_user(user_id):
             user.email = edit_form.email.data
             user.joined_date = user.joined_date
             user.total_views = user.total_views
-            user.message_seen = user.message_seen
+            user.notification_seen = user.notification_seen
             db.session.commit()
 
             return redirect(url_for("pages.profile", user_id=user_id))
@@ -73,7 +72,7 @@ def edit_user(user_id):
 @pages.route("/create_blog", methods=["GET", "POST"])
 @login_required
 def create_blog():
-    current_user = db.session.query(Users).get(session['id'])
+    current_user = db.session.get(Users, session['id'])
     if len(current_user.blogs) >= 2 and current_user.id != 1:
         flash("The Maximum Amount Of Blogs Is 2")
         return abort(403, description="The Maximum Amount Of Blogs, Currently Available For Each User Are Only 2")
@@ -109,8 +108,7 @@ def create_blog():
 @login_required
 def edit_blog(blog_id):
     blog = Blogs.query.get(blog_id)
-    current_user = db.session.query(Users).get(session['id'])
-    if current_user.id == blog.author_id:
+    if session['id'] == blog.author_id:
         edit_form = CreateBlog(
             name=blog.name,
             description=blog.description,
@@ -151,7 +149,7 @@ def get_all_posts(blog_id):
     admin_user = blog.author
 
     if session.get('id'):
-        current_user = db.session.query(Users).get(session['id'])
+        current_user = db.session.get(Users, session['id'])
         if db.session.query(Views).filter_by(user_id=current_user.id,
                                              blog_id=blog_id).first() is None and current_user != blog.author and raise_view:
             blog.views += 1
@@ -171,7 +169,7 @@ def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
     raise_view = request.args.get("raise_view")
     if session.get('id'):
-        current_user = db.session.query(Users).get(session['id'])
+        current_user = db.session.get(Users, session['id'])
         if db.session.query(Views).filter_by(user_id=current_user.id, blog_id=requested_post.blog_id,
                                              post_id=post_id).first() is None and current_user != requested_post.blog.author and raise_view:
             requested_post.views += 1
@@ -229,8 +227,7 @@ def add_new_post(blog_id):
 @login_required
 def edit_post(post_id, blog_id):
     inside_blog = Blogs.query.get(blog_id)
-    current_user = db.session.query(Users).get(session['id'])
-    if current_user.id == inside_blog.author_id:
+    if session['id'] == inside_blog.author_id:
         post = BlogPost.query.get(post_id)
         edit_form = CreatePostForm(
             title=post.title,
@@ -262,18 +259,12 @@ def contact():
         try:
             # THIS IS SPAM DETECTING SYSTEM, DETECTS IF 2 MESSAGES 1 AFTER THE OTHER ARE THE SAME
             # CAN ADD A CHECK FOR THE SAME NAME ALSO, TOO TIRED THO.
-            with open("message", "rt") as file:
-                message_li = [value.strip("\r").strip() for value in form.message.data.split("\n")]
-                message_last = [value.strip() for value in file.readlines()[::2] if
-                                value.strip() is not None or value != "\n"]
 
-            if len(request.form["message"].strip()) < 7 or message_last == message_li:
+            if len(request.form["message"].strip()) < 7 or session['message'] == form.message.data:
                 flash("Spam Detected, please be patient while sending the message.")
                 return render_template("contact.html", form=form)
             else:
-                with open("message", "wt") as file:
-                    file.write(form.message.data)
-
+                session['message'] = form.message.data
                 with SMTP("smtp.gmail.com") as connection:
                     connection.starttls()
                     connection.login(user=MY_GMAIL, password=MY_PASS)

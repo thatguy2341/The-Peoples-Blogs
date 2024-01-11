@@ -4,6 +4,7 @@
 ### Flask ###
 .webassets-cache
 /message
+/Trash
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files

@@ -1,5 +1,39 @@
 "use strict";
 
+const body = document.querySelector("body");
+
+export const socket = io.connect(); //document.domain + ":" + location.port
+export const darkMode = body.dataset.darkMode === "True";
+export const userId = Number(body.dataset.id);
+
+if (darkMode) {
+  document.documentElement.style.setProperty("--anchor-color", "white");
+  document.documentElement.style.setProperty("--color-darkMode", "black");
+  document.documentElement.style.setProperty("--color-darkModeText", "white");
+  document.documentElement.style.setProperty(
+    "--color-spinner",
+    "#f8f9fa!important;"
+  );
+  document.documentElement.style.setProperty(
+    "--darkmode-border",
+    "1px solid rgba(255,255,255,0.5)"
+  );
+  body.classList.add("dark-mode-active");
+} else {
+  document.documentElement.style.setProperty("--anchor-color", "212529");
+  document.documentElement.style.setProperty("--color-darkMode", "white");
+  document.documentElement.style.setProperty("--color-darkModeText", "black");
+  document.documentElement.style.setProperty(
+    "--color-spinner",
+    "#212529!important;"
+  );
+  document.documentElement.style.setProperty(
+    "--darkmode-border",
+    "1px solid rgba(0,0,0,.1)"
+  );
+  body.classList.remove("dark-mode-active");
+}
+
 if (window.innerWidth < 400) {
   document.querySelector(".navbar-toggler").innerHTML =
     '<i class="fas fa-bars"></i>';
@@ -24,7 +58,6 @@ navBar.addEventListener("mouseout", makeBold.bind(1));
 
 // Dark and Light Mode.
 
-const body = document.querySelector("body");
 const viewBtn = document.querySelector(".light-btn");
 const btnsToChange = document.querySelectorAll(".btn[data-type]");
 const submitBtn = document.getElementById("submit");

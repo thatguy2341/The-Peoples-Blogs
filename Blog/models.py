@@ -1,7 +1,7 @@
-from __init__ import db
+from __init__ import db, online_users
 from sqlalchemy import and_, DateTime
 from sqlalchemy.orm import relationship
-from flask import Blueprint, session
+from flask import Blueprint
 models = Blueprint('auth', __name__)
 
 
@@ -18,17 +18,9 @@ class Users(db.Model):
     total_views = db.Column(db.Integer, nullable=False)
     posts = relationship('BlogPost', back_populates='author')
     friends = relationship('Friends', back_populates='user')
-    online = db.Column(db.Integer, nullable=True, default=0)
     notifications = relationship('Notifications', back_populates="user")
     notification_seen = db.Column(db.Integer, nullable=True, default=0)
     dark_mode = db.Column(db.Boolean, default=False)
-
-    def is_authenticated(self):
-        """Checks if the user is loaded in"""
-        print(session[str(self.id)])
-        if session[str(self.id)]:
-            return True
-        return False
 
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns
@@ -52,7 +44,7 @@ class Friends(db.Model):
                                                               Messages.to_id == self.user_id)).order_by(
             Messages.time.desc()).first()
         data.update({'last_message': last_message.message if last_message is not None else None})
-        data.update({'online': db.session.query(Users).get(self.friend_id).online})
+        data.update({'online': 1 if self.friend_id in online_users else 0})
         return data
 
 

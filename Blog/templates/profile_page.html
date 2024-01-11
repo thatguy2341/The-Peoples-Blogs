@@ -40,8 +40,7 @@ current_user = session.current_user %}
           {% else %}
           <h1 data-id="{{admin_user.id}}">
             {{admin_user.name}}'s Profile {% if current_user not in
-            admin_user.friends and current_user != admin_user and
-            is_authenticated %}
+            admin_user.friends and current_user != admin_user and auth %}
             <a
               about="send a friend request"
               id="friend-request"

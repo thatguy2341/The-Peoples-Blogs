@@ -1,6 +1,7 @@
 "use strict";
 
 import { Info } from "./infoSystem.js";
+import { darkMode } from "./header.js";
 
 const searchBar = document.querySelector("#bar-search");
 const searchBtn = document.querySelector("#button-addon2");
@@ -12,9 +13,6 @@ const nextPageBtn = document.querySelector("#next-page");
 const categories = document.querySelector(".categories-btns-row");
 let search = "";
 let page;
-//SCRIPT_ROOT = SCRIPT_ROOT || "https://the-peoples-blogs.onrender.com/";
-//
-//console.log(SCRIPT_ROOT);
 
 const getCategory = function (targetCategory) {
   if (!targetCategory) return selectedCategroy.innerText ?? "Recent";

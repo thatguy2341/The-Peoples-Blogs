@@ -1,9 +1,9 @@
-from __init__ import db, socket
+from __init__ import db, socket, online_users, session
 from datetime import datetime
 from flask import Blueprint, flash, request, redirect, render_template, url_for, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import exc
-from models import Users, session
+from models import Users
 from forms import RegistrationForm, LoginForm
 
 auth = Blueprint('auth', __name__)
@@ -11,7 +11,7 @@ auth = Blueprint('auth', __name__)
 
 def login_required(func):
     def wrapper(*args, **kwargs):
-        if session.get('id') and Users.query.get(session['id']).is_authenticated:
+        if session.get('id'):
             return func(*args, **kwargs)
         else:
             return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
@@ -31,29 +31,21 @@ def title(string: str):
 
 def online(data):
     user = Users.query.get(data['id'])
-    user.online = 1
     session['id'] = user.id
-    session[str(user.id)] = True
-    db.session.commit()
+    online_users.add(user.id)
     socket.emit('connected', {'id': user.id})
 
 
 def offline(data):
     user = Users.query.get(data['id'])
     session['id'] = 0
-    session[str(user.id)] = False
     session.clear()
+    try:
+        online_users.remove(user.id)
+    except KeyError:
+        pass
     session['dark_mode'] = user.dark_mode
-    user.online = 0
-    db.session.commit()
     socket.emit('disconnected', {'id': user.id})
-
-
-# @socket.on('disconnect')
-# def disconnect():
-#     if session.get('id'):
-#         offline({'id': session['id']})
-#     return redirect(url_for('pages.home_page'))
 
 
 @auth.route('/register', methods=["POST", "GET"])
@@ -76,7 +68,7 @@ def register():
         new_user.password = secured_password
         new_user.joined_date = datetime.now().strftime("%B %d, %Y")
         new_user.total_views = 0
-        new_user.notification_seen = 0
+        new_user.notification_seen = 1
 
         try:
             db.session.add(new_user)
