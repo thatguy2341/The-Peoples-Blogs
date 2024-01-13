@@ -34,11 +34,6 @@ const startBlogs = async function () {
 };
 
 const controlGetPage = function () {
-  console.log(
-    (paginationView.page - 1) * AMOUNT_OF_PAGES_PER_BLOG,
-    (paginationView.page - 1) * AMOUNT_OF_PAGES_PER_BLOG +
-      AMOUNT_OF_PAGES_PER_BLOG
-  );
   blogsView.renderSpinner();
   blogsView.showBlogs(
     state.blogs.slice(
