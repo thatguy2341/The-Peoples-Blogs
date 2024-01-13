@@ -33,8 +33,7 @@ def get_blogs(search, category='Recent'):
     if not all_blogs:
         return jsonify({'Error': f"Sorry, we couldn't find '{search}'"}), 404
 
-    page = session['page']
-    return jsonify({'blogs': all_blogs_dict[page: (page + 1) * 10]}), 200
+    return jsonify({'blogs': all_blogs_dict}), 200
 
 
 @api.route('/get_users/<search>', methods=['GET'])

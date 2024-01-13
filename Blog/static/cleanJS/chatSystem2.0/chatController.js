@@ -1,6 +1,6 @@
 "use strict";
 
-import { getNotifications } from "./notifications/notificationsModel.js";
+import { getNotifications } from "../notifications/notificationsModel.js";
 import {
   getFriends,
   getUsers,
@@ -10,13 +10,13 @@ import {
   sendFriendReq,
   removeFriend,
   addSocketListeners,
-} from "./chatSystem2.0/chatModel.js";
-import notificationView from "./notifications/views/notificationView.js";
-import bellView from "./notifications/views/bellView.js";
-import chatView from "./chatSystem2.0/views/chatView.js";
-import friendsView from "./chatSystem2.0/views/friendsView.js";
-import { userId } from "./../js/header.js";
-import { getTime } from "./extention.js";
+} from "./chatModel.js";
+import notificationView from "../notifications/views/notificationView.js";
+import bellView from "../notifications/views/bellView.js";
+import chatView from "./views/chatView.js";
+import friendsView from "./views/friendsView.js";
+import { userId } from "../../js/header.js";
+import { getTime } from "../extention.js";
 
 let phone_mode = window.innerWidth < 800;
 
@@ -35,7 +35,10 @@ const controlNotifications = async function () {
 };
 
 const checkSize = function () {
-  if (window.innerWidth < 750 || window.innerHeight < 500) {
+  if (
+    (window.innerWidth < 800 && window.innerHeight < 600) ||
+    window.innerHeight < 450
+  ) {
     chatView.fullScreen();
     phone_mode = true;
   } else {
@@ -101,7 +104,7 @@ const constrolGetUsers = async function () {
   if (!input) return friendsView.showData(state["friends"]);
   await getUsers(input);
   friendsView.resetInput();
-  friendsView.showUsers(state["users"]);
+  friendsView.showData(state["users"], undefined, friendsView.markUpUsers);
 };
 
 const init = function () {

@@ -1,12 +1,16 @@
 "use strict";
 
 import { socket } from "../../js/header.js";
+import { get, send } from "../extention.js";
 
 export const state = { friends: [], messages: [], users: [] };
-const timeoutSeconds = 15;
 
 export const getFriends = async function (userId) {
-  await get(`/get_friends/${userId}`, "friends", "problem getting friends");
+  state["friends"] = await get(
+    `/get_friends/${userId}`,
+    "friends",
+    "problem getting friends"
+  );
 };
 
 export const removeFriend = async function (url) {
@@ -18,7 +22,7 @@ export const sendFriendReq = async function (url) {
 };
 
 export const getChatMessages = async function ({ friendId }) {
-  await get(
+  state["messages"] = await get(
     `/get_user_message/${friendId}`,
     "messages",
     "problem getting chat messages"
@@ -37,35 +41,11 @@ export const sendMessage = async function (message, { friendId, id }) {
 };
 
 export const getUsers = async function (input) {
-  await get(`/get_users/${input}`, "users", "failed getting users");
-};
-
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
-const get = async function (link, type, error) {
-  try {
-    const response = await Promise.race([fetch(link), timeout(timeoutSeconds)]);
-    if (!response.ok) throw new Error(error);
-    const data = await response.json();
-    state[type] = data[type];
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const send = async function (link, error) {
-  try {
-    const response = await Promise.race([fetch(link), timeout(timeoutSeconds)]);
-    if (!response.ok) throw new Error(error);
-  } catch (error) {
-    console.error(error);
-  }
+  state["users"] = await get(
+    `/get_users/${input}`,
+    "users",
+    "failed getting users"
+  );
 };
 
 export const addSocketListeners = function (

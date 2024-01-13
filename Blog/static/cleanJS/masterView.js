@@ -15,7 +15,7 @@ export class View {
     this._container?.classList.add("hidden");
   }
 
-  addSmoothScrolling() {
+  addSmoothScrolling(section) {
     const revealSection = function (entries, observer) {
       const [entry] = entries;
       if (entry.isIntersecting) {
@@ -28,26 +28,44 @@ export class View {
       root: null,
       threshold: 0.25,
     });
-    this._sectionList.forEach((section) => {
-      section.classList.add("section--hidden");
-      section.classList.add("smooth-scroll");
-      observer.observe(section);
-    });
+    section.classList.add("section--hidden");
+    section.classList.add("smooth-scroll");
+    observer.observe(section);
   }
-  showData(dataArray, addClasses = []) {
-    this._container.innerHTML = "";
-    dataArray = dataArray || this._sectionList;
-    if (!dataArray) {
-      this._container.innerHTML = this.error;
+
+  /**
+   * This is a function that if a view class is built with the correct interface,
+   * will render an array of data each element as a section into a container by only recieving the data array.
+   * @param {Array} dataArray data to render.
+   * @param {Element} [container=this._container] container to render data into.
+   * @param {function markUp(data) {return html}} [htmlBuilder=this.markUp] htmlBuilder html to render the data into
+   * @param {Array} addClasses (optional) add classes to the outer div of each section
+   * @param {Element} [errorContainer=this._container] if error then will insert it to this container.
+   * @param {Boolean} [smoothScrolling=false] to add smooth scrolling to the rendered elements.
+   * @returns the last section that was rendered into the container.
+   */
+  showData(
+    dataArray,
+    container = this._container,
+    htmlBuilder = this.markUp,
+    addClasses = [],
+    errorContainer = this._container,
+    smoothScrolling = false
+  ) {
+    if (dataArray.length === 0) {
+      errorContainer.textContent = this.error;
+      return;
     }
-
+    container.innerHTML = "";
+    errorContainer.innerHTML = "";
+    let newSection;
     dataArray.forEach((data) => {
-      // TODO MAYBE CAN JUST CREATE 1 ELEMENT
-
-      const newSection = document.createElement("div");
+      newSection = document.createElement("div");
       if (addClasses) addClasses.forEach((cl) => newSection.classList.add(cl));
-      newSection.innerHTML = this.markUp(data);
-      this._container.insertAdjacentElement("beforeend", newSection);
+      newSection.innerHTML = htmlBuilder(data);
+      container.insertAdjacentElement("beforeend", newSection);
+      if (smoothScrolling) this.addSmoothScrolling(newSection);
     });
+    return newSection;
   }
 }

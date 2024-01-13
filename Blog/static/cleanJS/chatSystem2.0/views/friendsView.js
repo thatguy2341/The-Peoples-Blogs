@@ -7,6 +7,7 @@ class FriendsView extends View {
   #friendsInput = document.querySelector("#friends-input");
   #friendsBtn = document.querySelector("#friends-button-title");
   #friendsBody = document.querySelector("#friends-body");
+  error = "failed to get users, check your internet connection";
 
   markUpUsers(user) {
     return `
@@ -57,14 +58,14 @@ class FriendsView extends View {
     this.#friendsBtn.classList.add("active");
   }
 
-  showUsers(users) {
-    this._container.innerHTML = "";
-    users.forEach((user) => {
-      const newSection = document.createElement("div");
-      newSection.innerHTML = this.markUpUsers(user);
-      this._container.insertAdjacentElement("beforeend", newSection);
-    });
-  }
+  // showUsers(users) {
+  //   this._container.innerHTML = "";
+  //   users.forEach((user) => {
+  //     const newSection = document.createElement("div");
+  //     newSection.innerHTML = this.markUpUsers(user);
+  //     this._container.insertAdjacentElement("beforeend", newSection);
+  //   });
+  // }
 
   addStarterListener(callBackFunc) {
     this.#friendsBtn.addEventListener("click", callBackFunc);

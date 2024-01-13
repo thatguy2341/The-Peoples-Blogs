@@ -3,7 +3,7 @@
   <script
     defer
     type="module"
-    src="{{url_for('static', filename='js/searchSystem2.0.js')}}"
+    src="{{url_for('static', filename='cleanJS/searchSystem3.0/blogsController.js')}}"
   ></script>
   <script async src="{{url_for('static', filename='js/dropdown.js')}}"></script>
 </head>
@@ -73,16 +73,17 @@
               <div class="caret" style="border-top: 6px solid white"></div>
             </div>
             <ul class="menu menu-disable" style="color: white">
-              <li class="option">Popular</li>
-              <li class="option dropdown-active">Recent</li>
-              <li class="option">Latest</li>
+              <li data-category="t" class="option">Popular</li>
+              <li data-category="t" class="option dropdown-active">Recent</li>
+              <li data-category="t" class="option">Latest</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="row categories-btns-row">
+      <div class="row categories-btns-row categories-btns-disable">
         <button
+          data-category="t"
           type="button"
           data-type="btn-outline-dark"
           class="col btn category-btn btn-outline-light float-left"
@@ -90,6 +91,7 @@
           Popular
         </button>
         <button
+          data-category="t"
           type="button"
           data-type="btn-outline-dark"
           class="col btn category-btn btn-outline-light"
@@ -98,6 +100,7 @@
           Recent
         </button>
         <button
+          data-category="t"
           type="button"
           data-type="btn-outline-dark"
           class="col btn category-btn btn-outline-light float-right"
@@ -135,24 +138,21 @@
         ></div>
       </div>
 
-      {% if not auth %}
-      <hr class="smooth-scroll hor-line" />
-      {% endif %}
-
       <div
+        data-num="2"
         class="container clearfix smooth-scroll btn-hide"
         id="next-page"
         style="margin: 3rem 0"
       >
         <a
-          data-num="{{page + 1}}"
           data-type="btn-outline-info"
-          class="btn btn-new-post btn-outline-light float-right"
+          class="btn btn-new-post btn-outline-light float-right hidden"
           >Next Page</a
         >
       </div>
 
       {% if current_user.blogs | length <= 2 and not auth : %}
+      <hr class="smooth-scroll hor-line" style="margin-top: 10rem" />
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem">
           You can create your own blogs, by joining the community.
@@ -160,7 +160,7 @@
         </h4>
       </div>
       <div class="row smooth-scroll">
-        <div class="col col-lg-9 col-md-9 col-sm-9">
+        <div id="register-msg" class="col col-lg-9 col-md-9 col-sm-9">
           Click register, to create a new account:
         </div>
 
@@ -175,7 +175,7 @@
       </div>
       <hr class="smooth-scroll hor-line" />
       <div class="row smooth-scroll">
-        <div class="col col-lg-9 col-md-9 col-sm-9">
+        <div id="login-msg" class="col col-lg-9 col-md-9 col-sm-9">
           If you already have an account, login here:
         </div>
         <div class="col col-lg-3 col-md-3 col-sm-3">
@@ -257,16 +257,17 @@
               <div class="caret"></div>
             </div>
             <ul class="menu menu-disable" style="color: black">
-              <li class="option">Popular</li>
-              <li class="option dropdown-active">Recent</li>
-              <li class="option">Latest</li>
+              <li data-category="t" class="option">Popular</li>
+              <li data-category="t" class="option dropdown-active">Recent</li>
+              <li data-category="t" class="option">Latest</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="row categories-btns-row">
+      <div class="row categories-btns-row categories-btns-disable">
         <button
+          data-category="t"
           type="button"
           data-type="btn-outline-dark"
           class="col btn category-btn btn-outline-dark float-left"
@@ -274,6 +275,7 @@
           Popular
         </button>
         <button
+          data-category="t"
           type="button"
           data-type="btn-outline-dark"
           class="col btn category-btn btn-outline-dark"
@@ -282,6 +284,7 @@
           Recent
         </button>
         <button
+          data-category="t"
           type="button"
           data-type="btn-outline-dark"
           class="col btn category-btn btn-outline-dark float-right"
@@ -321,20 +324,20 @@
       </div>
 
       <div
-        class="container clearfix smooth-scroll btn-hide"
+        data-num="2"
+        class="container clearfix smooth-scroll btn-hide hidden"
         id="next-page"
         style="margin: 3rem 0"
       >
         <a
-          data-num="{{page + 1}}"
           data-type="btn-outline-info"
-          class="btn btn-new-post btn-outline-info float-right"
+          class="btn btn-new-post btn-outline-info float-right hidden"
           >Next Page</a
         >
       </div>
 
       {% if current_user.blogs | length <= 2 and not auth: %}
-      <hr class="smooth-scroll hor-line" style="margin-top: 15rem" />
+      <hr class="smooth-scroll hor-line" style="margin-top: 10rem" />
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem">
           You can create your own blogs, by joining the community.

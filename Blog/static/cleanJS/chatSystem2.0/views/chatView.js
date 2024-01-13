@@ -75,13 +75,12 @@ class ChatView extends PopupView {
   }
 
   showPastMessages(messages) {
-    this.#messagesContainer.innerHTML = "";
-    let lastMessage;
-    messages.forEach((message) => {
-      lastMessage = document.createElement("div");
-      lastMessage.innerHTML = this.htmlForMessage(message);
-      this.#messagesContainer.insertAdjacentElement("beforeend", lastMessage);
-    });
+    const lastMessage = this.showData(
+      messages,
+      this.#messagesContainer,
+      this.htmlForMessage
+    );
+
     this.scrollToMessage(lastMessage);
   }
 
@@ -112,14 +111,9 @@ class ChatView extends PopupView {
   }
 
   showFriends(friends) {
-    this.#friendChatContainer.innerHTML = "";
-    friends.forEach((friend) => {
-      // TODO MAYBE CAN JUST CREATE 1 ELEMENT
-      const section = document.createElement("div");
-      section.classList.add("friend-container");
-      section.innerHTML = this.htmlForFriendsChat(friend);
-      this.#friendChatContainer.insertAdjacentElement("beforeend", section);
-    });
+    this.showData(friends, this.#friendChatContainer, this.htmlForFriendsChat, [
+      "friend-container",
+    ]);
   }
 
   htmlForFriendsChat(friend) {

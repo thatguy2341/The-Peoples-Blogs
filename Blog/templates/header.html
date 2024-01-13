@@ -36,7 +36,7 @@
     <script
       defer
       type="module"
-      src="{{url_for('static', filename='cleanJS/chatController.js')}}"
+      src="{{url_for('static', filename='cleanJS/chatSystem2.0/chatController.js')}}"
     ></script>
     <!-- Bootstrap core CSS -->
     <link
@@ -169,7 +169,7 @@
 
       <!--CHAT MODEL-->
       <div
-        class="modal chat-modal edit-modal"
+        class="modal chat-modal edit-modal overflow-auto"
         id="chat-modal"
         style="color: black"
       >
@@ -246,7 +246,7 @@
               </button>
             </div>
           </div>
-          <div class="container overflow-auto" id="friends-container"></div>
+          <div class="container" id="friends-container"></div>
         </div>
       </div>
 
