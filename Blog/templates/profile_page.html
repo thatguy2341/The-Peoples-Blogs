@@ -57,7 +57,7 @@ current_user = session.current_user %}
     </div>
   </div>
 </header>
-<div class="modal" id="edit-modal" style="color: black">
+<div class="modal overflow-auto" id="edit-modal" style="color: black">
   <div class="modal-header">
     <div class="title">Confirmation</div>
     <button data-close-button class="close-button">&times;</button>
@@ -113,6 +113,8 @@ current_user = session.current_user %}
       </button>
       {% endif %}
     </div>
+    <div data-container-info data-dark="{{ DARKMODE }}"></div>
+
     {% if not blogs: %}
     <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem" />
     <div style="text-align: center">
@@ -132,7 +134,6 @@ current_user = session.current_user %}
       <p>Log in to your account at the top to create your own blog!</p>
       {% endif %}
     </div>
-
     {% else: %}
     <div data-container-info data-dark="{{ DARKMODE }}">
       {% for blog in blogs %}

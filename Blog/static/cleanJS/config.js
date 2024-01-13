@@ -1,6 +1,6 @@
 // File with all constant variables.
 
-export const TIMEOUTSECONDS = 15;
+export const TIMEOUTSECONDS = 30;
 
 export const AMOUNT_OF_PAGES_PER_BLOG = 10;
 

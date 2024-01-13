@@ -28,8 +28,8 @@ class PaginationView extends View {
 
   addListeners(callbackFunc) {
     const nextPage = function (e) {
-      if (!e.dataset?.num) return;
-      this.page = e.target.dataset.num;
+      if (!e.target.dataset?.num) return;
+      this.page = +e.target.dataset.num;
       callbackFunc();
     }.bind(this);
 
