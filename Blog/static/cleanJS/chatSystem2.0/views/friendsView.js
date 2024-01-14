@@ -12,12 +12,14 @@ class FriendsView extends View {
   markUpUsers(user) {
     return `
       <div style="padding: 0 10%;">
-      <div class="row friends-friend new-friend" id="friends-friend">
-      <p class="friend-name">${user.name}
-    
-        </p>
-        <a about="send a friend request" id="friend-request" style="cursor: pointer;margin: 10px;" data-url="/send_notification/${user.id}/friend_req">👤+</a>
-      </div>
+        <div class="row friends-friend new-friend" id="friends-friend">
+          <a href="/view_profile/${user.id}">
+            <p class="friend-name">
+              ${user.name}
+            </p>
+          </a>
+          <a about="send a friend request" id="friend-request" style="cursor: pointer;margin: 10px;" data-url="/send_notification/${user.id}/friend_req">👤+</a>
+        </div>
       </div>
       `;
   }
@@ -25,7 +27,9 @@ class FriendsView extends View {
   markUp(friend) {
     return `
     <div class="row friends-friend" id="friends-friend">
-        <p class="friend-name">${friend.friend_name}
+      <a href="/view_profile/${friend.friend_id}">
+          <p class="friend-name">
+            ${friend.friend_name}
         ${
           +friend.online
             ? `<i class="fas" id="online" data-id="${friend.friend_id}" style="padding-left: 1em; font-size: 14px;">🟢</i>`
@@ -33,6 +37,8 @@ class FriendsView extends View {
         }
         
         </p>
+        </a>
+
         <div>
         <a id="open-chat" data-friend-id="${friend.id}" data-name="${
       friend.friend_name
@@ -57,15 +63,6 @@ class FriendsView extends View {
     this.#friendsBody.classList.remove("hidden");
     this.#friendsBtn.classList.add("active");
   }
-
-  // showUsers(users) {
-  //   this._container.innerHTML = "";
-  //   users.forEach((user) => {
-  //     const newSection = document.createElement("div");
-  //     newSection.innerHTML = this.markUpUsers(user);
-  //     this._container.insertAdjacentElement("beforeend", newSection);
-  //   });
-  // }
 
   addStarterListener(callBackFunc) {
     this.#friendsBtn.addEventListener("click", callBackFunc);

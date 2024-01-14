@@ -39,8 +39,8 @@ current_user = session.current_user %}
 
           {% else %}
           <h1 data-id="{{admin_user.id}}">
-            {{admin_user.name}}'s Profile {% if current_user not in
-            admin_user.friends and current_user != admin_user and auth %}
+            {{admin_user.name}}'s Profile {% if auth and current_user.id not in
+            admin_friends and current_user.id != admin_user.id %}
             <a
               about="send a friend request"
               id="friend-request"
@@ -114,7 +114,7 @@ current_user = session.current_user %}
       {% endif %}
     </div>
 
-    {% if not current_user.blogs: %}
+    {% if not admin_user.blogs: %}
     <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem" />
     <div style="text-align: center">
       {% if current_user.id == admin_user.id %} You haven't written any blogs

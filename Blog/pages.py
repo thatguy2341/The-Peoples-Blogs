@@ -130,15 +130,15 @@ def edit_blog(blog_id):
 def profile(user_id):
     user = Users.query.get(user_id)
     blogs = user.blogs
+    friends = {friend.friend_id for friend in user.friends}
     form = Confirm()
     if form.validate_on_submit():
         if check_password_hash(password=form.password.data, pwhash=user.password):
             return redirect(url_for('pages.edit_user', user_id=user_id))
         else:
             flash('wrong password')
-            return render_template("profile_page.html", admin_user=user, blogs=blogs, form=form)
 
-    return render_template("profile_page.html", admin_user=user, blogs=blogs, form=form)
+    return render_template("profile_page.html", admin_user=user, blogs=blogs, form=form, admin_friends=friends)
 
 
 @pages.route('/get-posts/<int:blog_id>')
