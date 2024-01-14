@@ -225,7 +225,6 @@ def remove_notification(notification_id):
 @api.route("/blog/<int:blog_id>/delete")
 def delete_blog(blog_id):
     inside_blog = Blogs.query.get(blog_id)
-    print(online_users, session['id'])
     if session['id'] in online_users and session['id'] == inside_blog.author_id:
         db.session.delete(inside_blog)
         db.session.commit()

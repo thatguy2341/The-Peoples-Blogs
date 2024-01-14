@@ -13,6 +13,7 @@ class ChatView extends PopupView {
   #messagesContainer = this.modal.querySelector("#chat");
   #inputContainer = this._container.querySelector(".input-message");
   #input = this.#inputContainer.querySelector(".message-input");
+  error = "";
   #friendButton;
   #chosenFriend;
 

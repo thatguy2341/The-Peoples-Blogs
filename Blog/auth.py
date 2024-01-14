@@ -38,12 +38,8 @@ def online(data):
 
 def offline(data):
     user = Users.query.get(data['id'])
-    session['id'] = 0
     session.clear()
-    try:
-        online_users.remove(user.id)
-    except KeyError:
-        pass
+    online_users.discard(user.id)
     session['dark_mode'] = user.dark_mode
     socket.emit('disconnected', {'id': user.id})
 
@@ -107,6 +103,13 @@ def login():
         flash("You Haven't Registered Before, Your Email Is Unknown")
 
     return render_template("login.html", form=form)
+
+
+# @socket.on('disconnect')
+# @login_required
+# def logout_bysocket():
+#     offline({'id': session['id']})
+#     return redirect(url_for('pages.home_page'))
 
 
 @auth.route('/logout/')

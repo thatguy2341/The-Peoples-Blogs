@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask, session  # Do not delete
 from dotenv import load_dotenv  # DO NOT DELETE
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
@@ -24,6 +24,7 @@ def create_app():
 
     db.init_app(app)
     socket.init_app(app=app)
+
 
     from auth import auth
     from pages import pages

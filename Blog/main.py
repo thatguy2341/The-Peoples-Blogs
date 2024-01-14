@@ -12,16 +12,19 @@ gravatar = Gravatar(app=app, size=50, default="mp")
 
 @app.context_processor
 def inject_current_data():
-    if session.get('dark_mode') is None:
-        session['dark_mode'] = False
+    if session.get('id') and session.get('id') not in online_users:
+        session.clear()
 
-    if session.get('id'):
-        online_users.update({session['id']}) #if server encounters a bug and needs to reset it will also reset this set, so adding this here will keep updating it.
+    elif session.get('id'):
+        online_users.update({session['id']})
         user = db.session.get(Users, session['id'])
         new_notification = not user.notification_seen
         session['current_user'] = user.to_dict()
         return dict(year=datetime.now().year, DARKMODE=user.dark_mode, auth=user.id,
                     new_notification=new_notification)
+
+    if session.get('dark_mode') is None:
+        session['dark_mode'] = False
 
     session['current_user'] = Users(id=0).to_dict()
     return dict(year=datetime.now().year, DARKMODE=session['dark_mode'], auth=0)

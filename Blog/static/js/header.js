@@ -9,6 +9,7 @@ export const userId = Number(body.dataset.id);
 socket.connect(document.domain + ":" + location.port);
 
 if (darkMode) {
+  //DONE
   document.documentElement.style.setProperty("--anchor-color", "white");
   document.documentElement.style.setProperty("--color-darkMode", "black");
   document.documentElement.style.setProperty("--color-darkModeText", "white");
@@ -35,13 +36,13 @@ if (darkMode) {
   );
   body.classList.remove("dark-mode-active");
 }
-
+//DONE
 if (window.innerWidth < 400) {
   document.querySelector(".navbar-toggler").innerHTML =
     '<i class="fas fa-bars"></i>';
 }
 
-// Hover on navlinks effect.
+// Hover on navlinks effect. // DONE
 const navBar = document.querySelector(".navbar-collapse");
 
 const makeBold = function (e) {
@@ -63,7 +64,6 @@ navBar.addEventListener("mouseout", makeBold.bind(1));
 const viewBtn = document.querySelector(".light-btn");
 const btnsToChange = document.querySelectorAll(".btn[data-type]");
 const submitBtn = document.getElementById("submit");
-const anchors = document.querySelectorAll("a");
 const frontImage = document.querySelector(".masthead");
 document
   .querySelectorAll(".fas-anchor")
