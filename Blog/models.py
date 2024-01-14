@@ -25,6 +25,7 @@ class Users(db.Model):
     def to_dict(self):
         data = {column.name: getattr(self, column.name) for column in self.__table__.columns
                 if column.name not in ['password']}
+        data.update({'blogs': len(self.blogs)})
         return data
 
 

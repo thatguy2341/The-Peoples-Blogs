@@ -19,7 +19,7 @@ const searchControler = async function () {
         AMOUNT_OF_PAGES_PER_BLOG
     ),
     false,
-    inputView.getSearch()
+    inputView.getSearch() // Dont like, but is just for error handling
   );
   // 3. reset search:
   inputView.resetSearch();

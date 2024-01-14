@@ -3,14 +3,9 @@
 import { PopupView } from "../../popupView.js";
 
 class NotificatioView extends PopupView {
-  _sectionList = [];
   error = `<div class="container" style="text-align: center;">No notifications found</div>`;
   _container = document.querySelector("#notifications-container");
   modal = document.getElementById("notification-modal");
-
-  setNotifications(data) {
-    this._sectionList = data;
-  }
 
   htmlForNotLoggin() {
     return `<div class="container" style="text-align: center;">To see an notifications log in or register</div>`;

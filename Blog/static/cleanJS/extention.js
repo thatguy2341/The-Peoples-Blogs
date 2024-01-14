@@ -50,3 +50,12 @@ export const send = async function (link, error) {
     console.error(error);
   }
 };
+
+/**
+ * changes a word so only the first letter is upper cased.
+ * @param {string} str one word
+ * @returns titled word
+ */
+export const toTitle = function (str) {
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
+};

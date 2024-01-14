@@ -49,11 +49,11 @@ export class View {
     container = this._container,
     htmlBuilder = this.markUp,
     addClasses = [],
-    errorContainer = this._container,
+    errorContainer = container,
     smoothScrolling = false
   ) {
     if (dataArray.length === 0) {
-      errorContainer.textContent = this.error;
+      errorContainer.innerHTML = this.error;
       return;
     }
     container.innerHTML = "";

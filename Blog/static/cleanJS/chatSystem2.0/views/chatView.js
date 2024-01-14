@@ -168,7 +168,6 @@ class ChatView extends PopupView {
   }
 
   clearChat() {
-    this._container.querySelector(".chat-title").textContent = "";
     this.#messagesContainer.dataset.id = "";
     this.#messagesContainer.innerHTML = "";
     this.#inputContainer.classList.add("hidden");
@@ -176,8 +175,6 @@ class ChatView extends PopupView {
 
   startChat() {
     this.clearChat();
-    this._container.querySelector(".message-begin").textContent =
-      "Choose a friend to message";
     this.#chatBody.classList.remove("hidden");
     this.#chatBtn.classList.add("active");
   }

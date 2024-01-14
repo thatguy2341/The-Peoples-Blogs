@@ -113,9 +113,8 @@ current_user = session.current_user %}
       </button>
       {% endif %}
     </div>
-    <div data-container-info data-dark="{{ DARKMODE }}"></div>
 
-    {% if not blogs: %}
+    {% if not current_user.blogs: %}
     <hr class="smooth-scroll hor-line" style="margin-bottom: 5rem" />
     <div style="text-align: center">
       {% if current_user.id == admin_user.id %} You haven't written any blogs
@@ -133,6 +132,7 @@ current_user = session.current_user %}
       <p>It seems that the creator hasn't posted anything yet 😖</p>
       <p>Log in to your account at the top to create your own blog!</p>
       {% endif %}
+      <div data-container-info data-dark="{{ DARKMODE }}"></div>
     </div>
     {% else: %}
     <div data-container-info data-dark="{{ DARKMODE }}">
@@ -183,7 +183,7 @@ current_user = session.current_user %}
       {% endfor %}
     </div>
 
-    {% if current_user.id == admin_user.id %}
+    {% if current_user.id == admin_user.id and current_user.blogs < 2: %}
     <a
       data-type="btn-outline-info"
       class="btn btn-new-post btn-outline-info float-right"

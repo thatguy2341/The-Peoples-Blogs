@@ -4,7 +4,7 @@ import { get } from "../extention.js";
 
 export const state = { blogs: [] };
 
-export const getBlogs = async function (search = "null", category = "Recent") {
+export const getBlogs = async function (search = "null", category = "recent") {
   try {
     state.blogs = await get(
       `get_blogs/${search}/${category}`,

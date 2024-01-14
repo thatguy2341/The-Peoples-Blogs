@@ -31,7 +31,7 @@
   </div>
 </header>
 
-{% if auth and (current_user.blogs | length < 2 or current_user.id == 1) %}
+{% if auth and (current_user.blogs < 2 or current_user.id == 1) %}
 <div class="clearfix" style="margin: 3rem 0">
   <a
     data-type="btn-outline-info"
@@ -151,7 +151,7 @@
         >
       </div>
 
-      {% if current_user.blogs | length <= 2 and not auth : %}
+      {% if not auth : %}
       <hr class="smooth-scroll hor-line" style="margin-top: 10rem" />
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem">
@@ -215,7 +215,7 @@
   </div>
 </header>
 
-{% if auth and (current_user.blogs | length < 2 or current_user.id == 1) %}
+{% if auth and (current_user.blogs < 2 or current_user.id == 1) %}
 <div class="clearfix" style="margin: 3rem 0">
   <a
     data-type="btn-outline-info"
@@ -336,7 +336,7 @@
         >
       </div>
 
-      {% if current_user.blogs | length <= 2 and not auth: %}
+      {% if not auth: %}
       <hr class="smooth-scroll hor-line" style="margin-top: 10rem" />
       <div class="smooth-scroll">
         <h4 style="text-align: center; line-height: 2; margin-bottom: 2rem">

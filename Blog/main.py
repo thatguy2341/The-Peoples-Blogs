@@ -2,7 +2,7 @@ from datetime import datetime
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
-from __init__ import create_app, socket, db, session
+from __init__ import create_app, socket, db, session, online_users
 from models import Users
 
 app = create_app()
@@ -16,6 +16,7 @@ def inject_current_data():
         session['dark_mode'] = False
 
     if session.get('id'):
+        online_users.update({session['id']}) #if server encounters a bug and needs to reset it will also reset this set, so adding this here will keep updating it.
         user = db.session.get(Users, session['id'])
         new_notification = not user.notification_seen
         session['current_user'] = user.to_dict()

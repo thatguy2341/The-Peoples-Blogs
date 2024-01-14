@@ -23,9 +23,9 @@ def get_blogs(search, category='Recent'):
         found_blogs = db.session.query(Blogs).filter(Blogs.id.in_(ids))
 
     category_keywords = {
-        'Recent': Blogs.created_date.asc(),
-        'Popular': Blogs.views.desc(),
-        'Latest': Blogs.created_date.desc()
+        'recent': Blogs.created_date.asc(),
+        'popular': Blogs.views.desc(),
+        'latest': Blogs.created_date.desc()
     }
     all_blogs = found_blogs.order_by(category_keywords[category]).all()
 
@@ -225,11 +225,11 @@ def remove_notification(notification_id):
 @api.route("/blog/<int:blog_id>/delete")
 def delete_blog(blog_id):
     inside_blog = Blogs.query.get(blog_id)
-    current_user = session['current_user']
-    if current_user.id in online_users and current_user.id == inside_blog.author_id:
+    print(online_users, session['id'])
+    if session['id'] in online_users and session['id'] == inside_blog.author_id:
         db.session.delete(inside_blog)
         db.session.commit()
-        return redirect(url_for('home_page'))
+        return redirect(url_for('pages.home_page'))
 
     return abort(403, description="Unauthorized Access, you are not allowed to access this page.")
 
@@ -246,11 +246,10 @@ def next_page(num):
 @login_required
 def delete_post(post_id, blog_id):
     inside_blog = Blogs.query.get(blog_id)
-    current_user = session['current_user']
-    if current_user.id == inside_blog.author_id:
+    if session['id'] == inside_blog.author_id:
         post_to_delete = BlogPost.query.get(post_id)
         db.session.delete(post_to_delete)
         db.session.commit()
-        return redirect(url_for('get_all_posts', blog_id=blog_id))
+        return redirect(url_for('pages.get_all_posts', blog_id=blog_id))
 
     return abort(403, description="Unauthorized Access, you are not allowed to access this page.")

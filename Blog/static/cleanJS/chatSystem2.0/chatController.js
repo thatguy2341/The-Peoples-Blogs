@@ -27,9 +27,8 @@ const controlNotifications = async function () {
     );
   } else {
     const notifications = await getNotifications();
-    notificationView.setNotifications(notifications);
     notificationView.openModal();
-    notificationView.showData();
+    notificationView.showData(notifications);
     bellView.resetBell();
   }
 };
@@ -55,12 +54,14 @@ const renderChatPopup = async function (main) {
   chatView.startChat();
   friendsView.hideFriends();
 
-  if (main === true && window.innerWidth > 800) {
+  if (main === true && !phone_mode) {
     chatView.friendsSpinner();
   }
-  await getFriends(userId);
+  if (!phone_mode) {
+    await getFriends(userId);
 
-  chatView.showFriends(state["friends"]);
+    chatView.showFriends(state["friends"]);
+  }
 };
 
 const getChat = async function () {
@@ -91,7 +92,7 @@ const chatWFriend = function (friendData) {
   friendsView.hideFriends();
   chatView.setChosenFriend(friendData);
   chatView.startChat();
-  if (window.innerWidth > 800) {
+  if (!phone_mode) {
     chatView.showFriends(state["friends"]);
     chatView.activateFriend();
   }

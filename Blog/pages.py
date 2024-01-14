@@ -28,21 +28,21 @@ def change_view_mode(change):
     return jsonify({'mode': session['dark_mode']})
 
 
-@pages.route('/get_page/<int:page>', methods=['GET'])
-def get_page(page=0):
-    if page and page <= db.session.query(Blogs).count() // 10:
-        session['page'] = page
+# @pages.route('/get_page/<int:page>', methods=['GET'])
+# def get_page(page=0):
+#     if page and page <= db.session.query(Blogs).count() // 10:
+#         session['page'] = page
 
-    return jsonify({'num': session['page']})
+#     return jsonify({'num': session['page']})
 
 
 # ------------------------- Site Functionallity --------------------------------------
 
 @pages.route("/", methods=["GET", "POST"])
 def home_page():
-    session['page'] = request.args.get("num") if request.args.get("num") is not None else 0
+    # session['page'] = request.args.get("num") if request.args.get("num") is not None else 0
 
-    return render_template('blogs.html', page=session['page'])
+    return render_template('blogs.html') #, page=session['page']
 
 
 @pages.route("/edit_user/<int:user_id>", methods=["POST", "GET"])
