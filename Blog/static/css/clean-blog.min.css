@@ -683,7 +683,7 @@ footer .copyright {
 
 /* .post-preview > a > .post-title {
   /*   margin-bottom: 1.5rem; */
-} */
+/* } */
 
 .views {
   padding: 0;
@@ -759,9 +759,9 @@ footer .copyright {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px var(--anchor-color) solid;
+  border: 2px var(--anchor-color) solid;
 
-  border-radius: 0.5em;
+  border-radius: 1.5em;
   padding: 5% 5%;
   cursor: pointer;
   transition: background 0.3s;
@@ -1105,6 +1105,15 @@ footer .copyright {
   width: -webkit-fill-available;
 }
 
+#friends-friend .name {
+  color: black;
+  text-decoration: none;
+}
+
+#friends-friend .name:hover {
+  text-decoration: underline;
+}
+
 .search-friends-row {
   padding-top: 2rem;
   padding-bottom: 3rem;
@@ -1227,4 +1236,13 @@ footer .copyright {
   margin: 0;
   padding: 0;
   z-index: 2000;
+}
+
+.btn-small {
+  padding: 8px 8px;
+  border-radius: 2rem;
+}
+
+.next-page:not([href]) {
+  color: #17a2b8;
 }

@@ -1,11 +1,14 @@
 "use strict";
 
 import { View } from "../../masterView.js";
-import { MAX_AMOUNT_OF_PAGES_BUTTONS } from "../../config.js";
+import {
+  AMOUNT_OF_PAGES_PER_BLOG,
+  MAX_AMOUNT_OF_PAGES_BUTTONS,
+} from "../../config.js";
 
 class PaginationView extends View {
   _container = document.querySelector("div[data-btn-map]"); // pageBtnsContainer
-  #nextPageBtn = document.querySelector("#next-page");
+  #nextPageBtn = document.querySelector("#next-page .btn");
   page = 1;
 
   markUp(page) {
@@ -38,13 +41,13 @@ class PaginationView extends View {
     );
   }
 
-  showPagination() {
+  showPagination(blogsAmount) {
     const pagesBack = Math.floor(MAX_AMOUNT_OF_PAGES_BUTTONS / 2);
     const pageStart = this.page > pagesBack ? this.page - pagesBack : 1;
     const len =
-      this.page > MAX_AMOUNT_OF_PAGES_BUTTONS
+      blogsAmount / AMOUNT_OF_PAGES_PER_BLOG > MAX_AMOUNT_OF_PAGES_BUTTONS
         ? MAX_AMOUNT_OF_PAGES_BUTTONS
-        : this.page;
+        : blogsAmount / AMOUNT_OF_PAGES_PER_BLOG;
 
     this._container.innerHTML = "";
     Array.from({ length: len }, (_, i) => pageStart + i).forEach((num) => {

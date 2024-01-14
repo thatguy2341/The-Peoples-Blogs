@@ -8,6 +8,7 @@ import { getBlogs, state } from "./blogsModel.js";
 import { AMOUNT_OF_PAGES_PER_BLOG } from "../config.js";
 
 const searchControler = async function () {
+  paginationView.page = 1;
   //1.get search:
   blogsView.renderSpinner();
   await getBlogs(inputView.getSearch(), categoryView.getCategory());
@@ -23,6 +24,8 @@ const searchControler = async function () {
   );
   // 3. reset search:
   inputView.resetSearch();
+  // 4. take care of accesorries:
+  controlAccessories();
 };
 
 const startBlogs = async function () {
@@ -49,18 +52,13 @@ const controlGetPage = function () {
  * Controls pagination and the button to go to the next page.
  */
 const controlAccessories = function () {
-  if (
-    state.blogs.length <
-    (paginationView.page - 1) * AMOUNT_OF_PAGES_PER_BLOG +
-      AMOUNT_OF_PAGES_PER_BLOG -
-      1
-  ) {
+  if (state.blogs.length <= paginationView.page * AMOUNT_OF_PAGES_PER_BLOG) {
     paginationView.hideNextPageBtn();
   } else {
     paginationView.showNextPageBtn();
     paginationView.setNextPageBtn();
   }
-  paginationView.showPagination();
+  paginationView.showPagination(state.blogs.length);
 };
 
 const controlSize = function () {

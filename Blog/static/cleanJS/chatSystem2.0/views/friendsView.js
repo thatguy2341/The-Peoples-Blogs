@@ -27,17 +27,19 @@ class FriendsView extends View {
   markUp(friend) {
     return `
     <div class="row friends-friend" id="friends-friend">
-      <a href="/view_profile/${friend.friend_id}">
-          <p class="friend-name">
+      <p class="friend-name">
+        <a class="name" href="/view_profile/${friend.friend_id}">
+
             ${friend.friend_name}
+            </a>
+
         ${
           +friend.online
             ? `<i class="fas" id="online" data-id="${friend.friend_id}" style="padding-left: 1em; font-size: 14px;">🟢</i>`
             : `<i class="fas" id="online" data-id="${friend.friend_id}" style="padding-left: 1em; font-size: 14px;">🔴</i>`
         }
         
-        </p>
-        </a>
+      </p>
 
         <div>
         <a id="open-chat" data-friend-id="${friend.id}" data-name="${

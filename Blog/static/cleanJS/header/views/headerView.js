@@ -14,6 +14,9 @@ class HeaderView extends View {
 
   setPageProperties(darkMode) {
     this.lazyLoadPicture(this.#frontImage, this.#frontImage.dataset.start);
+    document
+      .querySelectorAll(".fas-anchor")
+      .forEach((a) => (a.style.color = "#212529"));
 
     if (darkMode) {
       document.documentElement.style.setProperty("--anchor-color", "white");
