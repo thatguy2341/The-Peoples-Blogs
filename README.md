@@ -1,5 +1,5 @@
 Welcome to the people blogs website, source code!
-This is a project I made almost fully on my own. 
+This is a project I made almost fully on my own(credits at the bottom). 
 
 DESCRIPTION
   This website is a social website, it allows multiple users at once, the users can message eachother.
@@ -25,7 +25,12 @@ How did I design the website?
 
 Any hardships?
   MANY, so much, I can't remember all of them.
-  
+  The four biggest ones were: 
+  1. In the flask framework there is a library called Flask-login, which for months I used, but when I tried to make the website multi user based, I was stumped.
+     The Flask-login library doesn't work with multiple users, so I had to scrap most of the authentication code, and create an authentication system of my own, which at the time I had no Idea how.
+  2. The first javascript feature I wrote was the search system, and I had no idea how to actually create it, so for multiple times I had to scrap a lot of it and start from scratch (that is why the search system is called searchSystem3.0)
+  3. I made the javascript part of the website before I learned to organize JS in the MVC pattern, which made it hell to change or add any feature to the website, so I decided to organize more than 1000 lines of unorganized JS code, which took 5 days.
+  4. Adding socket based communication to the website, was so difficault, I almost quit at the end. This is because, after everything worked on my computer, I pushed the code to the render server and everything broke, I had no idea what was the problem, and thought the problem was on the render side, but after A LOT of searches I found the problem and fixed it.
 
 
 
