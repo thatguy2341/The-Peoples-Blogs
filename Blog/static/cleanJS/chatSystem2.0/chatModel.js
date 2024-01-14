@@ -1,6 +1,6 @@
 "use strict";
 
-import { socket } from "../../js/header.js";
+import { socket } from "../header/headController.js";
 import { get, send } from "../extention.js";
 
 export const state = { friends: [], messages: [], users: [] };

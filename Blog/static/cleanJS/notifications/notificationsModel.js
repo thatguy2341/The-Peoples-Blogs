@@ -1,6 +1,6 @@
 "use strict";
 
-import { userId } from "../../js/header.js";
+import { userId } from "../header/headController.js";
 
 export const getNotifications = async function () {
   try {

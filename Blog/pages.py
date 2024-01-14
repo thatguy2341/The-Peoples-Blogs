@@ -16,25 +16,15 @@ pages = Blueprint('pages', __name__)
 
 @pages.route('/change_view/<change>', methods=['GET', 'POST'])
 def change_view_mode(change):
-    if change == '1':
-        if session.get('id'):
-            user = db.session.query(Users).get(session['id'])
-            user.dark_mode = not user.dark_mode
-            db.session.commit()
-            session['dark_mode'] = user.dark_mode
-        else:
-            session['dark_mode'] = not session['dark_mode']
-
+    # if change == '1':
+        # if session.get('id'):
+            # user = db.session.query(Users).get(session['id'])
+            # user.dark_mode = not user.dark_mode
+            # db.session.commit()
+            # session['dark_mode'] = not session['dark_mode']
+        # else:
+    session['dark_mode'] = change == '1'
     return jsonify({'mode': session['dark_mode']})
-
-
-# @pages.route('/get_page/<int:page>', methods=['GET'])
-# def get_page(page=0):
-#     if page and page <= db.session.query(Blogs).count() // 10:
-#         session['page'] = page
-
-#     return jsonify({'num': session['page']})
-
 
 # ------------------------- Site Functionallity --------------------------------------
 

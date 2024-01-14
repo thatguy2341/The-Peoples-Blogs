@@ -33,14 +33,16 @@ def online(data):
     user = Users.query.get(data['id'])
     session['id'] = user.id
     online_users.add(user.id)
+    session['dark_mode'] = user.dark_mode
     socket.emit('connected', {'id': user.id})
 
 
 def offline(data):
     user = Users.query.get(data['id'])
+    user.dark_mode = session['dark_mode']
+    db.session.commit()
     session.clear()
     online_users.discard(user.id)
-    session['dark_mode'] = user.dark_mode
     socket.emit('disconnected', {'id': user.id})
 
 

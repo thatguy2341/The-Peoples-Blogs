@@ -15,8 +15,8 @@ import notificationView from "../notifications/views/notificationView.js";
 import bellView from "../notifications/views/bellView.js";
 import chatView from "./views/chatView.js";
 import friendsView from "./views/friendsView.js";
-import { userId } from "../../js/header.js";
 import { getTime } from "../extention.js";
+import { userId } from "../header/headController.js";
 
 let phone_mode = window.innerWidth < 800;
 

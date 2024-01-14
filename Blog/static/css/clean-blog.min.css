@@ -227,6 +227,7 @@ img::-moz-selection {
     transform: translate3d(0, 100%, 0);
   }
 }
+
 header.masthead {
   margin-bottom: 50px;
   background-color: #868e96;
