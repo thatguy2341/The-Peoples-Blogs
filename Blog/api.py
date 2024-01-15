@@ -10,6 +10,7 @@ api = Blueprint('api', __name__)
 
 # ------------------------- Site API --------------------------------------
 
+#TODO make sure that not all blogs actually get passed to the user at once 
 @api.route('/get_blogs/<search>/<category>', methods=['GET'])
 def get_blogs(search, category='Recent'):
     if search == 'null':

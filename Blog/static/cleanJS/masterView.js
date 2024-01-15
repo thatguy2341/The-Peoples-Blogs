@@ -15,6 +15,10 @@ export class View {
     this._container?.classList.add("hidden");
   }
 
+  /**
+   * recievs a html Element and makes the element float up when user scrolls to it.
+   * @param {Element} section
+   */
   addSmoothScrolling(section) {
     const revealSection = function (entries, observer) {
       const [entry] = entries;

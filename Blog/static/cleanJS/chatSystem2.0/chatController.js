@@ -108,7 +108,7 @@ const constrolGetUsers = async function () {
   friendsView.showData(state["users"], undefined, friendsView.markUpUsers);
 };
 
-const init = function () {
+export const initChat = function () {
   window.addEventListener("resize", checkSize);
   bellView.addListener(controlNotifications);
   notificationView.addListener();
@@ -131,4 +131,3 @@ const init = function () {
   );
   checkSize();
 };
-init();

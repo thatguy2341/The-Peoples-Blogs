@@ -829,6 +829,9 @@ footer .copyright {
   display: block;
   opacity: 1;
 }
+.menu hr {
+  margin: 0;
+}
 .search-margin {
   margin-bottom: 3rem;
 }

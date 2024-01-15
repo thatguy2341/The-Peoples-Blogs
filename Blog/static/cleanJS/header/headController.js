@@ -4,6 +4,7 @@ import headerView from "./views/headerView.js";
 import navbarView from "./views/navbarView.js";
 import viewMode from "./views/viewMode.js";
 import { changeModeAtSession, logoutUser } from "./headerModel.js";
+import { initChat } from "../chatSystem2.0/chatController.js";
 
 export const socket = io({ autoConnect: false });
 export let darkMode = viewMode.getMode();
@@ -17,6 +18,7 @@ const controlViewModeSwitch = function () {
 const init = function () {
   headerView.setPageProperties(darkMode);
   headerView.addDisconnectListeners(logoutUser);
+  headerView.setSmoothScrollingSections();
   headerView.addProgressProtectionListener();
   navbarView.setNavbar();
   navbarView.addHoverEffect();
@@ -26,6 +28,7 @@ const init = function () {
     headerView.lazyLoadPicture,
     changeModeAtSession
   );
+  initChat();
 };
 
 init();

@@ -11,6 +11,13 @@ class HeaderView extends View {
   #inputs = document.querySelectorAll(
     "[data-important]>form .form-group .form-control"
   );
+  #smoothScrolingSections = document.querySelectorAll(".smooth-scroll");
+
+  setSmoothScrollingSections() {
+    this.#smoothScrolingSections.forEach((section) => {
+      this.addSmoothScrolling(section);
+    });
+  }
 
   setPageProperties(darkMode) {
     this.lazyLoadPicture(this.#frontImage, this.#frontImage.dataset.start);

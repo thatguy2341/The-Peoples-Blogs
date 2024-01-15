@@ -1,7 +1,4 @@
 {% include "header.html" %}
-<head>
-   <script defer src="{{url_for('static', filename='js/smoothScrolling.js')}}"></script>
-</head>
 
 {% set current_user = session.current_user %}
 <!-- Main Content -->
@@ -12,7 +9,7 @@
         data-start="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
         data-src-light="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
         data-src-dark="url({{url_for('static', filename='img/index-light-bg.jpg')}})"
-        style="background-image: url('{{url_for('static', filename='img/index-light-bg-blur.jpg')}}');">
+        style="background-image: url({{url_for('static', filename='img/index-light-bg-blur.jpg')}});">
    <div class="container">
       <div class="row">
          <div class="col-lg-8 col-md-10 mx-auto">
